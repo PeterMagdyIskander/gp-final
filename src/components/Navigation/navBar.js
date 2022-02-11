@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import OwnerNavBar from "./OwnerNavbar";
-import UserNavBar from "./UserNavbar";
+import ParentNavBar from "./ParentNavbar";
 import "../../styles/app.css";
 const NavBar = (props) => {
   return (
@@ -16,10 +15,10 @@ const NavBar = (props) => {
               </Link>
             </li>
           </ul>
-        ) : props.authedUser.owner ? (
-          <OwnerNavBar />
+        ) : props.authedUser? (
+          <ParentNavBar />
         ) : (
-          <UserNavBar />
+          null
         )}
       </div>
     </nav>

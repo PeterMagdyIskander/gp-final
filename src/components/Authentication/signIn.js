@@ -26,7 +26,7 @@ const SignIn = (props) => {
         authed ?  <Routes>
         <Route
         path="*"
-        element={<Navigate to="/" />}
+        element={<Navigate to="/report" />}
     />
       </Routes>:
         <div className="sign-in-page">

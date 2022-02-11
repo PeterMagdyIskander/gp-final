@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { setAuthedUser } from "../../actions/authedUser";
 import { connect } from "react-redux";
 import '../../styles/app.css';
-const UserNavbar = (props) => {
+const OwnerNavbar = (props) => {
   const {dispatch}=props;
   const signOut = () => {
     console.log("Successufully Signed out");
@@ -13,19 +13,19 @@ const UserNavbar = (props) => {
       <nav>
         <ul>
           <li>
-            <Link to="/">Browser Items</Link>
+            <Link to="/Profile">Profile</Link>
           </li>
           <li>
-            <Link to="/myshoppingcart" >My Cart</Link>
+            <Link to="/Status">Status</Link>
           </li>
-
-         
           <li>
+          <Link to="/Report" >Report</Link>
+          </li>
+         <li>
          <div className="separator"></div>
          </li>
-
-          <li>
-            <Link to="/" onClick={signOut}>Sign out</Link>
+         <li>
+          <Link to="/" onClick={signOut}>Sign out</Link>
           </li>
           
         </ul>
@@ -33,4 +33,4 @@ const UserNavbar = (props) => {
     </div>
   );
 };
-export default connect()(UserNavbar);
+export default connect()(OwnerNavbar);

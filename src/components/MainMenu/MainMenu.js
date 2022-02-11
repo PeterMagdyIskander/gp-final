@@ -2,13 +2,13 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const MainMenu = () => {
+const MainMenu = (props) => {
   return (
     <div className="container-centered">
       <div className="found-child">do the shazam thing</div>
       <br />
         <div className="report-missing-child">
-            <Link  className="redColor" to="report">
+            <Link  className="redColor" to={props.authedUSer ? "report" : "signin"}>
             Report Missing Child
             </Link>
         </div>
@@ -21,4 +21,10 @@ const MainMenu = () => {
     </div>
   );
 };
-export default connect()(MainMenu);
+
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
+}
+export default connect(mapStateToProps)(MainMenu);
