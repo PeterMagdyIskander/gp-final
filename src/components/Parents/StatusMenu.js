@@ -6,14 +6,7 @@ const StatusMenu=()=>{
         <StatusCard picture='/assets/lost1.png' status={false}/>
         <StatusCard picture='/assets/lost1.png' status={true}/>
         <StatusCard picture='/assets/lost1.png' status={false}/>
-        <StatusCard picture='/assets/lost1.png' status={true}/>
-        <StatusCard picture='/assets/lost1.png' status={false}/>
-        <StatusCard picture='/assets/lost1.png' status={true}/>
-        <StatusCard picture='/assets/lost1.png' status={false}/>
-        <StatusCard picture='/assets/lost1.png' status={true}/>
-        <StatusCard picture='/assets/lost1.png' status={false}/>
-        <StatusCard picture='/assets/lost1.png' status={true}/>
-    </div>
+        </div>
 }
 
 export default connect()(StatusMenu);

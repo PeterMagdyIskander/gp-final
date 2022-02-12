@@ -91,6 +91,44 @@ function binarySearch(ArrayOfUsers, username) {
   }
   return -1;
 }
+
+let FoundChildData={
+  img:'imgPath', //could be bitmap whatever
+  map:'googleMapsApi',
+  address:'address [OPTIONAL]',
+  childName:'name of child [OPTIONAL]',
+  reporterPhone:'reporter phone [OPTIONAL]',
+}
+
+let ReportChildData={
+  imgs:[],//the 10 images of child 
+  nameOfChild:'name',
+  ageOfChild:0,
+  lastSeenLocationMap:'googleMapsApi',
+  lastSeenLocationAddress:'address',
+  clothesDescription:'description of what the child was wearing',
+  parentName:'get from cognito',
+  parentPhoneNumber:'get from cognito',
+}
+
+let FoundItemData={
+  uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
+  itemType:'',//could be [CAR,WALLET,ELECTRONICS]
+  map:'googleMapsApi',
+  address:'address [OPTIONAL]',
+  reporterPhone:'reporter phone [OPTIONAL]',
+}
+
+let ReportItemData={
+  uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
+  itemType:'',//could be [CAR,WALLET,ELECTRONICS]
+  lastSeenLocationMap:'googleMapsApi',
+  lastSeenLocationAddress:'address',
+  ItemDescription:'description of what the child was wearing',
+  username:'get from cognito',
+  userPhoneNumber:'get from cognito',
+}
+
 export function _getItems() {
   return new Promise((res, rej) => {
     setTimeout(() => res(items), 50);
