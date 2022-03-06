@@ -8,6 +8,7 @@ import NavBar from "./Navigation/navBar";
 import MainMenu from "./MainMenu/MainMenu";
 import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
+import Found from "./User/Found";
 function App(props) {
   useEffect(() => {
     props.dispatch(handleInitialData());
@@ -23,7 +24,7 @@ function App(props) {
           <Route path="/Status" element={<StatusMenu />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-         
+          <Route path="/found" element={<Found />} />
         </Routes>
       </Fragment>
     </Router>

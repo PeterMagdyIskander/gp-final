@@ -92,6 +92,7 @@ function binarySearch(ArrayOfUsers, username) {
   return -1;
 }
 
+//data i will send to you
 let FoundChildData={
   img:'imgPath', //could be bitmap whatever
   map:'googleMapsApi',
@@ -100,6 +101,7 @@ let FoundChildData={
   reporterPhone:'reporter phone [OPTIONAL]',
 }
 
+//data i will send to recognition
 let ReportChildData={
   imgs:[],//the 10 images of child 
   nameOfChild:'name',

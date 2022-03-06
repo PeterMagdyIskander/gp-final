@@ -12,6 +12,9 @@ const OwnerNavbar = (props) => {
     <div>
       <nav>
         <ul>
+        <li>
+            <Link to="/found">Found</Link>
+          </li>
           <li>
             <Link to="/Profile">Profile</Link>
           </li>

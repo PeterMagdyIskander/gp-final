@@ -1,33 +1,26 @@
 import { FiCircle } from "react-icons/fi";
 import { IconContext } from "react-icons";
-import {FiEdit}from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
-const StatusCard=(props)=>{
-    const color=props.status ? 'green' : 'red';
-    return (
-        
+const StatusCard = (props) => {
+  const color = props.status ? "green" : "red";
+  return (
     <div className="status-card-grid">
-        <div><img className="lost-child-img" src={props.picture} /></div>
-        <IconContext.Provider value={{color: color}}> 
+      <div>
+        <img className="lost-child-img" src={props.picture} />
+      </div>
+      <div className="flex">
+        <FiCircle color={color} />
+        <p>{props.status ? "Matched" : "Not Matched"}</p>
+      </div>
+      {!props.status ? (
         <div className="flex">
-        <FiCircle />
-        <p>{props.status ? "Matched" : "Not Matched" }</p>
-        
+          <FiEdit />
+          <Link to="/report">edit</Link>
         </div>
-        </IconContext.Provider>
-        {
-            !props.status ?
-            <div className="flex"> 
-            <FiEdit />
-            <Link to='/report'>
-                edit
-            </Link>
-            </div>
-            :
-            null 
-        }
+      ) : null}
     </div>
-     )
-}
+  );
+};
 
 export default StatusCard;
