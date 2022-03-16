@@ -6,16 +6,17 @@ import { setAuthedUser } from "../../actions/authedUser";
 import { Route, Navigate, Routes } from "react-router-dom";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import UserPool from "../../AWS/UserPool";
+import { getParent } from "../../utils/api";
 const SignIn = (props) => {
   const { dispatch } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [idToken, setIdToken] = useState(null);
-
+  const [parent, setParent] = useState(null);
   const [authed, setAuthed] = useState(false);
 
-  const Login = (email,password) => {
+  const Login = (email, password) => {
     const user = new CognitoUser({
       Username: email,
       Pool: UserPool,
@@ -29,9 +30,10 @@ const SignIn = (props) => {
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
         console.log("onSuccess: ", data.getIdToken());
-        setIdToken(JSON.stringify(data.getIdToken()));
-        setAuthed(true);
-        dispatch(setAuthedUser(data.getIdToken()));
+        getParent().then((res) => {
+          dispatch(setAuthedUser({ ...data.getIdToken(), ...res }));
+          setAuthed(true);
+        });
       },
       onFailure: (err) => {
         console.error("onFailure: ", err);
@@ -48,8 +50,8 @@ const SignIn = (props) => {
       username: "abadeer@hotmail.com",
       password: "abadir_2000",
     },
-    onSubmit:(values) => {
-      Login(values.username,values.password)
+    onSubmit: (values) => {
+      Login(values.username, values.password);
     },
   });
 

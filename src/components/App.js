@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { handleInitialData } from "../actions/shared";
 import SignIn from "./Authentication/signIn";
 import SignUp from "./Authentication/signUp";
 import NavBar from "./Navigation/navBar";
@@ -10,9 +9,6 @@ import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
 function App(props) {
-  useEffect(() => {
-    props.dispatch(handleInitialData());
-  });
   return (
     <Router>
       <Fragment>

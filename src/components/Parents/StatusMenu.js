@@ -1,12 +1,27 @@
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { getReportedChildById } from "../../utils/api";
 import StatusCard from "../Cards/StatusCard";
 
-const StatusMenu=()=>{
+const StatusMenu=(props)=>{
+    const [children,setChildren]=useState([]);
+    useEffect(()=>{
+        getReportedChildById(props.authedUser.reportedChildrenID).then(res=>setChildren(res))
+    })
     return <div className="status">
-        <StatusCard picture='/assets/lost1.png' status={false}/>
-        <StatusCard picture='/assets/lost1.png' status={true}/>
-        <StatusCard picture='/assets/lost1.png' status={false}/>
+        
+        {
+            children.map(c=>{
+                
+                return <StatusCard child={c}/>
+            })
+        }
         </div>
 }
 
-export default connect()(StatusMenu);
+function mapStateToProps({ authedUser }) {
+    return {
+      authedUser,
+    };
+  }
+  export default connect(mapStateToProps)(StatusMenu);

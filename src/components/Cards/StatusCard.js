@@ -1,25 +1,26 @@
 import { FiCircle } from "react-icons/fi";
-import { IconContext } from "react-icons";
 import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 const StatusCard = (props) => {
-  const color = props.status ? "green" : "red";
+  const color = props.child.status ? "green" : "red";
   return (
     <div className="status-card-grid">
       <div>
-        <img className="lost-child-img" src={props.picture} />
+        <img className="lost-child-img" src={props.child.imgs[0]} />
       </div>
       <div className="flex">
         <FiCircle color={color} />
-        <p>{props.status ? "Matched" : "Not Matched"}</p>
+        <p>{props.child.status ? "Matched" : "Not Matched"}</p>
       </div>
-      {!props.status ? (
+      {!props.child.status ? (
         <div className="flex">
           <FiEdit />
-          <Link to="/report">edit</Link>
+          <Link to="/report" state={{child:props.child}}>edit</Link>
         </div>
       ) : null}
+      
     </div>
+    
   );
 };
 

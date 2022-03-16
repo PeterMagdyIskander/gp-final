@@ -6,7 +6,11 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { useFormik } from "formik";
 import Toast from "../Toasts/Toasts";
 import { uploadtos3 } from "../../AWS/s3logic";
+import { useLocation } from "react-router";
 const ReportMenu = (props) => {
+  const location = useLocation();
+  const lc = location ? location.state : null;
+  console.log(lc);
   const [file, setFile] = useState([]);
   const [valid, setValid] = useState(false);
   const [res, setRes] = useState("");
