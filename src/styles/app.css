@@ -114,7 +114,7 @@ li {
 
 .status-card-grid {
     display: grid;
-    grid-template-columns: 100px 300px 100px;
+    grid-template-columns: 100px 375px;
     align-items: center;
     border-radius: 25px;
     width: 500px;
@@ -137,7 +137,9 @@ li {
     align-items: center;
     column-gap: 10px;
 }
-
+.flex-space-between{
+    justify-content: space-between;
+}
 .status {
     margin: auto;
     width: 50%;
