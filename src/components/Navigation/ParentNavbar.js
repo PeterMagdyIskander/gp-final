@@ -12,22 +12,22 @@ const OwnerNavbar = (props) => {
     <div>
       <nav>
         <ul>
-        <li>
+        <li className="nav-li">
             <Link to="/found">Found</Link>
           </li>
-          <li>
+          <li className="nav-li">
             <Link to="/Profile">Profile</Link>
           </li>
-          <li>
+          <li className="nav-li">
             <Link to="/Status">Status</Link>
           </li>
-          <li>
+          <li className="nav-li">
           <Link to="/Report" >Report</Link>
           </li>
-         <li>
+         <li className="nav-li">
          <div className="separator"></div>
          </li>
-         <li>
+         <li className="nav-li">
           <Link to="/" onClick={signOut}>Sign out</Link>
           </li>
           

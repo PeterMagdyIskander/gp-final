@@ -20,7 +20,7 @@ let FoundChildData={
 let ReportChildData=[
   {
     id:'asd123',
-    imgs:['/assets/lost1.png','/assets/lost2.jpg'],//the 10 images of child 
+    imgs:['/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg'],//the 10 images of child 
     nameOfChild:'petermagdy',
     ageOfChild:22,
     lastSeenLocationMap:'googleMapsApi',

@@ -40,8 +40,7 @@ ul {
 a {
     text-decoration: none;
 }
-
-li {
+.nav-li {
     list-style: none;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -249,4 +248,10 @@ li {
 
 Circles{
 display: none;
+}
+#status-card-img{
+    width:200px;
+    height:200px;
+   object-fit:cover;
+   background-color: #fafafa;
 }

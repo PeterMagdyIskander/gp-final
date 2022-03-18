@@ -9,7 +9,7 @@ const NavBar = (props) => {
       <div className="menu">
         {props.authedUser == null ? (
           <ul>
-            <li>
+            <li className="nav-li">
               <Link to="/signin" activeclassname="active" >
                 Sign in
               </Link>
