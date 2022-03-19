@@ -1,9 +1,9 @@
 import { TextField } from "@mui/material";
-export const MyField = ({ autoComplete, label, field, type, name, id }) => {
+export const MyField = ({ required,autoComplete, label, field, type, name, id }) => {
   return (
     <TextField
       margin="normal"
-      required
+      required={required}
       fullWidth
       type={type}
       label={label}

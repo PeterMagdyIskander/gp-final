@@ -40,6 +40,7 @@ ul {
 a {
     text-decoration: none;
 }
+
 .nav-li {
     list-style: none;
     margin-left: 1rem;
@@ -136,9 +137,11 @@ a {
     align-items: center;
     column-gap: 10px;
 }
-.flex-space-between{
+
+.flex-space-between {
     justify-content: space-between;
 }
+
 .status {
     margin: auto;
     width: 50%;
@@ -174,7 +177,7 @@ a {
 .request-loader span {
     position: relative;
     font-size: 72px;
-    
+
 }
 
 .request-loader::after {
@@ -246,12 +249,21 @@ a {
     margin: 25px;
 }
 
-Circles{
-display: none;
+Circles {
+    display: none;
 }
-#status-card-img{
-    width:200px;
-    height:200px;
-   object-fit:cover;
-   background-color: #fafafa;
+
+#status-card-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    background-color: #fafafa;
+}
+
+.close-modal {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 8px;
+    cursor: pointer;
 }

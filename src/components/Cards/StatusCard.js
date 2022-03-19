@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 const StatusCard = (props) => {
   const color = props.child.status ? "green" : "red";
   let iconSize = 20;
+  const [open, setOpen] = useState(false);
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
 
   const style = {
     position: "absolute",
@@ -23,9 +26,7 @@ const StatusCard = (props) => {
     boxShadow: 24,
     p: 4,
   };
-  const [open, setOpen] = useState(false);
-  const handleOpenModal = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  function handleRemoveChild() {}
   return (
     <div className="status-card-grid">
       <div>
@@ -54,7 +55,7 @@ const StatusCard = (props) => {
       </div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -97,10 +98,13 @@ const StatusCard = (props) => {
             Who to call: {props.child.parentPhoneNumber}
           </Typography>
           <Button
+            onClick={handleRemoveChild}
             sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}
           >
             Remove Report
           </Button>
+
+          <FiXCircle onClick={handleCloseModal} size={iconSize} color="red" className="close-modal" />
         </Box>
       </Modal>
     </div>

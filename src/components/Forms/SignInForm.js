@@ -22,10 +22,8 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link>
-      <Redirect  to='/'>
-      Lost and Found
-      </Redirect>
-              </Link>
+        <Redirect to="/">Lost and Found</Redirect>
+      </Link>
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -44,67 +42,65 @@ export default function SignInForm({ onSubmit }) {
         setLoading(true);
       }}
     >
-      {({ values }) => (
-        <Form>
-          <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 8,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
-                <Typography component="h1" variant="h5">
-                  Sign in
-                </Typography>
+      <Form>
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
 
-                <Field
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  component={MyField}
-                />
-                <Field
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  component={MyField}
-                />
-                <LoadingButton
-                  type="submit"
-                  loading={loading}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </LoadingButton>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
+              <Field
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                component={MyField}
+              />
+              <Field
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                component={MyField}
+              />
+              <LoadingButton
+                type="submit"
+                loading={loading}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </LoadingButton>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
                 </Grid>
-              </Box>
-              <Copyright sx={{ mt: 8, mb: 4 }} />
-            </Container>
-          </ThemeProvider>
-        </Form>
-      )}
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+          </Container>
+        </ThemeProvider>
+      </Form>
     </Formik>
   );
 }
