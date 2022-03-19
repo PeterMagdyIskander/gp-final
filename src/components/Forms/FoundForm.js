@@ -19,10 +19,9 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-
 const theme = createTheme();
 
-export default function FoundForm({onSubmit}) {
+export default function FoundForm({ onSubmit }) {
   const [map, setMap] = useState(null);
   const [coordinates, setCoordinates] = useState({
     lat: 30.068513,
@@ -33,7 +32,15 @@ export default function FoundForm({onSubmit}) {
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState("");
   const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
+  const handleCloseModal = (save) => {
+    if(!save){
+      setCoordinates({
+        lat: 30.068513,
+        lng: 31.243771,
+      })
+    } 
+    setOpen(false)
+  };
   const containerStyle = {
     width: "600px",
     height: "600px",
@@ -45,6 +52,7 @@ export default function FoundForm({onSubmit}) {
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
     map.fitBounds(bounds);
+    console.log(bounds)
     setMap(map);
   }, []);
 
@@ -93,10 +101,10 @@ export default function FoundForm({onSubmit}) {
           console.log({
             ...values,
             file,
-            coordinates
-          })
-          console.log(file)
-          onSubmit(file)
+            coordinates,
+          });
+          console.log(file);
+          onSubmit(file);
         }}
       >
         <Form>
@@ -227,25 +235,32 @@ export default function FoundForm({onSubmit}) {
           {isLoaded ? (
             <GoogleMap
               mapContainerStyle={containerStyle}
-              initialCenter={{ lat: coordinates.lat, lng: coordinates.lng }}
-              center={{ lat: coordinates.lat, lng: coordinates.lng }}
-              zoom={10}
+              initialCenter={coordinates}
+              center={coordinates}
+              zoom={17}
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
               <Marker
-                position={{ lat: coordinates.lat, lng: coordinates.lng }}
+                position={coordinates}
               />
             </GoogleMap>
           ) : (
             <></>
           )}
+
           <FiXCircle
-            onClick={handleCloseModal}
+            onClick={()=>handleCloseModal(false)}
             size={iconSize}
             color="red"
             className="close-modal"
           />
+          <Button
+            onClick={()=>handleCloseModal(true)}
+            sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}
+          >
+            CONFIRM
+          </Button>
         </Box>
       </Modal>
     </div>

@@ -8,6 +8,7 @@ import MainMenu from "./MainMenu/MainMenu";
 import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import FoundForm from "./Forms/FoundForm";
+import ReportForm from "./Forms/ReportForm"
 import Found from "./User/Found";
 function App(props) {
   return (
@@ -17,7 +18,7 @@ function App(props) {
         <Routes>
 
           <Route path="/" exact element={<MainMenu />} />
-          <Route path="/Report" element={<ReportMenu />} />
+          <Route path="/Report" element={<ReportForm />} />
           <Route path="/Status" element={<StatusMenu />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
