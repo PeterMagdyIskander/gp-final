@@ -1,9 +1,10 @@
 import {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,
+  GetObjectCommand,S3
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 
 const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
@@ -87,28 +88,53 @@ export async function singuploadtos3(
     console.log("Error", err);
   }
 }
-export async function gets3files(signintoken, files, Bucket) {
-  const s3 = new S3Client({
-    region: region,
-    credentials: fromCognitoIdentityPool({
-      client: new CognitoIdentityClient({ region: region }),
-      identityPoolId: identitypoolid,
-      logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
-      },
-    }),
-  });
+export async function gets3file(signintoken, id, Bucket) {
+  const s3 = new S3({
+     region: region,
+     credentials: fromCognitoIdentityPool({
+         client: new CognitoIdentityClient({ region: region }),
+         identityPoolId: identitypoolid,
+         logins: {
+             "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+         },
+     }),
+ });
 
-  const uploadParams = {
-    Bucket: Bucket,
-    Key: files[0],
-  };
 
+
+
+ 
+ var uriarr=[]
+ for (let i = 0; i < id.length; i++)
+ {
   try {
-    const data = await s3.send(new GetObjectCommand(uploadParams));
-    console.log("Success", data);
-    return data; // For unit tests.
+      const uploadParams = {
+          Bucket: Bucket,
+          Key: id[i],
+   
+   
+   
+      }
+      const command =new GetObjectCommand(uploadParams);
+      const url = await getSignedUrl(s3, command, { expiresIn: 36000 });
+     
+      uriarr.push(url);
+      
+      console.log("Success");
+      
   } catch (err) {
-    console.log("Error", err);
+      console.log("Error", err);
   }
+
+
+  }
+  return uriarr;
+
+
+ 
+
+
+
+
+
 }

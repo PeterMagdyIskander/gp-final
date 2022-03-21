@@ -1,5 +1,4 @@
-
-// import { useState } from "react";
+import { useState } from "react";
 // import { ToastContainer, toast } from "react-toastify";
 // import { Circles } from "react-loader-spinner";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,11 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
 
-import { /*uploadtos3,*/ singuploadtos3 } from "../../AWS/s3logic";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import { /*uploadtos3,*/ singuploadtos3,gets3file } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 const Found = (props) => {
   // const [uploadSuccess, setUploadSuccess] = useState(null);
-
+  const [imgs, setImgs] = useState([]);
   async function rekognitionUpload(file) {
     console.log("namef", file[0].name);
     var uploaded = await singuploadtos3(
@@ -23,22 +24,46 @@ const Found = (props) => {
       "lostpictures"
     );
     // setUploadSuccess(uploaded)
-    searchforsim(
+    const ids =await searchforsim(
       "lostchildren",
       "lostpictures",
       file[0].name,
       props.authedUser.jwtToken
     );
-    console.log('uploaded',uploaded)
+    console.log("nneeeeeeeeeeeeeee",ids);
+    console.log("uploaded", uploaded);
+    const x= await gets3file(props.authedUser.jwtToken,ids,"lostpictures");
+    console.log(x);
+    setImgs(x);
   }
 
 
   return (
-    <FoundForm onSubmit={(file)=>{rekognitionUpload(file)}}/>
-        
-    );
-  };
-  /* <Toast success={uploadSuccess} position="top-center" /> */
+    <div>
+      <FoundForm
+        onSubmit={(file) => {
+          rekognitionUpload(file);
+        }}
+      />
+      <div>
+        <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+          {imgs.map((img) => (
+            <ImageListItem key={img.name}>
+              <img
+                src={img}
+                srcSet={img}
+                alt={img.name}
+                loading="lazy"
+                id="status-card-img"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </div>
+    </div>
+  );
+};
+/* <Toast success={uploadSuccess} position="top-center" /> */
 
 function mapStateToProps({ authedUser }) {
   return {
@@ -63,7 +88,8 @@ export default connect(mapStateToProps)(Found);
   3- 
 
 */
-{/* {!uploadSuccess ? (
+{
+  /* {!uploadSuccess ? (
           <form className="report-data-entry" onSubmit={formik.handleSubmit}>
             <label htmlFor="img">Lost Child Image</label>
             <input
@@ -107,4 +133,5 @@ export default connect(mapStateToProps)(Found);
               "failed"
             )}
           </div>
-        )} */}
+        )} */
+}

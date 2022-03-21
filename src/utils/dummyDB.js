@@ -2,9 +2,14 @@
 
 let parentData={
   name:'abadeer',
-  username:'abadeer@hotmail.com',
+  username:'abadeer@hotmail.com',//not eidtable
   password:'abadir_2000',
-  reportedChildrenID:['asd123','qwe456'],
+  phoneNumber:'',//editable
+}
+let status={
+  imgs:['/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg','/assets/lost1.png','/assets/lost2.jpg'],//the 10 images of child 
+  childName:'asd',
+  Age:'',  
 }
 
 //USER data

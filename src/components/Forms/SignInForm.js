@@ -84,15 +84,11 @@ export default function SignInForm({ onSubmit }) {
               >
                 Sign In
               </LoadingButton>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
+              <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link variant="body2">
+                  <Redirect to="/signup">Don't have an account?</Redirect>
+                    
                   </Link>
                 </Grid>
               </Grid>
