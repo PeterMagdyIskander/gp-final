@@ -114,12 +114,12 @@ a {
 
 .status-card-grid {
     display: grid;
-    grid-template-columns: 100px 375px;
+    grid-template-columns: 250px 375px;
     align-items: center;
     border-radius: 25px;
-    width: 500px;
+    width: fit-content;
     height: fit-content;
-    padding: 25px 0;
+    padding: 15px;
     text-align: center;
     background-color: #F1FAEE;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -127,9 +127,9 @@ a {
 }
 
 .lost-child-img {
-    width: 100px;
-    height: 100px;
-    object-fit: scale-down;
+    width: 250px;
+    height: 200px;
+    object-fit: cover;
 }
 
 .flex {
@@ -140,6 +140,7 @@ a {
 
 .flex-space-between {
     justify-content: space-between;
+    margin: 10px;
 }
 
 .status {
@@ -266,4 +267,13 @@ Circles {
     top: 0;
     margin: 8px;
     cursor: pointer;
+}
+.row:hover{
+    background-color: #aaa;
+}
+.found-child-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin-right: 10px;
 }

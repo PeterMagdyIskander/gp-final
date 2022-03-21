@@ -6,10 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
 
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import { /*uploadtos3,*/ singuploadtos3,gets3file } from "../../AWS/s3logic";
+import { /*uploadtos3,*/ singuploadtos3, gets3file } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
+import MatchedCard from "../Cards/MatchedCard";
 const Found = (props) => {
   // const [uploadSuccess, setUploadSuccess] = useState(null);
   const [imgs, setImgs] = useState([]);
@@ -24,42 +23,34 @@ const Found = (props) => {
       "lostpictures"
     );
     // setUploadSuccess(uploaded)
-    const ids =await searchforsim(
+    const ids = await searchforsim(
       "lostchildren",
       "lostpictures",
       file[0].name,
       props.authedUser.jwtToken
     );
-    console.log("nneeeeeeeeeeeeeee",ids);
+    console.log("nneeeeeeeeeeeeeee", ids);
     console.log("uploaded", uploaded);
-    const x= await gets3file(props.authedUser.jwtToken,ids,"lostpictures");
+    const x = await gets3file(props.authedUser.jwtToken, ids, "lostpictures");
     console.log(x);
     setImgs(x);
   }
 
-
   return (
     <div>
-      <FoundForm
-        onSubmit={(file) => {
-          rekognitionUpload(file);
-        }}
-      />
-      <div>
-        <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
-          {imgs.map((img) => (
-            <ImageListItem key={img.name}>
-              <img
-                src={img}
-                srcSet={img}
-                alt={img.name}
-                loading="lazy"
-                id="status-card-img"
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </div>
+      {imgs.length != 0 ? (
+        <div className="status">
+          {imgs.map((img) => {
+            return <MatchedCard img={img} name={"evan"} />;
+          })}
+        </div>
+      ) : (
+        <FoundForm
+          onSubmit={(file) => {
+            rekognitionUpload(file);
+          }}
+        />
+      )}
     </div>
   );
 };

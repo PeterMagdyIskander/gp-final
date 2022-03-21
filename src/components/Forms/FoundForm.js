@@ -27,13 +27,13 @@ export default function FoundForm({ onSubmit }) {
   const [address, setAddress] = useState("");
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = (save) => {
-    if(!save){
+    if (!save) {
       setCoordinates({
         lat: 30.068513,
         lng: 31.243771,
-      })
-    } 
-    setOpen(false)
+      });
+    }
+    setOpen(false);
   };
   const containerStyle = {
     width: "600px",
@@ -46,7 +46,7 @@ export default function FoundForm({ onSubmit }) {
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
     map.fitBounds(bounds);
-    console.log(bounds)
+    console.log(bounds);
     setMap(map);
   }, []);
 
@@ -113,26 +113,17 @@ export default function FoundForm({ onSubmit }) {
                   alignItems: "center",
                 }}
               >
-                <Button
-                  variant="contained"
-                  component="label"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Upload File
+                <Button component="label">
+                  Upload Picture
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => onFileUpload(e)}
+                    required
                     hidden
                   />
                 </Button>
-                <Button
-                  onClick={handleOpenModal}
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Location
-                </Button>
+                <Button onClick={handleOpenModal}>Location</Button>
                 <Field
                   id="address"
                   label="Address"
@@ -235,22 +226,20 @@ export default function FoundForm({ onSubmit }) {
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
-              <Marker
-                position={coordinates}
-              />
+              <Marker position={coordinates} />
             </GoogleMap>
           ) : (
             <></>
           )}
 
           <FiXCircle
-            onClick={()=>handleCloseModal(false)}
+            onClick={() => handleCloseModal(false)}
             size={iconSize}
             color="red"
             className="close-modal"
           />
           <Button
-            onClick={()=>handleCloseModal(true)}
+            onClick={() => handleCloseModal(true)}
             sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}
           >
             CONFIRM

@@ -35,7 +35,7 @@ const ReportMenu = (props) => {
     );
     const rek=await searchforsim("lostchildren","lostpictures","0asd.jpg",props.authedUser.jwtToken);
     const s3g=await gets3file(props.authedUser.jwtToken,rek,"lostpictures");
-    console.log(s3g);//turn to 
+    console.log(s3g)
 
 
   }

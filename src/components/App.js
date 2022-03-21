@@ -8,6 +8,7 @@ import MainMenu from "./MainMenu/MainMenu";
 import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
+import ProfileMenu from "./Parents/ProfileMenu";
 function App(props) {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App(props) {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/found" element={<Found />} />
+          <Route path="/profile" element={<ProfileMenu />} />
         </Routes>
       </Fragment>
     </Router>
