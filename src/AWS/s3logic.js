@@ -1,6 +1,5 @@
 import {
   S3Client,
-  AbortMultipartUploadCommand,
   PutObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";

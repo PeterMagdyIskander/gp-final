@@ -9,7 +9,6 @@ import SignInForm from '../Forms/SignInForm'
 
 const SignIn = (props) => {
   const { dispatch } = props;
-  const [invalidPassword, setInvalidPassword] = useState(false);
   const [authed, setAuthed] = useState(false);
 
   const Login = (email, password) => {
@@ -33,7 +32,6 @@ const SignIn = (props) => {
       },
       onFailure: (err) => {
         console.error("onFailure: ", err);
-        setInvalidPassword(true);
       },
       newPasswordRequired: (data) => {
         console.log("newPasswordRequired: ", data);

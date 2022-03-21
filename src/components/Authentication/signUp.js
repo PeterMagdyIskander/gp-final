@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { setAuthedUser } from "../../actions/authedUser";
 import { Route, Navigate, Routes } from "react-router-dom";
 const SignUp = (props) => {
   const { dispatch } = props;
@@ -19,6 +18,7 @@ const SignUp = (props) => {
   };
   const validateRePassword = (val) => {
     setInvalidPasswordVisible(false);
+    setAuthed(dispatch());
     if (val === password) {
       setInvalidPasswordVisible(true);
     }

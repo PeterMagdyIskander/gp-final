@@ -8,13 +8,13 @@ let parentData={
 }
 
 //USER data
-let FoundChildData={
-  img:'imgPath', //could be bitmap whatever
-  map:'googleMapsApi',
-  address:'address [OPTIONAL]',
-  childName:'name of child [OPTIONAL]',
-  reporterPhone:'reporter phone [OPTIONAL]',
-}
+// let FoundChildData={
+//   img:'imgPath', //could be bitmap whatever
+//   map:'googleMapsApi',
+//   address:'address [OPTIONAL]',
+//   childName:'name of child [OPTIONAL]',
+//   reporterPhone:'reporter phone [OPTIONAL]',
+// }
 
 //PARENT data
 let ReportChildData=[
@@ -45,23 +45,23 @@ let ReportChildData=[
   }
 ]
 //USER data
-let FoundItemData={
-  uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
-  itemType:'',//could be [CAR,WALLET,ELECTRONICS]
-  map:'googleMapsApi',
-  address:'address [OPTIONAL]',
-  reporterPhone:'reporter phone [OPTIONAL]',
-}
-//PARENT data
-let ReportItemData={
-  uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
-  itemType:'',//could be [CAR,WALLET,ELECTRONICS]
-  lastSeenLocationMap:'googleMapsApi',
-  lastSeenLocationAddress:'address',
-  ItemDescription:'description of what the child was wearing',
-  username:'get from cognito',
-  userPhoneNumber:'get from cognito',
-}
+// let FoundItemData={
+//   uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
+//   itemType:'',//could be [CAR,WALLET,ELECTRONICS]
+//   map:'googleMapsApi',
+//   address:'address [OPTIONAL]',
+//   reporterPhone:'reporter phone [OPTIONAL]',
+// }
+// //PARENT data
+// let ReportItemData={
+//   uniqueID:'', //cars = nemra, wallets = ID, Electronics = serial number
+//   itemType:'',//could be [CAR,WALLET,ELECTRONICS]
+//   lastSeenLocationMap:'googleMapsApi',
+//   lastSeenLocationAddress:'address',
+//   ItemDescription:'description of what the child was wearing',
+//   username:'get from cognito',
+//   userPhoneNumber:'get from cognito',
+// }
 
 export function _getParent() {
   return new Promise((res, rej) => {

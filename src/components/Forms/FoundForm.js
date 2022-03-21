@@ -1,16 +1,11 @@
 import { useState, useCallback } from "react";
-import Avatar from "@mui/material/Avatar";
-import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
-import { Link as Redirect } from "react-router-dom";
 import { Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { FiXCircle } from "react-icons/fi";
@@ -27,7 +22,6 @@ export default function FoundForm({ onSubmit }) {
     lat: 30.068513,
     lng: 31.243771,
   });
-  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState("");
@@ -56,7 +50,7 @@ export default function FoundForm({ onSubmit }) {
     setMap(map);
   }, []);
 
-  const onUnmount = useCallback(function callback(map) {
+  const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
 
@@ -237,7 +231,7 @@ export default function FoundForm({ onSubmit }) {
               mapContainerStyle={containerStyle}
               initialCenter={coordinates}
               center={coordinates}
-              zoom={17}
+              zoom={17} //minimum zoom & max zoom
               onLoad={onLoad}
               onUnmount={onUnmount}
             >
