@@ -43,7 +43,7 @@ export async function uploadtos3(
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      console.log("Success", data);
+      return data
     } catch (err) {
       console.log("Error", err);
     }

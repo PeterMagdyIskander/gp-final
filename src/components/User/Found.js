@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { ToastContainer, toast } from "react-toastify";
 // import { Circles } from "react-loader-spinner";
 import "react-toastify/dist/ReactToastify.css";
-// import Toast from "../Toasts/Toasts";
+import Toast from "../Toasts/Toasts";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
 
@@ -10,7 +10,7 @@ import { /*uploadtos3,*/ singuploadtos3, gets3file } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 const Found = (props) => {
-  // const [uploadSuccess, setUploadSuccess] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(null);
   const [imgs, setImgs] = useState([]);
   async function rekognitionUpload(file) {
     console.log("namef", file[0].name);
@@ -22,7 +22,7 @@ const Found = (props) => {
       file[0].name,
       "lostpictures"
     );
-    // setUploadSuccess(uploaded)
+    setUploadSuccess(uploaded);
     const ids = await searchforsim(
       "lostchildren",
       "lostpictures",
@@ -51,6 +51,7 @@ const Found = (props) => {
           }}
         />
       )}
+      <Toast success={uploadSuccess} />
     </div>
   );
 };

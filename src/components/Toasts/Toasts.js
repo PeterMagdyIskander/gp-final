@@ -2,28 +2,29 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Toast = (props) => {
-  console.log('hi');
-  if (props.success != null && props.success)
+  if(!props.success)return <></>
+  
+  else if (props.success)
     toast.success("Uploaded Successfully!", {
       position: props.position,
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 2000,
+      hideProgressBar: true,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
     });
-  else if (props.success != null)
+  else
     toast.error("Upload unsuccessful!", {
       position: props.position,
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 2000,
+      hideProgressBar: true,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
     });
 
-  return <ToastContainer />;
+  return <ToastContainer limit={1}/>;
 };
 export default Toast;
