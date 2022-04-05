@@ -15,7 +15,7 @@ import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
 import ProfileMenu from "./Parents/ProfileMenu";
 import { useEffect } from "react";
-import { checkAutoLogin } from "../actions/authedUser";
+import { checkAutoLogin } from "../ReduxStore/actions/authedUser";
 import RequireAuth from "./Navigation/RequireAuth";
 
 function App(props) {

@@ -2,7 +2,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
- import { isAuthedForRouting } from "../../actions/authedUser";
+ import { isAuthedForRouting } from "../../ReduxStore/actions/authedUser";
 const RequireAuth = ({children }) => {
   let location = useLocation();
   if (!isAuthedForRouting()) {

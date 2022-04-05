@@ -4,9 +4,8 @@ import App from './components/App';
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from './reducers'
-import middleware from './middleware'
-
+import reducer from './ReduxStore//reducers'
+import middleware from './ReduxStore/middleware';
 
 
 

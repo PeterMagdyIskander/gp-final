@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { setAuthedUser } from "../../actions/authedUser";
+import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
 import { connect } from "react-redux";
 import '../../styles/app.css';
 const OwnerNavbar = (props) => {

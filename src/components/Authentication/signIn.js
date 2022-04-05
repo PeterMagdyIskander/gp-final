@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect, useDispatch } from "react-redux";
-import { setAuthedUser, runLogoutTimer } from "../../actions/authedUser";
+import { setAuthedUser, runLogoutTimer } from "../../ReduxStore/actions/authedUser";
 import { Route, Navigate, Routes,useLocation,useNavigate } from "react-router-dom";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import UserPool from "../../AWS/UserPool";
