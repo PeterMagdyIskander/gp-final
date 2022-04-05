@@ -9,6 +9,9 @@ import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 import { ToastContainer, toast } from "react-toastify";
 import MatchedCard from "../Cards/MatchedCard";
+import CircularIntegration from "../Loading/UpdateRekoFetch";
+import { Container } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 const ReportMenu = (props) => {
   // const region = "us-east-1";
   // const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
@@ -70,6 +73,10 @@ const ReportMenu = (props) => {
           }}
         />
       )}
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <CircularIntegration />
+      </Container>
       <ToastContainer limit={1} />;
     </div>
   );

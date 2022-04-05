@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { connect } from "react-redux";
-import { setAuthedUser } from "../../actions/authedUser";
-import { Route, Navigate, Routes } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { setAuthedUser, runLogoutTimer } from "../../actions/authedUser";
+import { Route, Navigate, Routes,useLocation,useNavigate } from "react-router-dom";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import UserPool from "../../AWS/UserPool";
 import { getParent } from "../../utils/api";
-import SignInForm from '../Forms/SignInForm'
+import SignInForm from "../Forms/SignInForm";
 
 const SignIn = (props) => {
   const { dispatch } = props;
+  let location = useLocation();
+  let navigate = useNavigate();
+  let from = location.state?.from?.pathname || '/';
+  console.error( from);
   const [authed, setAuthed] = useState(false);
-
   const Login = (email, password) => {
     const user = new CognitoUser({
       Username: email,
@@ -24,11 +27,14 @@ const SignIn = (props) => {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        console.log("onSuccess: ", data.getIdToken());
-        getParent().then((res) => {
-          dispatch(setAuthedUser({ ...data.getIdToken(), ...res }));
-          setAuthed(true);
-        });
+        dispatch(setAuthedUser(data.getIdToken()));
+        runLogoutTimer(
+          dispatch,
+          new Date(data.getIdToken().payload.exp * 1000).getTime() -
+            new Date().getTime()
+        );
+        setAuthed(true);
+        navigate(from, { replace: true });
       },
       onFailure: (err) => {
         console.error("onFailure: ", err);
@@ -40,13 +46,12 @@ const SignIn = (props) => {
   };
   return (
     <>
-      {authed ? (
-        <Routes>
-          <Route path="*" element={<Navigate to="/report" />} />
-        </Routes>
-      ) : (
-          <SignInForm onSubmit={({email,password})=>{Login(email,password)}}/>
-      )}
+        <SignInForm
+          onSubmit={({ email, password }) => {
+            Login(email, password);
+          }}
+        />
+      
     </>
   );
 };
