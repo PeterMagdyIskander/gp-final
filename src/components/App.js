@@ -5,7 +5,6 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-// import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import SignIn from "./Authentication/signIn";
 import SignUp from "./Authentication/signUp";
 import NavBar from "./Navigation/navBar";
@@ -18,7 +17,7 @@ import { useEffect } from "react";
 import { checkAutoLogin } from "../ReduxStore/actions/authedUser";
 import RequireAuth from "./Navigation/RequireAuth";
 
-function App(props) {
+function App() {
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,7 +30,7 @@ function App(props) {
       <Fragment>
         <NavBar />
         <Routes>
-          <Route path="/" exact element={<MainMenu />} />
+          <Route path="/"  element={<MainMenu />} />
           <Route path="/Report" element={<RequireAuth><ReportMenu /></RequireAuth>} />
           <Route path="/Status" element={<RequireAuth><StatusMenu /></RequireAuth>} />
           <Route path="/Found" element={<Found />} />
@@ -39,7 +38,6 @@ function App(props) {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
-        ;
       </Fragment>
     </Router>
   );

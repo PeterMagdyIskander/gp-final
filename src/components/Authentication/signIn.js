@@ -1,19 +1,18 @@
-import { useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import { setAuthedUser, runLogoutTimer } from "../../ReduxStore/actions/authedUser";
-import { Route, Navigate, Routes,useLocation,useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  setAuthedUser,
+  runLogoutTimer,
+} from "../../ReduxStore/actions/authedUser";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import UserPool from "../../AWS/UserPool";
-import { getParent } from "../../utils/api";
 import SignInForm from "../Forms/SignInForm";
 
 const SignIn = (props) => {
   const { dispatch } = props;
   let location = useLocation();
   let navigate = useNavigate();
-  let from = location.state?.from?.pathname || '/';
-  console.error( from);
-  const [authed, setAuthed] = useState(false);
+  let from = location.state?.from?.pathname || "/";
   const Login = (email, password) => {
     const user = new CognitoUser({
       Username: email,
@@ -33,7 +32,6 @@ const SignIn = (props) => {
           new Date(data.getIdToken().payload.exp * 1000).getTime() -
             new Date().getTime()
         );
-        setAuthed(true);
         navigate(from, { replace: true });
       },
       onFailure: (err) => {
@@ -45,14 +43,11 @@ const SignIn = (props) => {
     });
   };
   return (
-    <>
-        <SignInForm
-          onSubmit={({ email, password }) => {
-            Login(email, password);
-          }}
-        />
-      
-    </>
+    <SignInForm
+      onSubmit={({ email, password }) => {
+        Login(email, password);
+      }}
+    />
   );
 };
 export default connect()(SignIn);
