@@ -5,7 +5,7 @@ import { RiUserSearchFill } from "react-icons/ri";
 const MainMenu = (props) => {
   return (
     <div className="container-centered">
-      <div class="request-loader">
+      <div className="request-loader">
         <span>
           <Link to="/found">
             <RiUserSearchFill color="#aaa"/>
@@ -13,7 +13,7 @@ const MainMenu = (props) => {
         </span>
       </div>
       <div className="report-missing-child">
-        <Link className="redColor" to={props.authedUSer ? "report" : "signin"}>
+        <Link className="redColor" to="/Report">
           Report Missing Child
         </Link>
       </div>

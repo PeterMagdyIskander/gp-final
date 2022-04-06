@@ -2,7 +2,6 @@ import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -21,9 +20,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link>
-        <Redirect to="/">Lost and Found</Redirect>
-      </Link>
+
+      <Redirect to="/">Lost and Found</Redirect>
+
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -86,10 +85,7 @@ export default function SignInForm({ onSubmit }) {
               </LoadingButton>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link variant="body2">
                   <Redirect to="/signup">Don't have an account?</Redirect>
-                    
-                  </Link>
                 </Grid>
               </Grid>
             </Box>
