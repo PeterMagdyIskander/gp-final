@@ -13,7 +13,7 @@ const StatusMenu=(props)=>{
         {
             children.map(c=>{
                 
-                return <StatusCard child={c}/>
+                return <StatusCard key={c.id} child={c}/>
             })
         }
         </div>
