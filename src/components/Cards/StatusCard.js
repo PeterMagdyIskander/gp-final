@@ -30,7 +30,7 @@ const StatusCard = (props) => {
   return (
     <div className="status-card-grid">
       <div>
-        <img className="lost-child-img" src={props.child.imgs[0]} z/>
+        <img className="lost-child-img" alt={props.child.nameOfChild} src={props.child.imgs[0]} z/>
       </div>
       <div className="flex flex-space-between">
         <div className="flex">

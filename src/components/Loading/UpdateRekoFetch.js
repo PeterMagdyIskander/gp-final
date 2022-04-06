@@ -2,10 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
-import CancelIcon from '@mui/icons-material/Cancel';
 import InfoIcon from '@mui/icons-material/Info';
 export default function CircularIntegration() {
   const [loading, setLoading] = React.useState(false);

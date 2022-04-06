@@ -36,7 +36,7 @@ export function runLogoutTimer(dispatch, timer) {
 export function checkAutoLogin(dispatch) {
   const userDetails = localStorage.getItem("userDetails");
   let tokenDetails = "";
-  if (userDetails == "null" || !userDetails) return false;
+  if (userDetails === "null" || !userDetails) return false;
 
   tokenDetails = JSON.parse(userDetails);
   console.log(tokenDetails);
@@ -55,7 +55,7 @@ export function checkAutoLogin(dispatch) {
 export function isAuthedForRouting(){
   const userDetails = localStorage.getItem("userDetails");
   let tokenDetails = "";
-  if (userDetails == "null" || !userDetails) return false;
+  if (userDetails === "null" || !userDetails) return false;
 
   tokenDetails = JSON.parse(userDetails);
   console.log(tokenDetails);

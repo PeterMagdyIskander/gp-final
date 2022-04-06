@@ -17,7 +17,6 @@ import PlacesAutocomplete, {
 const theme = createTheme();
 
 export default function FoundForm({ onSubmit }) {
-  const [map, setMap] = useState(null);
   const [coordinates, setCoordinates] = useState({
     lat: 30.068513,
     lng: 31.243771,
@@ -47,11 +46,6 @@ export default function FoundForm({ onSubmit }) {
     const bounds = new window.google.maps.LatLngBounds();
     map.fitBounds(bounds);
     console.log(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = useCallback(function callback() {
-    setMap(null);
   }, []);
 
   const style = {
@@ -87,9 +81,9 @@ export default function FoundForm({ onSubmit }) {
     <div>
       <Formik
         initialValues={{
-          address: "ads",
-          childName: "das",
-          reporterPhone: "123",
+          address: "",
+          childName: "",
+          reporterPhone: "",
         }}
         onSubmit={(values) => {
           console.log({
@@ -224,7 +218,6 @@ export default function FoundForm({ onSubmit }) {
               center={coordinates}
               zoom={17} //minimum zoom & max zoom
               onLoad={onLoad}
-              onUnmount={onUnmount}
             >
               <Marker position={coordinates} />
             </GoogleMap>

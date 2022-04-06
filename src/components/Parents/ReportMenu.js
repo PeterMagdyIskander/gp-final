@@ -1,9 +1,5 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-// import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
-// import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
-// import { S3Client} from "@aws-sdk/client-s3";
-
 import { gets3file, uploadtos3 } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
@@ -13,10 +9,7 @@ import CircularIntegration from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 const ReportMenu = (props) => {
-  // const region = "us-east-1";
-  // const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
   const albumBucketName = "lostpictures";
-  const [ids, setIds] = useState(null);
   const [imgs, setImgs] = useState([]);
   var id;
   function loadingToast() {
@@ -60,7 +53,7 @@ const ReportMenu = (props) => {
 
   return (
     <div>
-      {imgs.length != 0 ? (
+      {imgs.length !== 0 ? (
         <div className="status">
           {imgs.map((img) => {
             return <MatchedCard img={img} name={"evan"} />;
