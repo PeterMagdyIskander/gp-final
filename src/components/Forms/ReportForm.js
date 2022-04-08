@@ -10,7 +10,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 const theme = createTheme();
 
-export default function ReportForm({ onSubmit }) {
+export default function ReportForm({ onSubmit, setFiles }) {
   const [file, setFile] = useState([]);
   const [imgs, setImgs] = useState([]);
   const onFileUpload = (e) => {
@@ -18,9 +18,11 @@ export default function ReportForm({ onSubmit }) {
       if (e.target.files && e.target.files[img]) {
         return URL.createObjectURL(e.target.files[img]);
       }
-      return ''
+      return "";
     });
     setFile(imgs);
+    setFiles(e.target.files);
+    onSubmit(true);
     setImgs(e.target.files);
     console.log(imgs);
   };
@@ -37,13 +39,14 @@ export default function ReportForm({ onSubmit }) {
             ...values,
           });
           console.log(file);
+
           onSubmit(imgs);
         }}
       >
         <Form>
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-              <CssBaseline />
+            <CssBaseline />
               <Box
                 sx={{
                   marginTop: 8,

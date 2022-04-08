@@ -16,7 +16,7 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 const theme = createTheme();
 
-export default function FoundForm({ onSubmit }) {
+export default function FoundForm({ setFiles,onSubmit }) {
   const [coordinates, setCoordinates] = useState({
     lat: 30.068513,
     lng: 31.243771,
@@ -65,6 +65,8 @@ export default function FoundForm({ onSubmit }) {
 
   const onFileUpload = (e) => {
     setFile(e.target.files);
+    setFiles(e.target.files)
+    onSubmit(true);
   };
   const handleChange = (address) => {
     setAddress(address);
@@ -92,7 +94,7 @@ export default function FoundForm({ onSubmit }) {
             coordinates,
           });
           console.log(file);
-          onSubmit(file);
+          // onSubmit(file);
         }}
       >
         <Form>

@@ -16,7 +16,6 @@ import ProfileMenu from "./Parents/ProfileMenu";
 import { useEffect } from "react";
 import { checkAutoLogin } from "../ReduxStore/actions/authedUser";
 import RequireAuth from "./Navigation/RequireAuth";
-
 function App() {
 
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ function App() {
   
 
   return (
-    <Router>
+      <Router>
       <Fragment>
         <NavBar />
         <Routes>

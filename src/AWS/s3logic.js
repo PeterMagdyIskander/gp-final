@@ -1,7 +1,8 @@
 import {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,S3
+  GetObjectCommand,
+  S3,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -43,7 +44,7 @@ export async function uploadtos3(
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      return data
+      return data;
     } catch (err) {
       console.log("Error", err);
     }
@@ -57,6 +58,7 @@ export async function singuploadtos3(
   imgid,
   Bucket
 ) {
+  console.log(file)
   console.log("hi", Object.keys(file), imgid);
   const s3 = new S3Client({
     region: region,
@@ -90,51 +92,32 @@ export async function singuploadtos3(
 }
 export async function gets3file(signintoken, id, Bucket) {
   const s3 = new S3({
-     region: region,
-     credentials: fromCognitoIdentityPool({
-         client: new CognitoIdentityClient({ region: region }),
-         identityPoolId: identitypoolid,
-         logins: {
-             "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
-         },
-     }),
- });
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+      logins: {
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+      },
+    }),
+  });
 
-
-
-
- 
- var uriarr=[]
- for (let i = 0; i < id.length; i++)
- {
-  try {
+  var uriarr = [];
+  for (let i = 0; i < id.length; i++) {
+    try {
       const uploadParams = {
-          Bucket: Bucket,
-          Key: id[i],
-   
-   
-   
-      }
-      const command =new GetObjectCommand(uploadParams);
+        Bucket: Bucket,
+        Key: id[i],
+      };
+      const command = new GetObjectCommand(uploadParams);
       const url = await getSignedUrl(s3, command, { expiresIn: 36000 });
-     
+
       uriarr.push(url);
-      
+
       console.log("Success");
-      
-  } catch (err) {
+    } catch (err) {
       console.log("Error", err);
-  }
-
-
+    }
   }
   return uriarr;
-
-
- 
-
-
-
-
-
 }
