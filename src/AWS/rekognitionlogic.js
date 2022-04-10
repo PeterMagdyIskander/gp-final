@@ -37,6 +37,7 @@ export async function searchforsim(searchcollection, targetfacebucket, targetfac
       photoidarray.push(element["Face"]["ExternalImageId"]);
      
   }
+  
   return photoidarray;
   
 }

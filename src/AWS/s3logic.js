@@ -93,6 +93,7 @@ export async function singuploadtos3(
   }
 }
 export async function gets3file(signintoken, id, Bucket) {
+  console.log(id)
   const s3 = new S3({
     region: region,
     credentials: fromCognitoIdentityPool({

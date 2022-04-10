@@ -22,7 +22,7 @@ export default function ReportForm({ onSubmit, setFiles }) {
     });
     setFile(imgs);
     setFiles(e.target.files);
-    onSubmit(true);
+
     setImgs(e.target.files);
     console.log(imgs);
   };
@@ -31,22 +31,22 @@ export default function ReportForm({ onSubmit, setFiles }) {
     <div>
       <Formik
         initialValues={{
-          childName: "das",
-          childAge: "123",
+          childName: "",
+          childAge: "",
         }}
         onSubmit={(values) => {
           console.log({
             ...values,
           });
           console.log(file);
-
+          onSubmit(true);
           onSubmit(imgs);
         }}
       >
         <Form>
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-            <CssBaseline />
+              <CssBaseline />
               <Box
                 sx={{
                   marginTop: 8,

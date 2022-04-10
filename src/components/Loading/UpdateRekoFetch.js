@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
-import CircularComponent from "./CircularComponent";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
@@ -25,19 +25,19 @@ function CircularIntegration(props) {
   const [success3, setSuccess3] = useState(false);
   /*end3 */
   const buttonSx1 = {
-    ...((success1 ) && {
+    ...(success1 && {
       bgcolor: green[500],
       color: "white",
     }),
   };
   const buttonSx2 = {
-    ...((success2) && {
+    ...(success2 && {
       bgcolor: green[500],
       color: "white",
     }),
   };
   const buttonSx3 = {
-    ...((success3) && {
+    ...(success3 && {
       bgcolor: green[500],
       color: "white",
     }),
@@ -73,51 +73,37 @@ function CircularIntegration(props) {
     }, 450);
   };
   const setProgressThree = (s3g) => {
-    setSuccess3(true);
-    setLoading3(false);
     setTimeout(() => {
+      setSuccess3(true);
+      setLoading3(false);
       props.setDone(true);
       props.setImgs(s3g);
-      console.log(s3g);
+      console.log("imgs", s3g);
     }, 2500);
   };
 
-  useEffect(async () => {
-    console.log("called files", props);
-    props.reqFunctions
-      .reqFunctionOne(
-        props.authedUser.jwtToken,
-        props.file,
-        props.authedUser.email,
-        "peter",
-        props.file[0].name,
-        props.uploadBucketName
-      )
+  useEffect(() => {
+    props.reqFunctions.uploadToS3
+      .reqFunction(...props.reqFunctions.uploadToS3.params)
       .then(async (res) => {
         setProgressOne();
-        const ids = await props.reqFunctions.reqFunctionTwo(
-          props.searchCollection,
-          props.targetfacebucket,
-          props.file[0].name,
-          props.authedUser.jwtToken
+        const ids = await props.reqFunctions.searchForSim.reqFunction(
+          ...props.reqFunctions.searchForSim.params
         );
-        props.setIds(ids);
-
         setProgressTwo();
 
         console.log("finished 2");
         if (ids) {
-          const s3g = await props.reqFunctions.reqFunctionThree(
-            props.authedUser.jwtToken,
+          const s3g = await props.reqFunctions.getS3files.reqFunction(
+            props.reqFunctions.getS3files.params[0],
             ids,
-            props.getFromBucket
+            props.reqFunctions.getS3files.params[1]
           );
-
           setProgressThree(s3g);
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
 
   return (
     <Box
@@ -131,7 +117,7 @@ function CircularIntegration(props) {
         mt: "64px",
       }}
     >
-      <Typography sx={{ mb: "50px" }} variant="h5">
+      <Typography sx={{ mb: "50px", ml: "30px" }} variant="h5">
         Processing...
       </Typography>
 
@@ -260,3 +246,49 @@ function mapStateToProps({ authedUser }) {
   };
 }
 export default connect(mapStateToProps)(CircularIntegration);
+// async function onPicUpload(file) {
+//   toast.promise(
+//     uploadtos3(
+//       props.authedUser.jwtToken,
+//       file,
+//       "props.authedUser.payload.email",
+//       "asd.jpg",
+//       file[0].name, //take the name of first file and inceremenet numebrs after it
+//       albumBucketName
+//     ),
+//     {
+//       pending: "Uploading your imgs...",
+//       success: "Image uploaded successfuly 👌",
+//       error: "Promise rejected 🤯",
+//     },
+//     { autoClose: 2000 }
+//   );
+//   loadingToast();
+//   const ids = await searchforsim(
+//     "lostchildren",
+//     "lostpictures",
+//     file[0].name,
+//     props.authedUser.jwtToken
+//   );
+//   const s3g = await gets3file(props.authedUser.jwtToken, ids, "lostpictures");
+//   toast.update(id, {
+//     render: "Found him",
+//     type: "success",
+//     isLoading: false,
+//     autoClose: 2000,
+//   });
+//   console.log(s3g);
+//   setImgs(s3g);
+// }
+
+// parent:
+// upload my sons pic upload to bucket: -> lostchildrenbucket
+// reko -> searchCollection -> waitingslistfaces
+//      -> targetfacebucket ->  lostchildrenbucket
+// gets3 ->getFromBucket ->passerbybucket
+
+//passerby:
+// upload my sons pic upload to bucket: -> passerbybucket
+// reko -> searchCollection -> lostchildren
+//      -> targetfacebucket ->  passerbybucket
+// gets3 ->getFromBucket ->lostchildrenbucket
