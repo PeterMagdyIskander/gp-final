@@ -39,8 +39,10 @@ export async function uploadtos3(
       Metadata: {
         owner: owneremailaddress,
         lostchildid: lostchildid,
-        imgid: i + imgid,
-      },
+        imgid: "peterreac"+lostchildid+i,
+        address:"address",
+        phonenumber:"phone"
+    },
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
