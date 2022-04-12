@@ -72,38 +72,43 @@ function CircularIntegration(props) {
       setLoading3(true);
     }, 450);
   };
-  const setProgressThree = (s3g) => {
+  const setProgressThree = () => {
+    setSuccess3(true);
+    setLoading3(false);
     setTimeout(() => {
-      setSuccess3(true);
-      setLoading3(false);
       props.setDone(true);
-      props.setImgs(s3g);
-      console.log("imgs", s3g);
-    }, 2500);
+    }, 1850);
   };
 
-  useEffect(() => {
-    props.reqFunctions.uploadToS3
-      .reqFunction(...props.reqFunctions.uploadToS3.params)
-      .then(async (res) => {
-        setProgressOne();
-        const ids = await props.reqFunctions.searchForSim.reqFunction(
-          ...props.reqFunctions.searchForSim.params
-        );
-        setProgressTwo();
-
-        console.log("finished 2");
-        if (ids) {
-          const s3g = await props.reqFunctions.getS3files.reqFunction(
-            props.reqFunctions.getS3files.params[0],
-            ids,
-            props.reqFunctions.getS3files.params[1]
+  useEffect(
+    () => {
+      props.reqFunctions.uploadToS3
+        .reqFunction(...props.reqFunctions.uploadToS3.params)
+        .then(async (res) => {
+          setProgressOne();
+          const ids = await props.reqFunctions.searchForSim.reqFunction(
+            ...props.reqFunctions.searchForSim.params
           );
-          setProgressThree(s3g);
-        }
-      })
-      .catch((err) => console.log(err));
-  });
+          setProgressTwo();
+          if (ids) {
+            const s3g = await props.reqFunctions.getS3files.reqFunction(
+              props.reqFunctions.getS3files.params[0],
+              ids,
+              props.reqFunctions.getS3files.params[1]
+            );
+
+            props.setImgs(s3g);
+          }
+          setProgressThree();
+        })
+        .catch((err) => console.log(err));
+    },
+    [
+      props.reqFunctions.getS3files,
+      props.reqFunctions.searchForSim,
+      props.reqFunctions.uploadToS3,
+    ]
+  );
 
   return (
     <Box
@@ -176,7 +181,7 @@ function CircularIntegration(props) {
               <Fab aria-label="save" sx={buttonSx2}>
                 {success2 ? <CheckIcon /> : 2}
               </Fab>
-              {loading2 ? (
+              {loading2 && (
                 <CircularProgress
                   size={68}
                   sx={{
@@ -187,8 +192,6 @@ function CircularIntegration(props) {
                     zIndex: 1,
                   }}
                 />
-              ) : (
-                <></>
               )}
             </Box>
           </Box>
@@ -215,7 +218,7 @@ function CircularIntegration(props) {
               <Fab aria-label="save" sx={buttonSx3}>
                 {success3 ? <CheckIcon /> : 3}
               </Fab>
-              {loading3 ? (
+              {loading3 && (
                 <CircularProgress
                   size={68}
                   sx={{
@@ -226,8 +229,6 @@ function CircularIntegration(props) {
                     zIndex: 1,
                   }}
                 />
-              ) : (
-                <></>
               )}
             </Box>
           </Box>
@@ -246,49 +247,3 @@ function mapStateToProps({ authedUser }) {
   };
 }
 export default connect(mapStateToProps)(CircularIntegration);
-// async function onPicUpload(file) {
-//   toast.promise(
-//     uploadtos3(
-//       props.authedUser.jwtToken,
-//       file,
-//       "props.authedUser.payload.email",
-//       "asd.jpg",
-//       file[0].name, //take the name of first file and inceremenet numebrs after it
-//       albumBucketName
-//     ),
-//     {
-//       pending: "Uploading your imgs...",
-//       success: "Image uploaded successfuly 👌",
-//       error: "Promise rejected 🤯",
-//     },
-//     { autoClose: 2000 }
-//   );
-//   loadingToast();
-//   const ids = await searchforsim(
-//     "lostchildren",
-//     "lostpictures",
-//     file[0].name,
-//     props.authedUser.jwtToken
-//   );
-//   const s3g = await gets3file(props.authedUser.jwtToken, ids, "lostpictures");
-//   toast.update(id, {
-//     render: "Found him",
-//     type: "success",
-//     isLoading: false,
-//     autoClose: 2000,
-//   });
-//   console.log(s3g);
-//   setImgs(s3g);
-// }
-
-// parent:
-// upload my sons pic upload to bucket: -> lostchildrenbucket
-// reko -> searchCollection -> waitingslistfaces
-//      -> targetfacebucket ->  lostchildrenbucket
-// gets3 ->getFromBucket ->passerbybucket
-
-//passerby:
-// upload my sons pic upload to bucket: -> passerbybucket
-// reko -> searchCollection -> lostchildren
-//      -> targetfacebucket ->  passerbybucket
-// gets3 ->getFromBucket ->lostchildrenbucket

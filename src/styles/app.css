@@ -3,6 +3,10 @@ html {
     font-size: 18px;
 }
 
+body {
+    margin: 0
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -20,19 +24,6 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #F1FAEE;
-    border-radius: 25px;
-}
-
-ul {
-    display: flex;
-    padding-right: 1rem;
 }
 
 a {
@@ -112,7 +103,7 @@ a {
 
 .status-card-grid {
     display: grid;
-    grid-template-columns: 250px 375px;
+    grid-template-columns: 200px 375px;
     align-items: center;
     border-radius: 25px;
     width: fit-content;
@@ -125,9 +116,10 @@ a {
 }
 
 .lost-child-img {
-    width: 250px;
+    width: 200px;
     height: 200px;
     object-fit: cover;
+    border-radius: 30px;
 }
 
 .flex {
@@ -259,16 +251,24 @@ Circles {
     background-color: #fafafa;
 }
 
-.close-modal {
+.close-modal-x {
     position: absolute;
     right: 0;
     top: 0;
     margin: 8px;
     cursor: pointer;
 }
-.row:hover{
+.close-modal-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 8px;
+    cursor: pointer;
+}
+.row:hover {
     background-color: #aaa;
 }
+
 .found-child-img {
     width: 250px;
     height: 250px;

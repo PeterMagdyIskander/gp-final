@@ -28,11 +28,11 @@ export default function ReportForm({ onSubmit, setFiles }) {
   };
 
   return (
-    <div>
       <Formik
         initialValues={{
           childName: "",
           childAge: "",
+          location: "",
         }}
         onSubmit={(values) => {
           console.log({
@@ -100,6 +100,14 @@ export default function ReportForm({ onSubmit, setFiles }) {
                   required={true}
                   component={MyField}
                 />
+                <Field
+                  name="location"
+                  label="Location"
+                  type="text"
+                  id="location"
+                  required={true}
+                  component={MyField}
+                />
                 <Button
                   type="submit"
                   fullWidth
@@ -113,6 +121,5 @@ export default function ReportForm({ onSubmit, setFiles }) {
           </ThemeProvider>
         </Form>
       </Formik>
-    </div>
   );
 }

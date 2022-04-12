@@ -20,7 +20,7 @@ const ReportMenu = (props) => {
   // function loadingToast() {
   //   id = toast.loading("Please wait...");
   // }
-  
+
   return (
     <>
       {!sendReq && <ReportForm setFiles={setFile} onSubmit={setSendReq} />}

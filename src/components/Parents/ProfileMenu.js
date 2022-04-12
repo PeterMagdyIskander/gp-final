@@ -23,7 +23,7 @@ const ProfileMenu = () => {
   let iconSize = 20;
   return (
     <div>
-      <div className="container">
+      <div >
         <div className="row flex">
           <p className="name">Phone Number</p>
           <p className="value">01273482010</p>
