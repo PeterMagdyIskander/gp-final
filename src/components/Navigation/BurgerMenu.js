@@ -3,7 +3,6 @@ import {
   Drawer,
   IconButton,
   List,
-  ListItemButton,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -30,7 +29,7 @@ const BurgerMenu = (props) => {
     console.log("Successufully Signed out");
     setOpenDrawer(false);
     dispatch(setAuthedUser(null));
-    navigate("/signin")
+    navigate("/signin");
   };
   const navigate = useNavigate();
   const signIn = () => {
@@ -43,6 +42,10 @@ const BurgerMenu = (props) => {
   };
   console.log(props);
   const sxForIcons = { minWidth: 32 };
+  const redirect = (to) => {
+    setOpenDrawer(false);
+    navigate(to);
+  };
   return (
     <>
       <IconButton
@@ -61,25 +64,25 @@ const BurgerMenu = (props) => {
           <List>
             {props.authedUser !== null ? (
               <>
-                <ListItem button>
+                <ListItem button onClick={() => redirect("/Report")}>
                   <ListItemIcon sx={sxForIcons}>
                     <RiUserSearchFill />
                   </ListItemIcon>
                   <ListItemText primary={"Report"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={() => redirect("/Found")}>
                   <ListItemIcon sx={sxForIcons}>
                     <FiSearch />
                   </ListItemIcon>
                   <ListItemText primary={"Found"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={() => redirect("/Status")}>
                   <ListItemIcon sx={sxForIcons}>
                     <FiActivity />
                   </ListItemIcon>
                   <ListItemText primary={"Status"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={() => redirect("/Profile")}>
                   <ListItemIcon sx={sxForIcons}>
                     <FiUser />
                   </ListItemIcon>

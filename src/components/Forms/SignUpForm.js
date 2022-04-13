@@ -52,7 +52,7 @@ export default function SignUpForm() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}></Avatar>
               
           <Typography component="h1" variant="h5">
             Sign up

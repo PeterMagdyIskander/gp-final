@@ -2,7 +2,6 @@ import React from "react";
 import { FiInfo, FiXCircle, FiCheckCircle } from "react-icons/fi";
 import { useState } from "react";
 import { Box, Container } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -15,7 +14,6 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import { FiMapPin, FiCalendar, FiUser } from "react-icons/fi";
 const theme = createTheme();
 const StatusCard = (props) => {

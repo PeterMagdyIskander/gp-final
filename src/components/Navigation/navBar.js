@@ -14,32 +14,30 @@ import {
   Box,
   useTheme,
 } from "@mui/material";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Divider from "@mui/material/Divider";
 import {
   FiUser,
   FiSearch,
   FiActivity,
   FiLogOut,
-  FiLogIn,
-  FiUserPlus,
 } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import BurgerMenu from "./BurgerMenu";
 const NavBar = (props) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
-  console.log(theme);
+
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  console.log(theme);
+
   const { dispatch } = props;
   const navigate = useNavigate();
   const signOut = () => {
     console.log("Successufully Signed out");
     dispatch(setAuthedUser(null));
+    setValue(0)
     navigate("/signin");
   };
+  console.log(value)
   const signIn = () => navigate("/signin");
   const signUp = () => navigate("/signup");
   return (

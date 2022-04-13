@@ -53,7 +53,7 @@ export default function SignInForm({ onSubmit }) {
                 alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+              <Avatar sx={{ m: 1, bgcolor: "primary.main" }}></Avatar>
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
