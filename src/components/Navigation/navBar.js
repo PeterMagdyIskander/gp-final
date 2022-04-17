@@ -59,7 +59,7 @@ const NavBar = (props) => {
           <Box sx={{ marginLeft: "auto", display: "flex" }}>
             {props.authedUser !== null ? (
               <Tabs
-                indicatorColor="text.primary"
+                indicatorColor="primary"
                 textColor="inherit"
                 value={value}
                 onChange={(e, value) => setValue(value)}

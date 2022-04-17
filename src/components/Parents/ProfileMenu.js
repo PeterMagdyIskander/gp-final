@@ -3,6 +3,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react"
+import GoogleMaps from "../Google/GoogleMaps";
 const ProfileMenu = () => {
     const [open, setOpen] = useState(false);
     const handleOpenModal = () => setOpen(true);
@@ -46,6 +47,7 @@ const ProfileMenu = () => {
         </Box>
       </Modal>
       </div>
+      <GoogleMaps/>
     </div>
   );
 };

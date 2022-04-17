@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiInfo, FiXCircle, FiCheckCircle } from "react-icons/fi";
 import { useState } from "react";
 import { Box, Container } from "@mui/material";
@@ -15,11 +15,15 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { FiMapPin, FiCalendar, FiUser } from "react-icons/fi";
+import { gets3file } from "../../AWS/s3logic";
+import { connect } from "react-redux";
+import { Deleteobjects } from "../../AWS/s3logic";
 const theme = createTheme();
 const StatusCard = (props) => {
   const color = props.child.status ? "green" : "red";
   let iconSize = 20;
   const [open, setOpen] = useState(false);
+  const [childImgs, setChildImgs] = useState([]);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
@@ -36,7 +40,25 @@ const StatusCard = (props) => {
     boxShadow: 24,
     p: 4,
   };
-  function handleRemoveChild() {}
+
+  useEffect(() => {
+    gets3file(
+      props.authedUser.jwtToken,
+      props.child.imgs,
+      "lostchildrenbucket"
+    ).then((imgs) => {
+      setChildImgs(imgs);
+      console.log(imgs);
+    });
+  }, []);
+
+  const handleRemoveChild=()=> {
+    let refresh=Deleteobjects(props.authedUser.jwtToken,props.child.imgs,"lostchildrenbucket");
+    if(refresh){
+      props.refresh(true)
+    }
+      
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
@@ -56,8 +78,7 @@ const StatusCard = (props) => {
           <img
             className="lost-child-img"
             alt={props.child.nameOfChild}
-            src={props.child.imgs[0]}
-            z
+            src={childImgs[0]}
           />
           <Box
             sx={{
@@ -106,10 +127,10 @@ const StatusCard = (props) => {
               cols={3}
               rowHeight={200}
             >
-              {props.child.imgs.map((img) => (
+              {childImgs.map((img) => (
                 <ImageListItem key={img.name}>
                   <img
-                    src={`${img}?w=164&h=164&fit=crop&auto=format`}
+                    src={img}
                     srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                     alt={img.name}
                     loading="lazy"
@@ -177,7 +198,7 @@ const StatusCard = (props) => {
                         variant="body2"
                         color="text.primary"
                       >
-                        {"location here"}
+                        {props.child.location}
                       </Typography>
                     </React.Fragment>
                   }
@@ -192,4 +213,9 @@ const StatusCard = (props) => {
   );
 };
 
-export default StatusCard;
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
+}
+export default connect(mapStateToProps)(StatusCard);

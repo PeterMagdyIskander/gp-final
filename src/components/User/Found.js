@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 // import Toast from "../Toasts/Toasts";
-import { searchforsim } from "../../AWS/rekognitionlogic";
+import { searchforsimpasserby } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
 import { Typography } from "@mui/material";
-import { singuploadtos3, gets3file } from "../../AWS/s3logic";
+import { uploadarrtos3passerby, gets3filepasserby } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import CircularIntegration from "../Loading/UpdateRekoFetch";
@@ -16,33 +16,21 @@ const Found = (props) => {
   const [imgs, setImgs] = useState([]);
   const [files, setFile] = useState([]);
   const [sendReq, setSendReq] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [data, setData] = useState({});
   const [done, setDone] = useState(false);
-  // async function rekognitionUpload(file) {
-  //   console.log("namef", file[0].name);
-  //   var uploaded = await singuploadtos3(
-  //     props.authedUser.jwtToken,
-  //     file,
-  //     "props.authedUser.payload.email",
-  //     "asd",
-  //     file[0].name,
-  //     "lostpictures"
-  //   );
-  //   setUploadSuccess(uploaded);
-  //   const ids = await searchforsim(
-  //     "lostchildren",
-  //     "lostpictures",
-  //     file[0].name,
-  //     props.authedUser.jwtToken
-  //   );
-  //   console.log("nneeeeeeeeeeeeeee", ids);
-  //   console.log("uploaded", uploaded);
-  //   const x = await gets3file(props.authedUser.jwtToken, ids, "lostpictures");
-  //   console.log(x);
-  //   setImgs(x);
-  // }
+
+  
   return (
     <div>
-      {!sendReq && <FoundForm setFiles={setFile} onSubmit={setSendReq} />}
+      {!sendReq && (
+        <FoundForm
+          setFiles={setFile}
+          setData={setData}
+          setFileName={setFileName}
+          onSubmit={setSendReq}
+        />
+      )}
       {imgs.length === 0 && done ? (
         <Box
           sx={{
@@ -77,31 +65,25 @@ const Found = (props) => {
               setDone={setDone}
               reqFunctions={{
                 uploadToS3: {
-                  reqFunction: singuploadtos3,
+                  reqFunction: uploadarrtos3passerby,
                   params: [
-                    props.authedUser.jwtToken,
-                    files,
-                    props.authedUser.email,
-                    "peter",
-                    files[0].name,
+                    files[0],
+                    '30',
+                    '30',
+                    data.address,
+                    data.childName,
+                    data.reporterPhone,
+                    fileName,
                     "passerbybucket",
                   ],
                 },
                 searchForSim: {
-                  reqFunction: searchforsim,
-                  params: [
-                    "lostchildren",
-                    "passerbybucket",
-                    files[0].name,
-                    props.authedUser.jwtToken,
-                  ],
+                  reqFunction: searchforsimpasserby,
+                  params: ["lostchildren", "passerbybucket", fileName],
                 },
                 getS3files: {
-                  reqFunction: gets3file,
-                  params: [
-                    props.authedUser.jwtToken,
-                    "lostchildrenbucket",
-                  ],
+                  reqFunction: gets3filepasserby,
+                  params: ["lostchildrenbucket"],
                 },
               }}
             />

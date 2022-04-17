@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { gets3file, uploadtos3 } from "../../AWS/s3logic";
+import { gets3file, uploadarrtos3 } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 //import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +14,7 @@ const theme = createTheme();
 const ReportMenu = (props) => {
   const [imgs, setImgs] = useState([]);
   const [files, setFile] = useState([]);
+  const [data, setData] = useState({});
   const [sendReq, setSendReq] = useState(false);
   const [done, setDone] = useState(false);
   // var id;
@@ -23,7 +24,13 @@ const ReportMenu = (props) => {
 
   return (
     <>
-      {!sendReq && <ReportForm setFiles={setFile} onSubmit={setSendReq} />}
+      {!sendReq && (
+        <ReportForm
+          setFiles={setFile}
+          setData={setData}
+          onSubmit={setSendReq}
+        />
+      )}
       {imgs.length === 0 && done ? (
         <Box
           sx={{
@@ -43,7 +50,7 @@ const ReportMenu = (props) => {
       ) : (
         <div className="status">
           {imgs.map((img) => {
-            return <MatchedCard img={img} name={"evan"} />;
+            return <MatchedCard img={img} key={img} name={"evan"} />;
           })}
         </div>
       )}
@@ -58,13 +65,15 @@ const ReportMenu = (props) => {
               setDone={setDone}
               reqFunctions={{
                 uploadToS3: {
-                  reqFunction: uploadtos3,
+                  reqFunction: uploadarrtos3,
                   params: [
                     props.authedUser.jwtToken,
                     files,
                     props.authedUser.email,
-                    "peter",
-                    files[0].name,
+                    props.authedUser.cognitoUserId,
+                    data.childName,
+                    data.location,
+                    props.authedUser.phoneNumber,
                     "lostchildrenbucket",
                   ],
                 },
@@ -73,7 +82,7 @@ const ReportMenu = (props) => {
                   params: [
                     "waitingslistfaces",
                     "lostchildrenbucket",
-                    "0" + files[0].name,
+                    props.authedUser.cognitoUserId+data.childName+'0',
                     props.authedUser.jwtToken,
                   ],
                 },

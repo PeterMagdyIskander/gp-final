@@ -92,9 +92,8 @@ function CircularIntegration(props) {
           setProgressTwo();
           if (ids) {
             const s3g = await props.reqFunctions.getS3files.reqFunction(
-              props.reqFunctions.getS3files.params[0],
               ids,
-              props.reqFunctions.getS3files.params[1]
+              ...props.reqFunctions.getS3files.params
             );
 
             props.setImgs(s3g);
@@ -103,11 +102,7 @@ function CircularIntegration(props) {
         })
         .catch((err) => console.log(err));
     },
-    [
-      props.reqFunctions.getS3files,
-      props.reqFunctions.searchForSim,
-      props.reqFunctions.uploadToS3,
-    ]
+    []
   );
 
   return (

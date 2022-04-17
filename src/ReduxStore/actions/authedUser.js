@@ -10,7 +10,7 @@ export function setAuthedUser(user) {
       phoneNumber: user.payload.phone_number,
       name: `${user.payload.name} ${user.payload.family_name}`,
       tokenExpiryDate: user.payload.exp * 1000,
-      reportedChildrenID: ["asd123", "qwe456"],
+      cognitoUserId:user.payload["cognito:username"],
     };
   } else {
     authedUser = user;

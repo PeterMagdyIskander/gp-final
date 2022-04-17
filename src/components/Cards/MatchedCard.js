@@ -9,7 +9,7 @@ const MatchedCard = (props) => {
   let iconSize = 20;
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main">
+      <Container component="main" maxWidth="xs">
         <CardContent
           variant="outlined"
           sx={{

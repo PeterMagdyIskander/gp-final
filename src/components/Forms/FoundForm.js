@@ -16,7 +16,12 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 const theme = createTheme();
 
-export default function FoundForm({ setFiles, onSubmit }) {
+export default function FoundForm({
+  setFiles,
+  setData,
+  setFileName,
+  onSubmit,
+}) {
   const [coordinates, setCoordinates] = useState({
     lat: 30.068513,
     lng: 31.243771,
@@ -33,6 +38,14 @@ export default function FoundForm({ setFiles, onSubmit }) {
       });
     }
     setOpen(false);
+  };
+  let options = {
+    zoomControl: false,
+    mapTypeControl: false,
+    scaleControl: false,
+    streetViewControl: false,
+    rotateControl: false,
+    fullscreenControl: false,
   };
   const containerStyle = {
     width: "600px",
@@ -62,7 +75,12 @@ export default function FoundForm({ setFiles, onSubmit }) {
     p: 4,
   };
   let iconSize = 20;
-
+  const formatName = (name, address, lat, long) => {
+    const filename = (name + address + lat + long + Date.now()).toString();
+    const filename1 = filename.replace(/\./g, "d");
+    const filename2 = filename1.replace(/ /g, "s");
+    return filename2;
+  };
   const onFileUpload = (e) => {
     setFile(e.target.files);
     setFiles(e.target.files);
@@ -92,7 +110,20 @@ export default function FoundForm({ setFiles, onSubmit }) {
             file,
             coordinates,
           });
-          console.log(file);
+          setFileName(
+            formatName(
+              values.childName,
+              values.address,
+              '30',
+              '30'
+            )
+          );
+          setData({
+            address: values.address,
+            childName: values.childName,
+            reporterPhone: values.reporterPhone,
+            coordinates: coordinates,
+          });
           onSubmit(true);
         }}
       >
@@ -214,6 +245,7 @@ export default function FoundForm({ setFiles, onSubmit }) {
           </Box>
           {isLoaded ? (
             <GoogleMap
+              options={options}
               mapContainerStyle={containerStyle}
               initialCenter={coordinates}
               center={coordinates}

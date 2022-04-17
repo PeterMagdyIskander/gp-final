@@ -3,6 +3,7 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   S3,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -11,15 +12,17 @@ import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
 const region = "us-east-1";
 
-export async function uploadtos3(
+export async function uploadarrtos3(
   signintoken,
   file,
   owneremailaddress,
+  uid,
   lostchildid,
-  imgid,
+  address,
+  phone,
   Bucket
 ) {
-  console.log("hi", Object.keys(file), imgid);
+  console.log(uid, address);
   const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -30,28 +33,34 @@ export async function uploadtos3(
       },
     }),
   });
+  var success = true;
   for (let i = 0; i < Object.keys(file).length; i++) {
-    console.log(file[i].name);
+    console.log(Object.keys(file).length);
+    console.log(file[i]);
+
     const uploadParams = {
       Bucket: Bucket,
-      Key: i + imgid, //get alragel mnazel kam sora nkteb emailaddress0
+      Key: uid + lostchildid + i,
       Body: file[i],
       Metadata: {
         owner: owneremailaddress,
         lostchildid: lostchildid,
-        imgid: "peterreac"+lostchildid+i,
-        address:"address",
-        phonenumber:"phone"
-    },
+        imgid: uid + lostchildid + i,
+        address: address,
+        phonenumber: phone,
+      },
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      return data;
+      console.log("Success", data);
     } catch (err) {
       console.log("Error", err);
+      success = false;
     }
   }
+  return success;
 }
+
 export async function singuploadtos3(
   signintoken,
   file,
@@ -60,7 +69,7 @@ export async function singuploadtos3(
   imgid,
   Bucket
 ) {
-  console.log(file)
+  console.log(file);
   console.log("hi", Object.keys(file), imgid);
   const s3 = new S3Client({
     region: region,
@@ -92,8 +101,8 @@ export async function singuploadtos3(
     console.log("Error", err);
   }
 }
-export async function gets3file(signintoken, id, Bucket) {
-  console.log(id)
+export async function gets3file(id, signintoken, Bucket) {
+  console.log(id);
   const s3 = new S3({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -102,6 +111,135 @@ export async function gets3file(signintoken, id, Bucket) {
       logins: {
         "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
       },
+    }),
+  });
+
+  var uriarr = [];
+  for (let i = 0; i < id.length; i++) {
+    try {
+      const uploadParams = {
+        Bucket: Bucket,
+        Key: id[i],
+      };
+      const command = new GetObjectCommand(uploadParams);
+      const url = await getSignedUrl(s3, command, { expiresIn: 36000 });
+
+      uriarr.push(url);
+
+      console.log("Success");
+    } catch (err) {
+      console.log("Error", err);
+    }
+  }
+  return uriarr;
+}
+export async function Deleteobject(signintoken, oid, Bucket) {
+  const s3 = new S3Client({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+      logins: {
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+      },
+    }),
+  });
+  const Params = {
+    Bucket: Bucket,
+    Key: oid,
+  };
+  try {
+    const data = await s3.send(new DeleteObjectCommand(Params));
+    console.log("Success", data);
+  } catch (err) {
+    console.log("Error", err);
+  }
+  return true;
+}
+
+export async function Deleteobjects(signintoken, oid, Bucket) {
+  const s3 = new S3Client({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+      logins: {
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+      },
+    }),
+  });
+  var success = true;
+  for (let i = 0; i < oid.length; i++) {
+    const Params = {
+      Bucket: Bucket,
+      Key: oid[0],
+    };
+    try {
+      const data = await s3.send(new DeleteObjectCommand(Params));
+      console.log("Success", data);
+    } catch (err) {
+      console.log("Error", err);
+      success = false;
+    }
+  }
+
+  return success;
+}
+export async function uploadarrtos3passerby(
+  file,
+  lat,
+  lng,
+  address,
+  name,
+  phoneNumber,
+  filename,
+  Bucket
+) {
+  console.log(
+    "im here1",
+    file,
+    lat,
+    lng,
+    address,
+    name,
+    phoneNumber,
+    filename,
+    Bucket
+  );
+  const s3 = new S3Client({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+    }),
+  });
+
+  const uploadParams = {
+    Bucket: Bucket,
+    Key: filename,
+    Body: file,
+    Metadata: {
+      name: name,
+      lng: lng,
+      lat: lat,
+      phoneNumber: phoneNumber,
+      writenaddress: address,
+    },
+  };
+  try {
+    const data = await s3.send(new PutObjectCommand(uploadParams));
+    console.log("Success", data);
+    return data; // For unit tests.
+  } catch (err) {
+    console.log("Error", err);
+  }
+}
+export async function gets3filepasserby(id, Bucket) {
+  const s3 = new S3({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
     }),
   });
 
