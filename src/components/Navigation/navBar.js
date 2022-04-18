@@ -103,7 +103,7 @@ const NavBar = (props) => {
               </Tabs>
             ) : (
               <Tabs
-                indicatorColor="text.primary"
+                indicatorColor="primary"
                 textColor="inherit"
                 value={value}
                 onChange={(e, value) => setValue(value)}

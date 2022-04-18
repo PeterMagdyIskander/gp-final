@@ -18,9 +18,7 @@ const MainMenu = (props) => {
         </Link>
       </div>
 
-      <Link className="redColor" to="items">
-        <div className="missing-items underline">Missing Items?</div>
-      </Link>
+      
     </div>
   );
 };

@@ -91,6 +91,8 @@ function CircularIntegration(props) {
           );
           setProgressTwo();
           if (ids) {
+            console.log(ids,...props.reqFunctions.getS3files.params)
+            
             const s3g = await props.reqFunctions.getS3files.reqFunction(
               ids,
               ...props.reqFunctions.getS3files.params

@@ -4,6 +4,7 @@ import {
   GetObjectCommand,
   S3,
   DeleteObjectCommand,
+  HeadObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -195,17 +196,6 @@ export async function uploadarrtos3passerby(
   filename,
   Bucket
 ) {
-  console.log(
-    "im here1",
-    file,
-    lat,
-    lng,
-    address,
-    name,
-    phoneNumber,
-    filename,
-    Bucket
-  );
   const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -220,12 +210,13 @@ export async function uploadarrtos3passerby(
     Body: file,
     Metadata: {
       name: name,
-      lng: lng,
-      lat: lat,
-      phoneNumber: phoneNumber,
+      lng: lng.toString(),
+      lat: lat.toString(),
+      phoneNumber: phoneNumber.toString(),
       writenaddress: address,
     },
   };
+  console.log(uploadParams);
   try {
     const data = await s3.send(new PutObjectCommand(uploadParams));
     console.log("Success", data);
@@ -261,4 +252,30 @@ export async function gets3filepasserby(id, Bucket) {
     }
   }
   return uriarr;
+}
+
+export async function gets3fileheadobject(id, Bucket) {
+  const s3 = new S3Client({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+    }),
+  });
+
+  const Params = {
+    Bucket: Bucket,
+    Key: id,
+  };
+
+  try {
+    const command = new HeadObjectCommand(Params);
+    const response = await s3.send(command);
+    console.log("asdaasdasdasdasdasd", response);
+    return response;
+
+    console.log("Success");
+  } catch (err) {
+    console.log("Error", err);
+  }
 }

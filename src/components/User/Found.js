@@ -49,8 +49,8 @@ const Found = (props) => {
         </Box>
       ) : (
         <div className="status">
-          {imgs.map((img) => {
-            return <MatchedCard img={img} name={"evan"} />;
+          {imgs.map((img,index) => {
+            return <MatchedCard img={img} key={index} name={"Peter"} />;
           })}
         </div>
       )}
@@ -68,8 +68,8 @@ const Found = (props) => {
                   reqFunction: uploadarrtos3passerby,
                   params: [
                     files[0],
-                    '30',
-                    '30',
+                    data.coordinates.lat,
+                    data.coordinates.lng,
                     data.address,
                     data.childName,
                     data.reporterPhone,

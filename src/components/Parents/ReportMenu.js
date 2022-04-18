@@ -50,7 +50,7 @@ const ReportMenu = (props) => {
       ) : (
         <div className="status">
           {imgs.map((img) => {
-            return <MatchedCard img={img} key={img} name={"evan"} />;
+            return <MatchedCard img={img} key={img} name={"Peter"} />;
           })}
         </div>
       )}

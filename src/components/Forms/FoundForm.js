@@ -14,6 +14,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
+import GoogleMaps from "../Google/GoogleMaps";
 const theme = createTheme();
 
 export default function FoundForm({
@@ -22,10 +23,7 @@ export default function FoundForm({
   setFileName,
   onSubmit,
 }) {
-  const [coordinates, setCoordinates] = useState({
-    lat: 30.068513,
-    lng: 31.243771,
-  });
+  const [coordinates, setCoordinates] = useState({});
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
   const [address, setAddress] = useState("");
@@ -66,8 +64,8 @@ export default function FoundForm({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "850px",
-    height: "700px",
+    width: "750px",
+    height: "70%",
     overflowY: "auto",
     bgcolor: "background.paper",
     border: "2px solid #000",
@@ -114,8 +112,8 @@ export default function FoundForm({
             formatName(
               values.childName,
               values.address,
-              '30',
-              '30'
+              coordinates.lat,
+              coordinates.lng
             )
           );
           setData({
@@ -194,76 +192,11 @@ export default function FoundForm({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h4" component="h2">
+          <Typography id="modal-modal-title" variant="h6" component="h3">
             Address
           </Typography>
-          <Box>
-            <PlacesAutocomplete
-              value={address}
-              onChange={handleChange}
-              onSelect={handleSelect}
-            >
-              {({
-                getInputProps,
-                suggestions,
-                getSuggestionItemProps,
-                loading,
-              }) => (
-                <div>
-                  <input
-                    {...getInputProps({
-                      placeholder: "Search Places ...",
-                      className: "location-search-input",
-                    })}
-                  />
-                  <div className="autocomplete-dropdown-container">
-                    {loading && <div>Loading...</div>}
-                    {suggestions.map((suggestion) => {
-                      const className = suggestion.active
-                        ? "suggestion-item--active"
-                        : "suggestion-item";
-                      // inline style for demonstration purpose
-                      const style = suggestion.active
-                        ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                        : { backgroundColor: "#ffffff", cursor: "pointer" };
-                      return (
-                        <div
-                          key={suggestion.description}
-                          {...getSuggestionItemProps(suggestion, {
-                            className,
-                            style,
-                          })}
-                        >
-                          <span>{suggestion.description}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </PlacesAutocomplete>
-          </Box>
-          {isLoaded ? (
-            <GoogleMap
-              options={options}
-              mapContainerStyle={containerStyle}
-              initialCenter={coordinates}
-              center={coordinates}
-              zoom={17} //minimum zoom & max zoom
-              onLoad={onLoad}
-            >
-              <Marker position={coordinates} />
-            </GoogleMap>
-          ) : (
-            <></>
-          )}
 
-          <FiXCircle
-            onClick={() => handleCloseModal(false)}
-            size={iconSize}
-            color="red"
-            className="close-modal"
-          />
+          <GoogleMaps setCoordinates={setCoordinates}/>
           <Button
             onClick={() => handleCloseModal(true)}
             sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}

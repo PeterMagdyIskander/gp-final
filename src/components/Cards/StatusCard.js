@@ -43,8 +43,8 @@ const StatusCard = (props) => {
 
   useEffect(() => {
     gets3file(
-      props.authedUser.jwtToken,
       props.child.imgs,
+      props.authedUser.jwtToken,
       "lostchildrenbucket"
     ).then((imgs) => {
       setChildImgs(imgs);
@@ -60,17 +60,16 @@ const StatusCard = (props) => {
       
   }
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main">
+      <>
         <CardContent
           variant="outlined"
           sx={{
-            width: "fit-content",
             display: "grid",
             gridTemplateColumns: "200px 300px",
             gap: "10px",
-            margin: "5%",
-            boxShadow: 1,
+            mt: "5%",
+            mb: "5%",
+            boxShadow: 10,
             borderRadius: "30px",
             bgcolor: "#fafafa",
           }}
@@ -208,8 +207,7 @@ const StatusCard = (props) => {
             <Button onClick={handleRemoveChild}>Remove Report</Button>
           </Box>
         </Modal>
-      </Container>
-    </ThemeProvider>
+      </>
   );
 };
 
