@@ -75,45 +75,40 @@ function CircularIntegration(props) {
   const setProgressThree = () => {
     setSuccess3(true);
     setLoading3(false);
-    setTimeout(() => {
-      props.setDone(true);
-    }, 1850);
+    props.setDone(true);
   };
 
-  useEffect(
-    () => {
-      props.reqFunctions.uploadToS3
-        .reqFunction(...props.reqFunctions.uploadToS3.params)
-        .then(async (res) => {
-          setProgressOne();
-          const ids = await props.reqFunctions.searchForSim.reqFunction(
-            ...props.reqFunctions.searchForSim.params
-          );
-          setProgressTwo();
-          if (ids) {
-            console.log(ids,...props.reqFunctions.getS3files.params)
-            
-            const s3g = await props.reqFunctions.getS3files.reqFunction(
-              ids,
-              ...props.reqFunctions.getS3files.params
-            );
+  useEffect(() => {
+    props.reqFunctions.uploadToS3
+      .reqFunction(...props.reqFunctions.uploadToS3.params)
+      .then(async (res) => {
+        setProgressOne();
+        const ids = await props.reqFunctions.searchForSim.reqFunction(
+          ...props.reqFunctions.searchForSim.params
+        );
+        setProgressTwo();
+        if (ids) {
+          console.log(ids, ...props.reqFunctions.getS3files.params);
 
-            props.setImgs(s3g);
-          }
-          setProgressThree();
-        })
-        .catch((err) => console.log(err));
-    },
-    []
-  );
+          const s3g = await props.reqFunctions.getS3files.reqFunction(
+            ids,
+            ...props.reqFunctions.getS3files.params
+          );
+
+          props.setImgs(s3g);
+        }
+        setProgressThree();
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Box
       sx={{
         padding: "15px",
         alignItems: "center",
-        border: "1px solid black",
-        borderRadius: "25px",
+        boxShadow: 10,
+        borderRadius: "30px",
         width: "70%",
         margin: "auto",
         mt: "64px",

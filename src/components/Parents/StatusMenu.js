@@ -6,12 +6,13 @@ import Skeleton from "@mui/material/Skeleton";
 import { Box, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { gets3file } from "../../AWS/s3logic";
+import Toast from "../Toasts/Toasts";
+import MatchedCard from "../Cards/MatchedCard";
 const theme = createTheme();
 const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [count,setCount]=useState(0);
   useEffect(() => {
     quaryfromdynamodb(
       "userdata",
@@ -19,12 +20,11 @@ const StatusMenu = (props) => {
       props.authedUser.jwtToken
     ).then((res) => {
       setChildren(res);
-      setLoading(false)
+      console.log("called", res);
+      setLoading(false);
     });
-  }, []);
-  useEffect(() => {
-    console.log(count)
-  }, [count]);
+  }, [refresh]);
+
   return (
     <Container sx={{ mt: "64px" }} component="main" maxWidth="sm">
       {loading ? (
@@ -34,6 +34,8 @@ const StatusMenu = (props) => {
           sx={{ borderRadius: "30px" }}
           animation="wave"
         />
+      ) : children.length === 0 ? (
+        <MatchedCard img={"/assets/warning.png"} name="No Reports Found" />
       ) : (
         children.map((child, index) => {
           return (
@@ -47,6 +49,7 @@ const StatusMenu = (props) => {
                 status: child.match,
               }}
               refresh={setRefresh}
+              loading={setLoading}
             />
           );
         })

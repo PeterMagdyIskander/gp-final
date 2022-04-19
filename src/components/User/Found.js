@@ -11,6 +11,7 @@ import CircularIntegration from "../Loading/UpdateRekoFetch";
 import { Box, Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 const theme = createTheme();
 const Found = (props) => {
   const [imgs, setImgs] = useState([]);
@@ -20,7 +21,6 @@ const Found = (props) => {
   const [data, setData] = useState({});
   const [done, setDone] = useState(false);
 
-  
   return (
     <div>
       {!sendReq && (
@@ -31,31 +31,16 @@ const Found = (props) => {
           onSubmit={setSendReq}
         />
       )}
-      {imgs.length === 0 && done ? (
-        <Box
-          sx={{
-            padding: "15px",
-            alignItems: "center",
-            border: "1px solid black",
-            borderRadius: "25px",
-            width: "70%",
-            margin: "auto",
-            mt: "150px",
-          }}
-        >
-          <Typography sx={{ ml: "30px" }} variant="h5">
-            No Matches Found
-          </Typography>
-        </Box>
-      ) : (
-        <div className="status">
-          {imgs.map((img,index) => {
-            return <MatchedCard img={img} key={index} name={"Peter"} />;
-          })}
-        </div>
-      )}
-
-      {sendReq && !done && (
+      <div className="status">
+        {imgs.length === 0 && done ? (
+          <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
+        ) : (
+          imgs.map((img, index) => {
+            return <MatchedCard img={img} key={index} name={"David"} />;
+          })
+        )}
+      </div>
+      {sendReq && !done ? (
         <ThemeProvider theme={theme}>
           <Container component="main">
             <CssBaseline />
@@ -89,6 +74,8 @@ const Found = (props) => {
             />
           </Container>
         </ThemeProvider>
+      ) : (
+        <></>
       )}
     </div>
   );

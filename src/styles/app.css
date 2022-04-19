@@ -101,6 +101,10 @@ a {
     color: #ffe;
 }
 
+.red {
+    color: rgb(243, 32, 19);
+}
+
 .status-card-grid {
     display: grid;
     grid-template-columns: 200px 375px;
@@ -258,6 +262,7 @@ Circles {
     margin: 8px;
     cursor: pointer;
 }
+
 .close-modal-btn {
     position: absolute;
     right: 0;
@@ -265,6 +270,7 @@ Circles {
     margin: 8px;
     cursor: pointer;
 }
+
 .row:hover {
     background-color: #aaa;
 }
@@ -275,9 +281,14 @@ Circles {
     object-fit: cover;
     margin-right: 10px;
 }
-.suggestion-item{
+
+.suggestion-item {
     display: flex;
     justify-content: flex-start;
     gap: 10px;
     padding-left: 10px;
+}
+
+.matched-name {
+    text-align: center;
 }

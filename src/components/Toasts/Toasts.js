@@ -2,10 +2,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Toast = (props) => {
-  if(!props.success)return <></>
-  
-  else if (props.success)
-    toast.success("Uploaded Successfully!", {
+  if (props.success)
+    toast.success(props.message, {
       position: props.position,
       autoClose: 2000,
       hideProgressBar: true,
@@ -15,7 +13,7 @@ const Toast = (props) => {
       progress: undefined,
     });
   else
-    toast.error("Upload unsuccessful!", {
+    toast.error(props.message, {
       position: props.position,
       autoClose: 2000,
       hideProgressBar: true,
@@ -25,6 +23,6 @@ const Toast = (props) => {
       progress: undefined,
     });
 
-  return <ToastContainer limit={1}/>;
+  return <ToastContainer limit={1} />;
 };
 export default Toast;

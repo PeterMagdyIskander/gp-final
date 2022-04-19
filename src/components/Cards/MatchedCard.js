@@ -25,7 +25,7 @@ const MatchedCard = (props) => {
           }}
         >
           <img className="lost-child-img" alt={name} src={img} />
-          <p>{name}</p>
+          <p className="matched-name">{name}</p>
         </CardContent>
       </Container>
     </ThemeProvider>

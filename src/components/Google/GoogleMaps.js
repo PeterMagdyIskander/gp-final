@@ -65,7 +65,7 @@ const GoogleMaps = (props) => {
           mapContainerStyle={containerStyle}
           initialCenter={coordinates}
           center={coordinates}
-          zoom={19} //minimum zoom & max zoom
+          zoom={16} //minimum zoom & max zoom
           options={createMapOptions}
         >
           <Marker position={coordinates} />

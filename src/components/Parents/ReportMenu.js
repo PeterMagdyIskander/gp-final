@@ -29,33 +29,19 @@ const ReportMenu = (props) => {
           setFiles={setFile}
           setData={setData}
           onSubmit={setSendReq}
+          setDone={setDone}
         />
       )}
-      {imgs.length === 0 && done ? (
-        <Box
-          sx={{
-            padding: "15px",
-            alignItems: "center",
-            border: "1px solid black",
-            borderRadius: "25px",
-            width: "70%",
-            margin: "auto",
-            mt: "150px",
-          }}
-        >
-          <Typography sx={{ ml: "30px" }} variant="h5">
-            No Matches Found
-          </Typography>
-        </Box>
-      ) : (
-        <div className="status">
-          {imgs.map((img) => {
-            return <MatchedCard img={img} key={img} name={"Peter"} />;
-          })}
-        </div>
-      )}
-
-      {sendReq && !done && (
+      <div className="status">
+        {imgs.length === 0 && done ? (
+          <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
+        ) : (
+          imgs.map((img, index) => {
+            return <MatchedCard img={img} key={index} name={"David"} />;
+          })
+        )}
+      </div>
+      {sendReq && !done ? (
         <ThemeProvider theme={theme}>
           <Container component="main">
             <CssBaseline />
@@ -82,7 +68,7 @@ const ReportMenu = (props) => {
                   params: [
                     "waitingslistfaces",
                     "lostchildrenbucket",
-                    props.authedUser.cognitoUserId+data.childName+'0',
+                    props.authedUser.cognitoUserId + data.childName + "0",
                     props.authedUser.jwtToken,
                   ],
                 },
@@ -94,6 +80,8 @@ const ReportMenu = (props) => {
             />
           </Container>
         </ThemeProvider>
+      ) : (
+        <></>
       )}
     </>
   );

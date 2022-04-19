@@ -18,6 +18,8 @@ import { FiMapPin, FiCalendar, FiUser } from "react-icons/fi";
 import { gets3file } from "../../AWS/s3logic";
 import { connect } from "react-redux";
 import { Deleteobjects } from "../../AWS/s3logic";
+import Toast from "../Toasts/Toasts";
+import { ToastContainer, toast } from "react-toastify";
 const theme = createTheme();
 const StatusCard = (props) => {
   const color = props.child.status ? "green" : "red";
@@ -26,7 +28,7 @@ const StatusCard = (props) => {
   const [childImgs, setChildImgs] = useState([]);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
-
+  const [deleted, setDeleted] = useState(false);
   const style = {
     position: "absolute",
     top: "50%",
@@ -50,7 +52,7 @@ const StatusCard = (props) => {
       setChildImgs(imgs);
       console.log(imgs);
     });
-  }, []);
+  }, [props.child.imgs]);
 
   const handleRemoveChild = async () => {
     let refresh = await Deleteobjects(
@@ -59,7 +61,9 @@ const StatusCard = (props) => {
       "lostchildrenbucket"
     );
     if (refresh) {
-      console.log("deleted")
+      handleCloseModal();
+      props.refresh(refresh);
+      props.loading(refresh);
     }
   };
   return (
@@ -85,22 +89,12 @@ const StatusCard = (props) => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", columnGap: "5px" }}>
-            {props.child.status ? (
-              <>
-                <FiCheckCircle size={iconSize} color={color} />
-                <p>Matched</p>
-              </>
-            ) : (
-              <>
-                <FiXCircle size={iconSize} color={color} />
-                <p>Not Matched</p>
-              </>
-            )}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <p className="red">Click for more info</p>
           </Box>
           <span>
             <FiInfo
@@ -173,7 +167,7 @@ const StatusCard = (props) => {
                       variant="body2"
                       color="text.primary"
                     >
-                      {props.child.ageOfChild}
+                      {22}
                     </Typography>
                   </React.Fragment>
                 }
