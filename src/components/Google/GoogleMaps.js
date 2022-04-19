@@ -17,7 +17,10 @@ import { FiMapPin } from "react-icons/fi";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 const GoogleMaps = (props) => {
-  const [coordinates, setCoordinates] = useState({});
+  const [coordinates, setCoordinates] = useState({
+    lat: 30.068513,
+    lng: 31.243771,
+  });
   const [address, setAddress] = useState("");
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -53,27 +56,20 @@ const GoogleMaps = (props) => {
     rotateControl: false,
     fullscreenControl: true,
   };
-  useEffect(() => {
-    setCoordinates({ lat: 30.068513, lng: 31.243771 });
-  }, []);
-  console.log(coordinates);
+  console.log("coor", coordinates);
+  const arr = ["places"];
   return (
     <Box sx={{ position: "relative" }}>
       <Box>
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            initialCenter={coordinates}
-            center={coordinates}
-            zoom={19} //minimum zoom & max zoom
-            onLoad={onLoad}
-            options={createMapOptions}
-          >
-            <Marker position={coordinates} />
-          </GoogleMap>
-        ) : (
-          <></>
-        )}
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          initialCenter={coordinates}
+          center={coordinates}
+          zoom={19} //minimum zoom & max zoom
+          options={createMapOptions}
+        >
+          <Marker position={coordinates} />
+        </GoogleMap>
       </Box>
       <Box sx={{ top: 0, position: "absolute" }}>
         <PlacesAutocomplete
@@ -88,12 +84,6 @@ const GoogleMaps = (props) => {
             loading,
           }) => (
             <Box>
-              {/* <input
-                {...getInputProps({
-                  placeholder: "Search Places ...",
-                  className: "location-search-input",
-                })}
-              /> */}
               <Paper
                 component="form"
                 sx={{
@@ -138,17 +128,17 @@ const GoogleMaps = (props) => {
                     ? { backgroundColor: "#fafafa", cursor: "pointer" }
                     : { backgroundColor: "#ffffff", cursor: "pointer" };
                   return (
-                    <Box
-                      sx={{ height: "25px", padding: "5px", gap: "5px" }}
+                    <div
+                      className="dropdown-options"
                       key={suggestion.description}
                       {...getSuggestionItemProps(suggestion, {
                         className,
                         style,
                       })}
                     >
-                      <FiMapPin />
+                      <FiMapPin  />
                       <span>{suggestion.formattedSuggestion.mainText}</span>
-                    </Box>
+                    </div>
                   );
                 })}
               </Box>

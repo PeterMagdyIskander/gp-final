@@ -52,162 +52,159 @@ const StatusCard = (props) => {
     });
   }, []);
 
-  const handleRemoveChild=()=> {
-    let refresh=Deleteobjects(props.authedUser.jwtToken,props.child.imgs,"lostchildrenbucket");
-    if(refresh){
-      props.refresh(true)
+  const handleRemoveChild = async () => {
+    let refresh = await Deleteobjects(
+      props.authedUser.jwtToken,
+      props.child.imgs,
+      "lostchildrenbucket"
+    );
+    if (refresh) {
+      console.log("deleted")
     }
-      
-  }
+  };
   return (
-      <>
-        <CardContent
-          variant="outlined"
+    <>
+      <CardContent
+        variant="outlined"
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "200px 300px",
+          gap: "10px",
+          mt: "5%",
+          mb: "5%",
+          boxShadow: 10,
+          borderRadius: "30px",
+          bgcolor: "#fafafa",
+        }}
+      >
+        <img
+          className="lost-child-img"
+          alt={props.child.nameOfChild}
+          src={childImgs[0]}
+        />
+        <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "200px 300px",
-            gap: "10px",
-            mt: "5%",
-            mb: "5%",
-            boxShadow: 10,
-            borderRadius: "30px",
-            bgcolor: "#fafafa",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <img
-            className="lost-child-img"
-            alt={props.child.nameOfChild}
-            src={childImgs[0]}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+          <Box sx={{ display: "flex", alignItems: "center", columnGap: "5px" }}>
+            {props.child.status ? (
+              <>
+                <FiCheckCircle size={iconSize} color={color} />
+                <p>Matched</p>
+              </>
+            ) : (
+              <>
+                <FiXCircle size={iconSize} color={color} />
+                <p>Not Matched</p>
+              </>
+            )}
+          </Box>
+          <span>
+            <FiInfo
+              size={iconSize}
+              color={color}
+              style={{ cursor: "pointer" }}
+              onClick={handleOpenModal}
+            />
+          </span>
+        </Box>
+      </CardContent>
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h4" component="h2">
+            Child Info
+          </Typography>
+          <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+            {childImgs.map((img) => (
+              <ImageListItem key={img.name}>
+                <img
+                  src={img}
+                  srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  alt={img.name}
+                  loading="lazy"
+                  id="status-card-img"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
-            <Box
-              sx={{ display: "flex", alignItems: "center", columnGap: "5px" }}
-            >
-              {props.child.status ? (
-                <>
-                  <FiCheckCircle size={iconSize} color={color} />
-                  <p>Matched</p>
-                </>
-              ) : (
-                <>
-                  <FiXCircle size={iconSize} color={color} />
-                  <p>Not Matched</p>
-                </>
-              )}
-            </Box>
-            <span>
-              <FiInfo
-                size={iconSize}
-                color={color}
-                style={{ cursor: "pointer" }}
-                onClick={handleOpenModal}
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <FiUser size={28} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Name:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.nameOfChild}
+                    </Typography>
+                  </React.Fragment>
+                }
               />
-            </span>
-          </Box>
-        </CardContent>
-        <Modal
-          open={open}
-          onClose={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h4" component="h2">
-              Child Info
-            </Typography>
-            <ImageList
-              sx={{ width: 620, height: 405 }}
-              cols={3}
-              rowHeight={200}
-            >
-              {childImgs.map((img) => (
-                <ImageListItem key={img.name}>
-                  <img
-                    src={img}
-                    srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    alt={img.name}
-                    loading="lazy"
-                    id="status-card-img"
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList>
-            <List
-              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-            >
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <FiUser size={28} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Name:"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {props.child.nameOfChild}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <FiCalendar size={28} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Age:"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {props.child.ageOfChild}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <FiMapPin size={28} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Location:"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {props.child.location}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            </List>
-            <Button onClick={handleRemoveChild}>Remove Report</Button>
-          </Box>
-        </Modal>
-      </>
+            </ListItem>
+            <Divider variant="inset" component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <FiCalendar size={28} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Age:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.ageOfChild}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <FiMapPin size={28} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Location:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.location}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </List>
+          <Button onClick={handleRemoveChild}>Remove Report</Button>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

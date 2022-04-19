@@ -47,7 +47,6 @@ const ProfileMenu = () => {
         </Box>
       </Modal>
       </div>
-      <GoogleMaps/>
     </div>
   );
 };

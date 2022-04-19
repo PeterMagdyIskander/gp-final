@@ -15,12 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import {
-  FiUser,
-  FiSearch,
-  FiActivity,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiUser, FiSearch, FiActivity, FiLogOut } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import BurgerMenu from "./BurgerMenu";
 const NavBar = (props) => {
@@ -34,10 +29,10 @@ const NavBar = (props) => {
   const signOut = () => {
     console.log("Successufully Signed out");
     dispatch(setAuthedUser(null));
-    setValue(0)
+    setValue(1);
     navigate("/signin");
   };
-  console.log(value)
+  console.log(value);
   const signIn = () => navigate("/signin");
   const signUp = () => navigate("/signup");
   return (
@@ -50,7 +45,14 @@ const NavBar = (props) => {
       }}
     >
       <Toolbar>
-        <Typography sx={{ fontSize: "1.7rem" }}>Lost&Found</Typography>
+        <Typography
+          sx={{ fontSize: "1.7rem", cursor: "pointer" }}
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Lost&Found
+        </Typography>
         {isMatch ? (
           <>
             <BurgerMenu />
@@ -108,6 +110,12 @@ const NavBar = (props) => {
                 value={value}
                 onChange={(e, value) => setValue(value)}
               >
+                <Tab
+                  label="Found"
+                  component={Link}
+                  to={"/Found"}
+                  icon={<FiSearch />}
+                />
                 <Tab
                   label="Login"
                   component={Button}

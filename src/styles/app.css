@@ -275,3 +275,9 @@ Circles {
     object-fit: cover;
     margin-right: 10px;
 }
+.suggestion-item{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-left: 10px;
+}
