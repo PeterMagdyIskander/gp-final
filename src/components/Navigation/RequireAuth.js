@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import {
   useLocation,
   Navigate,
@@ -5,7 +6,8 @@ import {
  import { isAuthedForRouting } from "../../ReduxStore/actions/authedUser";
 const RequireAuth = ({children }) => {
   let location = useLocation();
-  if (!isAuthedForRouting()) {
+  const dispatch=useDispatch()
+  if (!isAuthedForRouting(dispatch)) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 

@@ -16,7 +16,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     checkAutoLogin(dispatch);
-  }, [dispatch]);
+  }, []);
 
   return (
     <Router>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FiInfo, FiXCircle, FiCheckCircle } from "react-icons/fi";
 import { useState } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Container, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -20,15 +20,16 @@ import { connect } from "react-redux";
 import { Deleteobjects } from "../../AWS/s3logic";
 import Toast from "../Toasts/Toasts";
 import { ToastContainer, toast } from "react-toastify";
+import SelectedImg from "./SelectedImg";
 const theme = createTheme();
 const StatusCard = (props) => {
   const color = props.child.status ? "green" : "red";
   let iconSize = 20;
   const [open, setOpen] = useState(false);
-  const [childImgs, setChildImgs] = useState([]);
+  const [selectedImgs, setSelectedIms] = useState([]);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
-  const [deleted, setDeleted] = useState(false);
+  const [editing, setEditing] = useState(false);
   const style = {
     position: "absolute",
     top: "50%",
@@ -43,16 +44,7 @@ const StatusCard = (props) => {
     p: 4,
   };
 
-  useEffect(() => {
-    gets3file(
-      props.child.imgs,
-      props.authedUser.jwtToken,
-      "lostchildrenbucket"
-    ).then((imgs) => {
-      setChildImgs(imgs);
-      console.log(imgs);
-    });
-  }, [props.child.imgs]);
+ 
 
   const handleRemoveChild = async () => {
     let refresh = await Deleteobjects(
@@ -65,6 +57,19 @@ const StatusCard = (props) => {
       props.refresh(refresh);
       props.loading(refresh);
     }
+  };
+  const handleEditing = () => {
+    if (editing) {
+    }
+    setEditing(!editing);
+  };
+  const [name, setName] = React.useState(props.child.nameOfChild);
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+  const [location, setLocation] = React.useState(props.child.location);
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
   };
   return (
     <>
@@ -84,7 +89,7 @@ const StatusCard = (props) => {
         <img
           className="lost-child-img"
           alt={props.child.nameOfChild}
-          src={childImgs[0]}
+          src={props.child.imgs[0].img}
         />
         <Box
           sx={{
@@ -117,18 +122,25 @@ const StatusCard = (props) => {
             Child Info
           </Typography>
           <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
-            {childImgs.map((img) => (
-              <ImageListItem key={img.name}>
-                <img
-                  src={img}
-                  srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  alt={img.name}
-                  loading="lazy"
-                  id="status-card-img"
-                />
+            {props.child.imgs.map((img, index) => (
+              <ImageListItem key={index}>
+                <SelectedImg key={index} img={img} editable={editing} />
               </ImageListItem>
             ))}
           </ImageList>
+
+          <div className="flex flex-space-between">
+            <Button
+              onClick={handleRemoveChild}
+              disabled={props.child.imgs.length === 10 || !editing}
+            >
+              Add Images
+            </Button>
+            <Button onClick={handleEditing} disabled={!editing}>
+              Remove Images
+            </Button>
+          </div>
+
           <List
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
@@ -136,66 +148,71 @@ const StatusCard = (props) => {
               <ListItemAvatar>
                 <FiUser size={28} />
               </ListItemAvatar>
-              <ListItemText
-                primary="Name:"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {props.child.nameOfChild}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
+              {editing ? (
+                <TextField
+                  id="outlined-basic"
+                  label="Name:"
+                  variant="outlined"
+                  value={name}
+                  onChange={handleNameChange}
+                />
+              ) : (
+                <ListItemText
+                  primary="Name:"
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {name}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              )}
             </ListItem>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <FiCalendar size={28} />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Age:"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {22}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
+
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <FiMapPin size={28} />
               </ListItemAvatar>
-              <ListItemText
-                primary="Location:"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {props.child.location}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
+              {editing ? (
+                <TextField
+                  id="outlined-basic"
+                  label="Location"
+                  variant="outlined"
+                  value={location}
+                  onChange={handleLocationChange}
+                />
+              ) : (
+                <ListItemText
+                  primary="Location:"
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {location}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              )}
             </ListItem>
           </List>
-          <Button onClick={handleRemoveChild}>Remove Report</Button>
+          <div className="flex flex-space-between">
+            <Button onClick={handleRemoveChild}>Remove Report</Button>
+            <Button onClick={handleEditing}>
+              {editing ? "Save Changes" : "Enable Editting"}
+            </Button>
+          </div>
         </Box>
       </Modal>
     </>

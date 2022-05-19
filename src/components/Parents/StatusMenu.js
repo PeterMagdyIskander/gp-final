@@ -13,17 +13,29 @@ const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
+  useEffect( () => {
+    console.log(props.authedUser);
     quaryfromdynamodb(
       "userdata",
       props.authedUser.email,
       props.authedUser.jwtToken
-    ).then((res) => {
-      setChildren(res);
-      console.log("called", res);
+    ).then(async (res) => {
+      let completedStatus = [...res];
+      for (let i = 0; i < completedStatus.length; i++) {
+        let images= await gets3file(
+          completedStatus[i].photos,
+          props.authedUser.jwtToken,
+          "lostchildrenbucket"
+        )
+        let selectedImages=images.map(img=>{return{img,selected:false}})
+        completedStatus[i].photos=selectedImages;  
+      }
+     
+      setChildren(completedStatus);
+      console.log("called", completedStatus);
       setLoading(false);
     });
-  }, [refresh]);
+  }, []);
 
   return (
     <Container sx={{ mt: "64px" }} component="main" maxWidth="sm">

@@ -248,12 +248,6 @@ Circles {
     display: none;
 }
 
-#status-card-img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    background-color: #fafafa;
-}
 
 .close-modal-x {
     position: absolute;
@@ -291,4 +285,31 @@ Circles {
 
 .matched-name {
     text-align: center;
+}
+
+/*
+styling for selected image
+*/
+.container {
+    position: relative;
+}
+
+#status-card-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    background-color: #fafafa;
+}
+
+.selected {
+    opacity: 0.3;
+
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
 }
