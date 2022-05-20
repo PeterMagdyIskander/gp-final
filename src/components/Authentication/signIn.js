@@ -32,6 +32,7 @@ const SignIn = (props) => {
           new Date(data.getIdToken().payload.exp * 1000).getTime() -
             new Date().getTime()
         );
+        console.log("from", from);
         navigate(from, { replace: true });
       },
       onFailure: (err) => {

@@ -50,7 +50,7 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/login" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </div>

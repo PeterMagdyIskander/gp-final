@@ -44,8 +44,6 @@ const StatusCard = (props) => {
     p: 4,
   };
 
- 
-
   const handleRemoveChild = async () => {
     let refresh = await Deleteobjects(
       props.authedUser.jwtToken,
@@ -71,6 +69,7 @@ const StatusCard = (props) => {
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
   };
+  
   return (
     <>
       <CardContent
@@ -155,6 +154,7 @@ const StatusCard = (props) => {
                   variant="outlined"
                   value={name}
                   onChange={handleNameChange}
+                  fullWidth
                 />
               ) : (
                 <ListItemText
@@ -174,7 +174,7 @@ const StatusCard = (props) => {
                 />
               )}
             </ListItem>
-            <Divider variant="inset" component="li" />
+            {!editing && <Divider variant="inset" component="li" />}
 
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -187,6 +187,7 @@ const StatusCard = (props) => {
                   variant="outlined"
                   value={location}
                   onChange={handleLocationChange}
+                  fullWidth
                 />
               ) : (
                 <ListItemText

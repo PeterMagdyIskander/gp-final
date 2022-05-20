@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/app.css";
 import {
   AppBar,
@@ -15,26 +15,32 @@ import {
   useTheme,
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { FiUser, FiSearch, FiActivity, FiLogOut } from "react-icons/fi";
+import { FiUser, FiSearch, FiActivity, FiLogOut, FiHome } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import BurgerMenu from "./BurgerMenu";
 const NavBar = (props) => {
-  const [value, setValue] = useState(0);
   const theme = useTheme();
 
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { dispatch } = props;
+  const { dispatch,authedUser } = props;
   const navigate = useNavigate();
+  const location = useLocation();
+  const [value, setValue] = useState(location.pathname);
   const signOut = () => {
     console.log("Successufully Signed out");
     dispatch(setAuthedUser(null));
-    setValue(1);
-    navigate("/signin");
+    setValue("/login");
+    navigate("/login");
   };
   console.log(value);
-  const signIn = () => navigate("/signin");
+  const signIn = () => navigate("/login");
   const signUp = () => navigate("/signup");
+  useEffect(() => {
+    console.log("sadasdas");
+
+    setValue(location.pathname);
+  }, [authedUser]);
   return (
     <AppBar
       sx={{
@@ -67,40 +73,53 @@ const NavBar = (props) => {
                 onChange={(e, value) => setValue(value)}
               >
                 <Tab
+                  label="Home"
+                  component={Link}
+                  to={"/"}
+                  icon={<FiHome />}
+                  value="/"
+                />
+                <Tab
                   label="Report"
                   component={Link}
                   to={"/Report"}
                   icon={<RiUserSearchFill />}
+                  value="/Report"
                 />
                 <Tab
                   label="Found"
                   component={Link}
                   to={"/Found"}
                   icon={<FiSearch />}
+                  value="/Found"
                 />
                 <Tab
                   label="Status"
                   component={Link}
                   to={"/Status"}
                   icon={<FiActivity />}
+                  value="/Status"
                 />
                 <Tab
                   label="Profile"
                   component={Link}
                   to={"/Profile"}
                   icon={<FiUser />}
+                  value="/Profile"
                 />
                 <Divider
                   orientation="vertical"
                   variant="middle"
                   flexItem
                   sx={{ bgcolor: "#abc" }}
+                  value="/divider"
                 />
                 <Tab
                   label="Log Out"
                   component={Button}
                   onClick={signOut}
                   icon={<FiLogOut />}
+                  value="/logout"
                 />{" "}
               </Tabs>
             ) : (
@@ -111,22 +130,32 @@ const NavBar = (props) => {
                 onChange={(e, value) => setValue(value)}
               >
                 <Tab
+                  label="Home"
+                  component={Link}
+                  to={"/"}
+                  icon={<FiHome />}
+                  value="/"
+                />
+                <Tab
                   label="Found"
                   component={Link}
                   to={"/Found"}
                   icon={<FiSearch />}
+                  value="/Found"
                 />
                 <Tab
                   label="Login"
                   component={Button}
                   onClick={signIn}
                   icon={<FiLogOut />}
+                  value="/login"
                 />
                 <Tab
                   label="Sign up"
                   component={Button}
                   onClick={signUp}
                   icon={<FiLogOut />}
+                  value="/logout"
                 />{" "}
               </Tabs>
             )}
