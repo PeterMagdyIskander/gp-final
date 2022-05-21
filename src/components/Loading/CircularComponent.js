@@ -1,51 +1,74 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
 import Typography from "@mui/material/Typography";
+import { FiAlertCircle } from "react-icons/fi";
+
 function CircularComponent(props) {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const buttonSx = {
-    ...(success && {
-      bgcolor: "info",
+    ...(props.success === "true" && {
+      bgcolor: green[500],
+      color: "white",
     }),
   };
-  if (props.start) {
-    setSuccess(false);
-    setLoading(true);
-  }
-  if (props.end) {
-    setSuccess(true);
-    setLoading(false);
-  }
+  const [loading, setLoading] = useState(props.loading);
+  useEffect(() => {
+    if (props.success === "true") setLoading(false);
+  }, [props.success, props.loading]);
+  useEffect(() => {
+    if (props.loading) setLoading(props.loading);
+  }, [props.loading]);
+
   return (
-    <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-      <Box
-        sx={{
-          position: "relative",
-          mb: "10px",
-        }}
-      >
-        <Fab aria-label="save" color="info" sx={buttonSx}>
-          {success ? <CheckIcon /> : props.processNumber}
-        </Fab>
-        {loading && (
-          <CircularProgress
-            size={68}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        width: "30%",
+      }}
+    >
+      <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
+        <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
+          <Box
             sx={{
-              color: green[500],
-              position: "absolute",
-              top: -6,
-              left: -6,
-              zIndex: 1,
+              position: "relative",
+              mb: "10px",
             }}
-          />
-        )}
+          >
+            <Fab aria-label="save" sx={buttonSx}>
+              {props.success === "true" ? (
+                <CheckIcon />
+              ) : props.success === "false" ? (
+                props.number
+              ) : (
+                <FiAlertCircle color="red" size={28} />
+              )}
+            </Fab>
+            {loading && (
+              <CircularProgress
+                size={68}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: -6,
+                  left: -6,
+                  zIndex: 1,
+                }}
+              />
+            )}
+          </Box>
+        </Box>
+        <Typography variant="p" sx={{ textAlign: "center" }}>
+          {props.success === "true"
+            ? props.message.success
+            : props.success === "false"
+            ? props.message.pending
+            : props.message.fail}
+        </Typography>
       </Box>
-      <Typography variant="p">{props.message}</Typography>
     </Box>
   );
 }

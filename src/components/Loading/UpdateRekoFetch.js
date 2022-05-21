@@ -8,21 +8,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import CheckIcon from "@mui/icons-material/Check";
+import CircularComponent from "./CircularComponent";
 function CircularIntegration(props) {
   /*start of circular comp 1 */
-  const [loading1, setLoading1] = useState(true);
-  const [success1, setSuccess1] = useState(false);
+  const [success1, setSuccess1] = useState("false");
 
   /*end1 */
 
   /*start of circular comp 2 */
   const [loading2, setLoading2] = useState(false);
-  const [success2, setSuccess2] = useState(false);
+  const [success2, setSuccess2] = useState("false");
   /*end2 */
 
   /*start of circular comp 3 */
   const [loading3, setLoading3] = useState(false);
-  const [success3, setSuccess3] = useState(false);
+  const [success3, setSuccess3] = useState("false");
   /*end3 */
   const buttonSx1 = {
     ...(success1 && {
@@ -47,59 +47,70 @@ function CircularIntegration(props) {
 
   const setProgressOne = () => {
     setTimeout(() => {
-      setSuccess1(true);
-      setLoading1(false);
       setProgress((prevProgress) =>
         prevProgress >= 100 ? 100 : prevProgress + 100
       );
+      setTimeout(() => {
+        setLoading2(true);
+      }, 250);
     }, 200);
-
-    setTimeout(() => {
-      setSuccess2(false);
-      setLoading2(true);
-    }, 450);
   };
+
   const setProgressTwo = () => {
     setTimeout(() => {
-      setSuccess2(true);
-      setLoading2(false);
       setProgress2((prevProgress) =>
         prevProgress >= 100 ? 100 : prevProgress + 100
       );
+      setTimeout(() => {
+        setLoading3(true);
+      }, 250);
     }, 200);
+  };
+  const setProgressThree = (s3g) => {
     setTimeout(() => {
-      setSuccess3(false);
-      setLoading3(true);
-    }, 450);
-  };
-  const setProgressThree = () => {
-    setSuccess3(true);
-    setLoading3(false);
-    props.setDone(true);
+      setSuccess3(true);
+      props.setImgs(s3g);
+      props.setDone(true);
+    }, 1500);
   };
 
-  useEffect(() => {
-    props.reqFunctions.uploadToS3
-      .reqFunction(...props.reqFunctions.uploadToS3.params)
-      .then(async (res) => {
-        setProgressOne();
-        const ids = await props.reqFunctions.searchForSim.reqFunction(
-          ...props.reqFunctions.searchForSim.params
-        );
-        setProgressTwo();
-        if (ids) {
-          console.log(ids, ...props.reqFunctions.getS3files.params);
+  useEffect(async () => {
+    let uploadSucces = await props.reqFunctions.uploadToS3.reqFunction(
+      ...props.reqFunctions.uploadToS3.params
+    );
+    if (!uploadSucces) {
+      setSuccess1("failure");
+      setSuccess2("failure");
+      setSuccess3("failure");
+      return;
+    }
+    setSuccess1("true");
+    setProgressOne();
 
-          const s3g = await props.reqFunctions.getS3files.reqFunction(
-            ids,
-            ...props.reqFunctions.getS3files.params
-          );
+    console.log(uploadSucces);
 
-          props.setImgs(s3g);
-        }
-        setProgressThree();
-      })
-      .catch((err) => console.log(err));
+    const ids = await props.reqFunctions.searchForSim.reqFunction(
+      ...props.reqFunctions.searchForSim.params
+    );
+    console.log(ids);
+    if (!ids || ids.length === 0) {
+      setSuccess2("failure");
+      setSuccess3("failure");
+      return;
+    }
+
+    setSuccess2("true");
+    setProgressTwo();
+
+    const s3g = await props.reqFunctions.getS3files.reqFunction(
+      ids,
+      ...props.reqFunctions.getS3files.params
+    );
+    if (s3g.lenght === 0) {
+      setSuccess3("failure");
+    }
+
+    setProgressThree(s3g);
   }, []);
 
   return (
@@ -122,112 +133,50 @@ function CircularIntegration(props) {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-          <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-            <Box
-              sx={{
-                position: "relative",
-                mb: "10px",
-              }}
-            >
-              <Fab aria-label="save" sx={buttonSx1}>
-                {success1 ? <CheckIcon /> : 1}
-              </Fab>
-              {loading1 && (
-                <CircularProgress
-                  size={68}
-                  sx={{
-                    color: green[500],
-                    position: "absolute",
-                    top: -6,
-                    left: -6,
-                    zIndex: 1,
-                  }}
-                />
-              )}
-            </Box>
-          </Box>
-          <Typography variant="p" sx={{ textAlign: "center" }}>
-            Uploading Pictures
-          </Typography>
-        </Box>
-
+        <CircularComponent
+          loading={true}
+          success={success1}
+          number={1}
+          message={{
+            success: "Uploaded Successfuly",
+            fail: "Failed to Upload",
+            pending: "Uploading Pictures",
+          }}
+        />
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%", top: "-29px" }}
+          sx={{ width: "30%" }}
           value={progress}
         />
-
-        <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box
-              sx={{
-                position: "relative",
-                mb: "10px",
-              }}
-            >
-              <Fab aria-label="save" sx={buttonSx2}>
-                {success2 ? <CheckIcon /> : 2}
-              </Fab>
-              {loading2 && (
-                <CircularProgress
-                  size={68}
-                  sx={{
-                    color: green[500],
-                    position: "absolute",
-                    top: -6,
-                    left: -6,
-                    zIndex: 1,
-                  }}
-                />
-              )}
-            </Box>
-          </Box>
-          <Typography variant="p" sx={{ textAlign: "center" }}>
-            Analyzing Faces
-          </Typography>
-        </Box>
-
+        <CircularComponent
+          loading={loading2}
+          success={success2}
+          number={2}
+          message={{
+            success: "Analyzed Successfuly",
+            fail: "No Matches Matches",
+            pending: "Analyzing Faces",
+          }}
+        />
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%", top: "-29px" }}
+          sx={{ width: "30%" }}
           value={progress2}
         />
-
-        <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box
-              sx={{
-                position: "relative",
-                mb: "10px",
-              }}
-            >
-              <Fab aria-label="save" sx={buttonSx3}>
-                {success3 ? <CheckIcon /> : 3}
-              </Fab>
-              {loading3 && (
-                <CircularProgress
-                  size={68}
-                  sx={{
-                    color: green[500],
-                    position: "absolute",
-                    top: -6,
-                    left: -6,
-                    zIndex: 1,
-                  }}
-                />
-              )}
-            </Box>
-          </Box>
-          <Typography variant="p" sx={{ textAlign: "center" }}>
-            Fetching Matches
-          </Typography>
-        </Box>
+        <CircularComponent
+          loading={loading3}
+          success={success3}
+          number={3}
+          message={{
+            success: "Matches Found",
+            fail: "No Matches",
+            pending: "Fetching Matches",
+          }}
+        />
       </Box>
     </Box>
   );

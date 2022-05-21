@@ -222,6 +222,7 @@ export async function uploadarrtos3passerby(
     console.log("Success", data);
     return data; // For unit tests.
   } catch (err) {
+    return null;
     console.log("Error", err);
   }
 }
