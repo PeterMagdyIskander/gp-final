@@ -176,16 +176,6 @@ const StatusCard = (props) => {
               <ListItemAvatar>
                 <FiUser size={28} />
               </ListItemAvatar>
-              {editing ? (
-                <TextField
-                  id="outlined-basic"
-                  label="Name:"
-                  variant="outlined"
-                  value={name}
-                  onChange={handleNameChange}
-                  fullWidth
-                />
-              ) : (
                 <ListItemText
                   primary="Name:"
                   secondary={
@@ -201,7 +191,6 @@ const StatusCard = (props) => {
                     </React.Fragment>
                   }
                 />
-              )}
             </ListItem>
             {!editing && <Divider variant="inset" component="li" />}
 
@@ -209,16 +198,7 @@ const StatusCard = (props) => {
               <ListItemAvatar>
                 <FiMapPin size={28} />
               </ListItemAvatar>
-              {editing ? (
-                <TextField
-                  id="outlined-basic"
-                  label="Location"
-                  variant="outlined"
-                  value={location}
-                  onChange={handleLocationChange}
-                  fullWidth
-                />
-              ) : (
+              
                 <ListItemText
                   primary="Location:"
                   secondary={
@@ -234,7 +214,7 @@ const StatusCard = (props) => {
                     </React.Fragment>
                   }
                 />
-              )}
+              
             </ListItem>
           </List>
           <div className="flex flex-space-between">
