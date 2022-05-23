@@ -313,3 +313,38 @@ styling for selected image
     transform: translate(-50%, -50%);
     font-size: 18px;
 }
+
+.found-options-container {
+    width: 50%;
+    margin: 10% auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.found-options {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 25px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin: 5px;
+    padding: 15px;
+    background-color: #FFFBFF;
+}
+
+.found-button {
+    all: unset;
+    cursor: pointer;
+    font-size: 26px;
+    padding: 5px 15px;
+    margin: 30px 15px;
+}
+
+.found-button:hover {
+    padding: 5px 15px;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+}

@@ -11,6 +11,8 @@ import CircularIntegration from "../Loading/UpdateRekoFetch";
 import { Box, Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import FoundOptionsCard from "../Cards/FoundOptionsCard";
+import FoundItemForm from "../Forms/FoundItemForm";
 
 const theme = createTheme();
 const Found = (props) => {
@@ -20,12 +22,28 @@ const Found = (props) => {
   const [fileName, setFileName] = useState("");
   const [data, setData] = useState({});
   const [done, setDone] = useState(false);
-
+  const [selecting, setSelecting] = useState("");
+  const handleSelect = (selecting) => {
+    setSelecting(selecting);
+  };
   return (
     <div>
-      {!sendReq && (
+      {selecting === "" && (
+        <div className="found-options-container">
+          <FoundOptionsCard type="child" select={handleSelect} />
+          <FoundOptionsCard type="items" select={handleSelect} />
+        </div>
+      )}
+      {!sendReq && selecting === "child" && (
         <FoundForm
           setFiles={setFile}
+          setData={setData}
+          setFileName={setFileName}
+          onSubmit={setSendReq}
+        />
+      )}
+      {!sendReq && selecting === "items" && (
+        <FoundItemForm
           setData={setData}
           setFileName={setFileName}
           onSubmit={setSendReq}
@@ -40,7 +58,7 @@ const Found = (props) => {
           })
         )}
       </div>
-      {sendReq && !done ? (
+      {sendReq && !done && (
         <ThemeProvider theme={theme}>
           <Container component="main">
             <CssBaseline />
@@ -74,13 +92,10 @@ const Found = (props) => {
             />
           </Container>
         </ThemeProvider>
-      ) : (
-        <></>
       )}
     </div>
   );
 };
-/* <Toast success={uploadSuccess} position="top-center" /> */
 
 function mapStateToProps({ authedUser }) {
   return {
@@ -88,3 +103,7 @@ function mapStateToProps({ authedUser }) {
   };
 }
 export default connect(mapStateToProps)(Found);
+
+/**
+  
+ */
