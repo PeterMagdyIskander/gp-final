@@ -7,7 +7,8 @@ export default function FoundOptionsCard(props) {
     <div className="found-options">
       {props.type === "child" ? <FiUser size={78} /> : <BiDevices size={78} />}
       <button className="found-button" onClick={() => props.select(props.type)}>
-        Found {props.type === "child" ? "A Child" : "An Object"}
+        {props.report ? "Report" : "Found"}{" "}
+        {props.type === "child" ? "A Child" : "An Object"}
       </button>
     </div>
   );

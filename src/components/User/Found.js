@@ -30,8 +30,8 @@ const Found = (props) => {
     <div>
       {selecting === "" && (
         <div className="found-options-container">
-          <FoundOptionsCard type="child" select={handleSelect} />
-          <FoundOptionsCard type="items" select={handleSelect} />
+          <FoundOptionsCard type="child" select={handleSelect} report={false} />
+          <FoundOptionsCard type="items" select={handleSelect} report={false} />
         </div>
       )}
       {!sendReq && selecting === "child" && (
@@ -45,7 +45,6 @@ const Found = (props) => {
       {!sendReq && selecting === "items" && (
         <FoundItemForm
           setData={setData}
-          setFileName={setFileName}
           onSubmit={setSendReq}
         />
       )}

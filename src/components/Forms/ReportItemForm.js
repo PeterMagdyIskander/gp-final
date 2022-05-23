@@ -12,12 +12,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
 const theme = createTheme();
-export default function FoundItemForm({
-  setData,
-  onSubmit,
-}) {
+export default function ReportItemForm({ setData, onSubmit }) {
   const [selected, setSelected] = React.useState("Car");
 
   const handleChange = (event) => {
@@ -27,18 +23,14 @@ export default function FoundItemForm({
   return (
     <Formik
       initialValues={{
-        address: "",
         id: "",
-        reporterPhone: "",
       }}
       onSubmit={(values) => {
         console.log({
           ...values,
         });
         setData({
-          address: values.address,
           id: values.id,
-          reporterPhone: values.reporterPhone,
         });
         onSubmit(true);
       }}
@@ -93,29 +85,13 @@ export default function FoundItemForm({
                 required={false}
                 component={MyField}
               />
-              <Field
-                name="reporterPhone"
-                label="Phone Number"
-                type="number"
-                id="reporterPhone"
-                required={false}
-                component={MyField}
-              />
-              <Field
-                id="address"
-                label="Address"
-                name="address"
-                autoComplete="address"
-                required={false}
-                component={MyField}
-              />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Submit Found Report
+                Submit Lost Item
               </Button>
             </Box>
           </Container>

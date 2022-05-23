@@ -10,6 +10,8 @@ import { Box, Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import FoundOptionsCard from "../Cards/FoundOptionsCard";
+import ReportItemForm from "../Forms/ReportItemForm";
 const theme = createTheme();
 const ReportMenu = (props) => {
   const [imgs, setImgs] = useState([]);
@@ -17,6 +19,10 @@ const ReportMenu = (props) => {
   const [data, setData] = useState({});
   const [sendReq, setSendReq] = useState(false);
   const [done, setDone] = useState(false);
+  const [selecting, setSelecting] = useState("");
+  const handleSelect = (selecting) => {
+    setSelecting(selecting);
+  };
   // var id;
   // function loadingToast() {
   //   id = toast.loading("Please wait...");
@@ -24,7 +30,14 @@ const ReportMenu = (props) => {
 
   return (
     <>
-      {!sendReq && (
+      {selecting === "" && (
+        <div className="found-options-container">
+          <FoundOptionsCard type="child" select={handleSelect} report={true} />
+          <FoundOptionsCard type="items" select={handleSelect} report={true} />
+        </div>
+      )}
+
+      {!sendReq && selecting === "child" && (
         <ReportForm
           setFiles={setFile}
           setData={setData}
@@ -32,6 +45,13 @@ const ReportMenu = (props) => {
           setDone={setDone}
         />
       )}
+      {!sendReq && selecting === "items" && (
+        <ReportItemForm
+          setData={setData}
+          onSubmit={setSendReq}
+        />
+      )}
+
       <div className="status">
         {imgs.length === 0 && done ? (
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
@@ -92,3 +112,7 @@ function mapStateToProps({ authedUser }) {
   };
 }
 export default connect(mapStateToProps)(ReportMenu);
+
+/*
+
+      */
