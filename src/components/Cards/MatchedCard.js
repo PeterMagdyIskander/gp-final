@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { FiInfo, FiXCircle, FiCheckCircle, FiEdit } from "react-icons/fi";
+import { FiInfo } from "react-icons/fi";
 import { Container } from "@mui/material";
 
 import CardContent from "@mui/material/CardContent";
@@ -7,7 +7,6 @@ import CardContent from "@mui/material/CardContent";
 const theme = createTheme();
 const MatchedCard = (props) => {
   let { img } = props;
-  let iconSize = 20;
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -24,7 +23,7 @@ const MatchedCard = (props) => {
             alignItems: "center",
           }}
         >
-          <img className="matched-child-img"  src={img.img} />
+          <img className="matched-child-img" alt="Matched child" src={img.img} />
           <div className="flex flex-space-between">
           more info
           <FiInfo size={24} style={{cursor:"pointer"}} onClick={props.selectMatch(props.match)}/>
@@ -33,22 +32,6 @@ const MatchedCard = (props) => {
       </Container>
     </ThemeProvider>
 
-    // <div className="status-card-grid">
-    //   <div>
-    //     <img
-    //       className="found-child-img"
-    //       src={img}
-    //       alt={name}
-    //     />
-    //   </div>
-    //   <div className="flex flex-space-between">
-    //     <p>{name}</p>
-    //     <FiInfo
-    //       size={iconSize}
-    //       style={{ cursor: "pointer" }}
-    //     />
-    //   </div>
-    // </div>
   );
 };
 export default MatchedCard;

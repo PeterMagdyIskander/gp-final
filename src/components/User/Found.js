@@ -3,12 +3,11 @@ import "react-toastify/dist/ReactToastify.css";
 // import Toast from "../Toasts/Toasts";
 import { searchforsimpasserby } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
-import { Typography } from "@mui/material";
 import { uploadarrtos3passerby, gets3filepasserby } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import CircularIntegration from "../Loading/UpdateRekoFetch";
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundOptionsCard from "../Cards/FoundOptionsCard";
@@ -49,10 +48,11 @@ const Found = (props) => {
       {!sendReq && selecting === "items" && (
         <FoundItemForm setData={setData} onSubmit={setSendReq} />
       )}
-      <div >
-        {imgs.length === 0 && done ? (
+      <div>
+        {imgs.length === 0 && done && (
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
-        ) : (
+        )}
+        {imgs.length !== 0 && done && (
           <MatchedDetailsMenu
             matches={imgs}
             setSelectedMatch={setSelectedMacth}

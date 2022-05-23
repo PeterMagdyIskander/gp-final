@@ -1,32 +1,9 @@
-import React, { useEffect } from "react";
-import {
-  FiInfo,
-  FiXCircle,
-  FiCheckCircle,
-  FiEdit,
-  FiPhone,
-} from "react-icons/fi";
-import { useState } from "react";
-import { Box, Container, TextField } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React from "react";
+import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { FiMapPin, FiCalendar, FiUser, FiMap } from "react-icons/fi";
-import { gets3file } from "../../AWS/s3logic";
-import { connect } from "react-redux";
-import { Deleteobjects } from "../../AWS/s3logic";
-import Toast from "../Toasts/Toasts";
-import { ToastContainer, toast } from "react-toastify";
-import SelectedImg from "./SelectedImg";
+import { FiPhone,FiMapPin, FiMap } from "react-icons/fi";
 import MatchedCard from "./MatchedCard";
 export default function MatchedDetailsMenu(props) {
   return (

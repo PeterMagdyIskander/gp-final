@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { useState } from "react";
 const SelectedImg = (props) => {
   const [selected, setSelected] = useState(props.img.selected);
+
   return (
     <div
       className="container"
       onClick={() => {
         if (props.editable) {
-          props.img.selected = !props.img.selected;
+          props.img.selected = !props.img.selected
           setSelected(!selected);
         }
       }}

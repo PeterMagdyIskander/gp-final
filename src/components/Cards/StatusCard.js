@@ -1,14 +1,7 @@
 import React, { useEffect } from "react";
-import {
-  FiInfo,
-  FiXCircle,
-  FiCheckCircle,
-  FiEdit,
-  FiPhone,
-} from "react-icons/fi";
+import { FiInfo, FiEdit } from "react-icons/fi";
 import { useState } from "react";
-import { Box, Container, TextField } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ImageList from "@mui/material/ImageList";
@@ -20,16 +13,11 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { FiMapPin, FiCalendar, FiUser, FiMap } from "react-icons/fi";
-import { gets3file } from "../../AWS/s3logic";
+import { FiMapPin, FiUser } from "react-icons/fi";
 import { connect } from "react-redux";
 import { Deleteobjects } from "../../AWS/s3logic";
-import Toast from "../Toasts/Toasts";
-import { ToastContainer, toast } from "react-toastify";
 import SelectedImg from "./SelectedImg";
-import MatchedCard from "./MatchedCard";
 import MatchedDetailsMenu from "./MatchedDetailsMenu";
-const theme = createTheme();
 const StatusCard = (props) => {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
@@ -43,7 +31,7 @@ const StatusCard = (props) => {
   const [selectedMatch, setSelectedMacth] = useState(props.child.matches[0]);
 
   const [editing, setEditing] = useState(false);
-  const [selectedImgs, setSelectedIms] = useState([]);
+  const [selectedImgs, setSelectedImgs] = useState([]);
   const styleInfo = {
     position: "absolute",
     top: "50%",
@@ -83,19 +71,11 @@ const StatusCard = (props) => {
     }
   };
   const handleEditing = () => {
-    if (editing) {
-    }
+    console.log(props.child.imgs)
     setEditing(!editing);
   };
-  const [name, setName] = React.useState(props.child.nameOfChild);
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-  const [location, setLocation] = React.useState(props.child.location);
-  const handleLocationChange = (event) => {
-    setLocation(event.target.value);
-  };
 
+ 
   return (
     <>
       <CardContent
@@ -152,7 +132,12 @@ const StatusCard = (props) => {
           <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
             {props.child.imgs.map((img, index) => (
               <ImageListItem key={index}>
-                <SelectedImg key={index} img={img} editable={editing} />
+                <SelectedImg
+                  key={index}
+                  img={img}
+                  editable={editing}
+                  selectedImgs={selectedImgs}
+                />
               </ImageListItem>
             ))}
           </ImageList>
@@ -176,21 +161,21 @@ const StatusCard = (props) => {
               <ListItemAvatar>
                 <FiUser size={28} />
               </ListItemAvatar>
-                <ListItemText
-                  primary="Name:"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {name}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
+              <ListItemText
+                primary="Name:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.nameOfChild}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
             </ListItem>
             {!editing && <Divider variant="inset" component="li" />}
 
@@ -198,23 +183,22 @@ const StatusCard = (props) => {
               <ListItemAvatar>
                 <FiMapPin size={28} />
               </ListItemAvatar>
-              
-                <ListItemText
-                  primary="Location:"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {location}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              
+
+              <ListItemText
+                primary="Location:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.location}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
             </ListItem>
           </List>
           <div className="flex flex-space-between">

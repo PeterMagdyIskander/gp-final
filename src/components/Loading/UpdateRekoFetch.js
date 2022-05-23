@@ -3,11 +3,6 @@ import { connect } from "react-redux";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import CircularProgress from "@mui/material/CircularProgress";
-import { green } from "@mui/material/colors";
-import Fab from "@mui/material/Fab";
-import CheckIcon from "@mui/icons-material/Check";
 import CircularComponent from "./CircularComponent";
 function CircularIntegration(props) {
   /*start of circular comp 1 */
@@ -24,24 +19,7 @@ function CircularIntegration(props) {
   const [loading3, setLoading3] = useState(false);
   const [success3, setSuccess3] = useState("false");
   /*end3 */
-  const buttonSx1 = {
-    ...(success1 && {
-      bgcolor: green[500],
-      color: "white",
-    }),
-  };
-  const buttonSx2 = {
-    ...(success2 && {
-      bgcolor: green[500],
-      color: "white",
-    }),
-  };
-  const buttonSx3 = {
-    ...(success3 && {
-      bgcolor: green[500],
-      color: "white",
-    }),
-  };
+  
   const [progress, setProgress] = useState(0);
   const [progress2, setProgress2] = useState(0);
 

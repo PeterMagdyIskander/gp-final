@@ -1,10 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback} from "react";
 import {
   GoogleMap,
   Marker,
   useJsApiLoader,
-  LoadScript,
-  InfoBox,
 } from "@react-google-maps/api";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -36,6 +34,7 @@ const GoogleMaps = (props) => {
   };
 
   const handleSelect = (address) => {
+    console.log(address)
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {

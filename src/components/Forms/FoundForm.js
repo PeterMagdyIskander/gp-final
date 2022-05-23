@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -8,12 +8,6 @@ import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
 import { Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import { FiXCircle } from "react-icons/fi";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 import GoogleMaps from "../Google/GoogleMaps";
 const theme = createTheme();
 
@@ -26,7 +20,6 @@ export default function FoundForm({
   const [coordinates, setCoordinates] = useState({});
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
-  const [address, setAddress] = useState("");
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = (save) => {
     if (!save) {
@@ -37,28 +30,7 @@ export default function FoundForm({
     }
     setOpen(false);
   };
-  let options = {
-    zoomControl: false,
-    mapTypeControl: false,
-    scaleControl: false,
-    streetViewControl: false,
-    rotateControl: false,
-    fullscreenControl: false,
-  };
-  const containerStyle = {
-    width: "600px",
-    height: "600px",
-  };
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDLCaL4NEybKGfsw_SYedrBpiClAFIej9I",
-  });
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-    console.log(bounds);
-  }, []);
-
+  
   const style = {
     position: "absolute",
     top: "50%",
@@ -72,7 +44,6 @@ export default function FoundForm({
     boxShadow: 24,
     p: 4,
   };
-  let iconSize = 20;
   const formatName = (name, address, lat, long) => {
     const filename = (name + address + lat + long + Date.now()).toString();
     const filename1 = filename.replace(/\./g, "d");
@@ -83,16 +54,7 @@ export default function FoundForm({
     setFile(e.target.files);
     setFiles(e.target.files);
   };
-  const handleChange = (address) => {
-    setAddress(address);
-  };
-
-  const handleSelect = (address) => {
-    geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
-      .then((latLng) => setCoordinates(latLng))
-      .catch((error) => console.error("Error", error));
-  };
+  
 
   return (
     <div>

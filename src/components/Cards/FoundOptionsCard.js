@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FiUser } from "react-icons/fi";
 
 import { BiDevices } from "react-icons/bi";

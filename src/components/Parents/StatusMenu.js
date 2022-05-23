@@ -3,12 +3,9 @@ import { connect } from "react-redux";
 import { quaryfromdynamodb } from "../../AWS/dynamodblogic";
 import StatusCard from "../Cards/StatusCard";
 import Skeleton from "@mui/material/Skeleton";
-import { Box, Container } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Container } from "@mui/material";
 import { gets3file } from "../../AWS/s3logic";
-import Toast from "../Toasts/Toasts";
 import MatchedCard from "../Cards/MatchedCard";
-const theme = createTheme();
 const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
