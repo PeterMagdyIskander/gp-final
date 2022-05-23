@@ -13,6 +13,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import FoundItemForm from "../Forms/FoundItemForm";
+import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 
 const theme = createTheme();
 const Found = (props) => {
@@ -23,6 +24,9 @@ const Found = (props) => {
   const [data, setData] = useState({});
   const [done, setDone] = useState(false);
   const [selecting, setSelecting] = useState("");
+
+  const [selectedMatch, setSelectedMacth] = useState([]);
+
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
@@ -43,18 +47,16 @@ const Found = (props) => {
         />
       )}
       {!sendReq && selecting === "items" && (
-        <FoundItemForm
-          setData={setData}
-          onSubmit={setSendReq}
-        />
+        <FoundItemForm setData={setData} onSubmit={setSendReq} />
       )}
-      <div className="status">
+      <div >
         {imgs.length === 0 && done ? (
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
         ) : (
-          imgs.map((img, index) => {
-            return <MatchedCard img={img} key={index} name={"David"} />;
-          })
+          <MatchedDetailsMenu
+            matches={imgs}
+            setSelectedMatch={setSelectedMacth}
+          />
         )}
       </div>
       {sendReq && !done && (

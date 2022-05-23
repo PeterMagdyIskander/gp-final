@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { FiInfo, FiXCircle, FiCheckCircle } from "react-icons/fi";
+import {
+  FiInfo,
+  FiXCircle,
+  FiCheckCircle,
+  FiEdit,
+  FiPhone,
+} from "react-icons/fi";
 import { useState } from "react";
 import { Box, Container, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -14,28 +20,36 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { FiMapPin, FiCalendar, FiUser } from "react-icons/fi";
+import { FiMapPin, FiCalendar, FiUser, FiMap } from "react-icons/fi";
 import { gets3file } from "../../AWS/s3logic";
 import { connect } from "react-redux";
 import { Deleteobjects } from "../../AWS/s3logic";
 import Toast from "../Toasts/Toasts";
 import { ToastContainer, toast } from "react-toastify";
 import SelectedImg from "./SelectedImg";
+import MatchedCard from "./MatchedCard";
+import MatchedDetailsMenu from "./MatchedDetailsMenu";
 const theme = createTheme();
 const StatusCard = (props) => {
-  const color = props.child.status ? "green" : "red";
-  let iconSize = 20;
-  const [open, setOpen] = useState(false);
-  const [selectedImgs, setSelectedIms] = useState([]);
-  const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
+  let iconSize = 24;
+  const [openInfo, setOpenInfo] = useState(false);
+  const handleOpenInfoModal = () => setOpenInfo(true);
+  const handleCloseInfoModal = () => setOpenInfo(false);
+
+  const [openMatches, setOpenMatches] = useState(false);
+  const handleOpenMatchesModal = () => setOpenMatches(true);
+  const handleCloseMatchesModal = () => setOpenMatches(false);
+
+  const [selectedMatch, setSelectedMacth] = useState(props.child.matches[0]);
+
   const [editing, setEditing] = useState(false);
-  const style = {
+  const [selectedImgs, setSelectedIms] = useState([]);
+  const styleInfo = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "fit-content",
+    width: "750px",
     height: "70%",
     overflowY: "auto",
     bgcolor: "background.paper",
@@ -43,7 +57,19 @@ const StatusCard = (props) => {
     boxShadow: 24,
     p: 4,
   };
-
+  const styleMatch = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "90%",
+    height: "90%",
+    overflowY: "auto",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
   const handleRemoveChild = async () => {
     let refresh = await Deleteobjects(
       props.authedUser.jwtToken,
@@ -51,7 +77,7 @@ const StatusCard = (props) => {
       "lostchildrenbucket"
     );
     if (refresh) {
-      handleCloseModal();
+      handleCloseInfoModal();
       props.refresh(refresh);
       props.loading(refresh);
     }
@@ -69,20 +95,24 @@ const StatusCard = (props) => {
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
   };
-  
+
   return (
     <>
       <CardContent
         variant="outlined"
         sx={{
-          display: "grid",
-          gridTemplateColumns: "200px 300px",
-          gap: "10px",
+          // display: "grid",
+          // gridTemplateColumns: "200px 300px",
+          // gap: "10px",
           mt: "5%",
           mb: "5%",
           boxShadow: 10,
           borderRadius: "30px",
           bgcolor: "#fafafa",
+          maxWidth: "350px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <img
@@ -90,33 +120,32 @@ const StatusCard = (props) => {
           alt={props.child.nameOfChild}
           src={props.child.imgs[0].img}
         />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <p className="red">Click for more info</p>
-          </Box>
-          <span>
+        <div className="flex big-gap">
+          <div className="options-container">
+            <h4 className="options-title">Matches</h4>
             <FiInfo
               size={iconSize}
-              color={color}
               style={{ cursor: "pointer" }}
-              onClick={handleOpenModal}
+              onClick={handleOpenMatchesModal}
             />
-          </span>
-        </Box>
+          </div>
+          <div className="options-container">
+            <h4 className="options-title">Edit</h4>
+            <FiEdit
+              size={iconSize}
+              style={{ cursor: "pointer" }}
+              onClick={handleOpenInfoModal}
+            />
+          </div>
+        </div>
       </CardContent>
       <Modal
-        open={open}
-        onClose={handleCloseModal}
+        open={openInfo}
+        onClose={handleCloseInfoModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={styleInfo}>
           <Typography id="modal-modal-title" variant="h4" component="h2">
             Child Info
           </Typography>
@@ -214,6 +243,23 @@ const StatusCard = (props) => {
               {editing ? "Save Changes" : "Enable Editting"}
             </Button>
           </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openMatches}
+        onClose={handleCloseMatchesModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styleMatch}>
+          <Typography id="modal-modal-title" variant="h4" component="h2">
+            {props.child.matches.length} Matches
+          </Typography>
+          <MatchedDetailsMenu
+            matches={props.child.matches}
+            setSelectedMatch={setSelectedMacth}
+          />
         </Box>
       </Modal>
     </>

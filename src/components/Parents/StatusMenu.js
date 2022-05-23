@@ -13,7 +13,7 @@ const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
-  useEffect( () => {
+  useEffect(() => {
     console.log(props.authedUser);
     quaryfromdynamodb(
       "userdata",
@@ -22,15 +22,17 @@ const StatusMenu = (props) => {
     ).then(async (res) => {
       let completedStatus = [...res];
       for (let i = 0; i < completedStatus.length; i++) {
-        let images= await gets3file(
+        let images = await gets3file(
           completedStatus[i].photos,
           props.authedUser.jwtToken,
           "lostchildrenbucket"
-        )
-        let selectedImages=images.map(img=>{return{img,selected:false}})
-        completedStatus[i].photos=selectedImages;  
+        );
+        let selectedImages = images.map((img) => {
+          return { img, selected: false };
+        });
+        completedStatus[i].photos = selectedImages;
       }
-     
+
       setChildren(completedStatus);
       console.log("called", completedStatus);
       setLoading(false);
@@ -38,7 +40,15 @@ const StatusMenu = (props) => {
   }, []);
 
   return (
-    <Container sx={{ mt: "64px" }} component="main" maxWidth="sm">
+    <Container
+      sx={{
+        mt: "64px",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-evenly",
+      }}
+      component="main"
+    >
       {loading ? (
         <Skeleton
           variant="rectangular"
@@ -59,6 +69,7 @@ const StatusMenu = (props) => {
                 ageOfChild: child.age,
                 location: child.Location,
                 status: child.match,
+                matches: child.photos,
               }}
               refresh={setRefresh}
               loading={setLoading}

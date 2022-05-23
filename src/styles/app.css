@@ -126,6 +126,14 @@ a {
     border-radius: 30px;
 }
 
+.matched-child-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+
+
 .flex {
     display: flex;
     align-items: center;
@@ -297,7 +305,7 @@ styling for selected image
 #status-card-img {
     width: 200px;
     height: 200px;
-    object-fit: cover;
+    border-radius: 15px;
     background-color: #fafafa;
 }
 
@@ -347,4 +355,16 @@ styling for selected image
     border-radius: 25px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.options-title{
+    margin: 3px;
+}
+.big-gap{
+    gap: 35px;
 }

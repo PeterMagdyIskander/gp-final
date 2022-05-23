@@ -1,11 +1,12 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { FiInfo, FiXCircle, FiCheckCircle, FiEdit } from "react-icons/fi";
 import { Container } from "@mui/material";
 
 import CardContent from "@mui/material/CardContent";
 // import { FiInfo } from "react-icons/fi";
 const theme = createTheme();
 const MatchedCard = (props) => {
-  let { img, name } = props;
+  let { img } = props;
   let iconSize = 20;
   return (
     <ThemeProvider theme={theme}>
@@ -13,9 +14,8 @@ const MatchedCard = (props) => {
         <CardContent
           variant="outlined"
           sx={{
-            width: "fit-content",
             display: "grid",
-            gridTemplateColumns: "200px 150px",
+            gridTemplateColumns: "100px 200px",
             gap: "25px",
             margin: "5%",
             boxShadow: 1,
@@ -24,8 +24,11 @@ const MatchedCard = (props) => {
             alignItems: "center",
           }}
         >
-          <img className="lost-child-img" alt={name} src={img} />
-          <p className="matched-name">{name}</p>
+          <img className="matched-child-img"  src={img.img} />
+          <div className="flex flex-space-between">
+          more info
+          <FiInfo size={24} style={{cursor:"pointer"}} onClick={props.selectMatch(props.match)}/>
+          </div>
         </CardContent>
       </Container>
     </ThemeProvider>
