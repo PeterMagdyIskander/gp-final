@@ -12,6 +12,7 @@ export async function searchforsim(
   targetfaceimagename,
   signintoken
 ) {
+  console.log("iaiodiojdioj",targetfaceimagename);
   const client = new RekognitionClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
