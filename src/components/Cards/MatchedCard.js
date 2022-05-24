@@ -23,15 +23,16 @@ const MatchedCard = (props) => {
             alignItems: "center",
           }}
         >
-          <img className="matched-child-img" alt="Matched child" src={img.img} />
-          <div className="flex flex-space-between">
-          more info
-          <FiInfo size={24} style={{cursor:"pointer"}} onClick={props.selectMatch(props.match)}/>
+          <img className="matched-child-img" alt="Matched child" src={img} />
+          <div
+            className="flex flex-space-between"
+          >
+            more info
+            <FiInfo size={24} style={{ cursor: "pointer" }} onClick={() => props.setSelectedMatch(props.match)} />
           </div>
         </CardContent>
       </Container>
     </ThemeProvider>
-
   );
 };
 export default MatchedCard;

@@ -3,7 +3,11 @@ import "react-toastify/dist/ReactToastify.css";
 // import Toast from "../Toasts/Toasts";
 import { searchforsimpasserby } from "../../AWS/rekognitionlogic";
 import { connect } from "react-redux";
-import { uploadarrtos3passerby, gets3filepasserby,getreports } from "../../AWS/s3logic";
+import {
+  uploadarrtos3passerby,
+  gets3filepasserby,
+  getreports,
+} from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import CircularIntegration from "../Loading/UpdateRekoFetch";
@@ -23,8 +27,6 @@ const Found = (props) => {
   const [data, setData] = useState({});
   const [done, setDone] = useState(false);
   const [selecting, setSelecting] = useState("");
-
-  const [selectedMatch, setSelectedMacth] = useState([]);
 
   const handleSelect = (selecting) => {
     setSelecting(selecting);
@@ -53,11 +55,7 @@ const Found = (props) => {
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
         )}
         {imgs.length !== 0 && done && (
-          <MatchedDetailsMenu
-            imgs={imgs}
-            matches={imgs}
-            setSelectedMatch={setSelectedMacth}
-          />
+          <MatchedDetailsMenu matches={imgs} />
         )}
       </div>
       {sendReq && !done && (

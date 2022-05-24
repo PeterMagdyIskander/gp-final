@@ -5,18 +5,25 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { FiPhone, FiMapPin, FiMap } from "react-icons/fi";
 import MatchedCard from "./MatchedCard";
+import { useState } from "react";
 export default function MatchedDetailsMenu(props) {
-  console.log(props)
+  console.log(props);
+
+  const [selectedMatch, setSelectedMacth] = useState(props.matches[0]);
+  const setSelectedMatch = (match) => {
+    console.log(matchMedia);
+    setSelectedMacth(match);
+  };
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Box sx={{ width: "45%" }}>
-        {props.imgs.map((match, index) => {
+      <Box sx={{ width: "30%" }}>
+        {props.matches.map((match, index) => {
           return (
             <MatchedCard
               key={index}
-              img={match}
+              img={match.photosuri[0]}
               match={match}
-              selectMatch={props.setSelectedMatch}
+              setSelectedMatch={setSelectedMatch}
             />
           );
         })}
@@ -26,27 +33,26 @@ export default function MatchedDetailsMenu(props) {
           boxShadow: 1,
           borderRadius: "30px",
           padding: "10px",
-          height: "80%",
-          width: "70%",
+          height: "90%",
+          width: "90%",
           margin: "15px",
         }}
       >
         <ImageList
           sx={{
-            width: "90%",
             height: 405,
             margin: "10px auto",
             padding: "10px",
             boxShadow: 1,
             borderRadius: "30px",
           }}
-          cols={3}
+          cols={5}
           rowHeight={200}
         >
-          {props.matches.map((img, index) => (
+          {selectedMatch.photosuri.map((img, index) => (
             <ImageListItem key={index}>
               <img
-                src={img.img}
+                src={img}
                 srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                 alt={index}
                 id="status-card-img"
@@ -61,7 +67,7 @@ export default function MatchedDetailsMenu(props) {
           variant="p"
           component="p"
         >
-          <FiPhone /> Phone Numebr {"Selected Match Number"}
+          <FiPhone /> Phone Numeber {selectedMatch.metadata.phonenumber}
         </Typography>{" "}
         <Typography
           sx={{ m: "10px" }}
@@ -69,16 +75,16 @@ export default function MatchedDetailsMenu(props) {
           variant="p"
           component="p"
         >
-          <FiMap /> Written Address {"Selected Match Number"}
+          <FiMap /> Written Address {selectedMatch.metadata.address}
         </Typography>{" "}
-        <Typography
+        {/* <Typography
           sx={{ m: "10px" }}
           id="modal-modal-title"
           variant="p"
           component="p"
         >
-          <FiMapPin /> Location {"Selected Match Location"}
-        </Typography>
+          <FiMapPin /> Location {selectedMatch.location}
+        </Typography> */}
       </Box>
     </Box>
   );
