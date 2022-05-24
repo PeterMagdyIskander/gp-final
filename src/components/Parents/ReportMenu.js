@@ -56,7 +56,7 @@ const ReportMenu = (props) => {
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
         ) : (
           imgs.map((img, index) => {
-            return <MatchedCard img={img} key={index} name={"David"} />;
+            return <MatchedCard img={img.photosuri[0]} key={index} />;
           })
         )}
       </div>

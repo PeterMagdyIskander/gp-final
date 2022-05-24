@@ -87,13 +87,6 @@ const NavBar = (props) => {
                   value="/Report"
                 />
                 <Tab
-                  label="Found"
-                  component={Link}
-                  to={"/Found"}
-                  icon={<FiSearch />}
-                  value="/Found"
-                />
-                <Tab
                   label="Status"
                   component={Link}
                   to={"/Status"}

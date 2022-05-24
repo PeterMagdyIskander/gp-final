@@ -1,24 +1,32 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
 import { RiUserSearchFill } from "react-icons/ri";
 
 import { FiFlag } from "react-icons/fi";
-import { PropaneSharp } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 export default function MainMenuCard(props) {
+  const navigate = useNavigate();
   return (
     <div className="found-options bg-main-menu-card">
       <div className="request-loader">
-        <span>
-          {props.type === "found" ? <RiUserSearchFill /> : <FiFlag />}
+        <span
+          onClick={() => {
+            navigate(`/${props.type}`);
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          {props.type === "Found" ? <RiUserSearchFill /> : <FiFlag />}
         </span>
       </div>
-      <h3>{props.message}</h3>
-      {/* {props.type === "child" ? <FiUser size={78} /> : <BiDevices size={78} />}
-      <button className="found-button" onClick={() => props.select(props.type)}>
-        {props.report ? "Report" : "Found"}{" "}
-        {props.type === "child" ? "A Child" : "An Object"}
-      </button> */}
+      <h3
+        onClick={() => {
+          navigate(`/${props.type}`);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        {" "}
+        {props.message}
+      </h3>
     </div>
   );
 }
