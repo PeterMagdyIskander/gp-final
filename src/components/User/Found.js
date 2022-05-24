@@ -32,7 +32,7 @@ const Found = (props) => {
     setSelecting(selecting);
   };
   return (
-    <div>
+    <>
       {selecting === "" && (
         <div className="found-options-container">
           <FoundOptionsCard type="child" select={handleSelect} report={false} />
@@ -93,7 +93,7 @@ const Found = (props) => {
           </Container>
         </ThemeProvider>
       )}
-    </div>
+    </>
   );
 };
 

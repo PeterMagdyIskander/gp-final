@@ -18,12 +18,14 @@ import Divider from "@mui/material/Divider";
 import { FiUser, FiSearch, FiActivity, FiLogOut, FiHome } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import BurgerMenu from "./BurgerMenu";
+import ParentNavbar from "./ParentNavbar";
+import UserNavbar from "./UserNavbar";
 const NavBar = (props) => {
   const theme = useTheme();
 
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { dispatch,authedUser } = props;
+  const { dispatch, authedUser } = props;
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
@@ -42,7 +44,24 @@ const NavBar = (props) => {
     setValue(location.pathname);
   }, [authedUser]);
   return (
-    <AppBar
+    <div className="navbar">
+      <Link to="/" className="logo">
+        <h1> Lost&Found</h1>
+      </Link>
+      {props.authedUser ? <ParentNavbar /> : <UserNavbar />}
+    </div>
+  );
+};
+
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
+}
+export default connect(mapStateToProps)(NavBar);
+/*
+
+<AppBar
       sx={{
         background: "#063970",
         paddingRight: "1%",
@@ -64,7 +83,7 @@ const NavBar = (props) => {
             <BurgerMenu />
           </>
         ) : (
-          <Box sx={{ marginLeft: "auto", display: "flex" }}>
+          <>
             {props.authedUser !== null ? (
               <Tabs
                 indicatorColor="primary"
@@ -152,16 +171,9 @@ const NavBar = (props) => {
                 />{" "}
               </Tabs>
             )}
-          </Box>
+          </>
         )}
       </Toolbar>
     </AppBar>
-  );
-};
 
-function mapStateToProps({ authedUser }) {
-  return {
-    authedUser,
-  };
-}
-export default connect(mapStateToProps)(NavBar);
+*/

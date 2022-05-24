@@ -27,8 +27,25 @@ body {
     background: #555;
 }
 
-a {
+a,
+
+a:focus,
+a:active {
     text-decoration: none;
+    color: inherit;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 15px;
+    padding: 0 50px;
+}
+
+.sub-navbar{
+    width: 40%;
+    justify-content: space-around;
 }
 
 .nav-li {
@@ -37,8 +54,13 @@ a {
     margin-right: 1rem;
 }
 
+a:hover{
+    color:white;
+}
+
 .logo {
-    padding-left: 2rem;
+    padding-left: 4rem;
+    
 }
 
 .container-centered {
@@ -138,7 +160,6 @@ a {
 .flex {
     display: flex;
     align-items: center;
-    column-gap: 10px;
 }
 
 .flex-space-between {
