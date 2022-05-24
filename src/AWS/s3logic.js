@@ -254,9 +254,60 @@ export async function gets3filepasserby(id, Bucket) {
   }
   return uriarr;
 }
+export async function getreports(id, Bucket) {
+  console.log("abaaaaaaa",id);
+  var y=await gets3filepasserby(id,"lostchildrenbucket");
+    
+    const metadataarr=[];
+    const matchesmap = new Map();
+    for(let i=0;i<id.length;i++)
+    {
+        const x=await  gets3fileheadobject(id[i],"lostchildrenbucket")
+        console.log("metadata for loop : ",x);
+        console.log("abaaaaaa",id[i]);
+        const metdata=JSON.stringify({
+            owner:x["Metadata"]["owner"],
+            address:x["Metadata"]["address"],
+            lostchildid:x["Metadata"]["lostchildid"],
+            phonenumber:x["Metadata"]["phonenumber"]
+        })
+        console.log("metadata",metdata);
+        if(matchesmap.has(metdata))
+        {
+            const uriarr=matchesmap.get(metdata)
+            uriarr.push(y[i])
+            matchesmap.set(metdata,uriarr)
+
+
+        }
+        else
+        {
+            matchesmap.set(metdata,[y[i]])
+        }
+    
+
+        metadataarr.push(x["Metadata"]);
+
+
+    }
+    const outarr=[]
+    for (const i of matchesmap.entries()) {
+        const out={
+            photosuri:i[1],
+            metadata:JSON.parse(i[0])
+
+        }
+        outarr.push(out)
+      }
+    console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
+    return outarr;
+    
+  
+  
+}
 
 export async function gets3fileheadobject(id, Bucket) {
-  const s3 = new S3Client({
+  const s3 = new S3({
     region: region,
     credentials: fromCognitoIdentityPool({
       client: new CognitoIdentityClient({ region: region }),
