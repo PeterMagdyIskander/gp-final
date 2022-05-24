@@ -3,13 +3,14 @@ import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { FiPhone,FiMapPin, FiMap } from "react-icons/fi";
+import { FiPhone, FiMapPin, FiMap } from "react-icons/fi";
 import MatchedCard from "./MatchedCard";
 export default function MatchedDetailsMenu(props) {
+  console.log(props)
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
       <Box sx={{ width: "45%" }}>
-        {props.matches.map((match, index) => {
+        {props.imgs.map((match, index) => {
           return (
             <MatchedCard
               key={index}

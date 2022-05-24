@@ -54,6 +54,7 @@ const Found = (props) => {
         )}
         {imgs.length !== 0 && done && (
           <MatchedDetailsMenu
+            imgs={imgs}
             matches={imgs}
             setSelectedMatch={setSelectedMacth}
           />

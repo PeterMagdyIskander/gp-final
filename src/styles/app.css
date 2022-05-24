@@ -97,7 +97,7 @@ a {
     margin: 10px;
 }
 
-.redColor {
+.report {
     color: #ffe;
 }
 
@@ -342,6 +342,11 @@ styling for selected image
     background-color: #FFFBFF;
 }
 
+.bg-main-menu-card {
+    background-color: #fff;
+    position: sticky;
+}
+
 .found-button {
     all: unset;
     cursor: pointer;
@@ -362,9 +367,11 @@ styling for selected image
     flex-direction: column;
     align-items: center;
 }
-.options-title{
+
+.options-title {
     margin: 3px;
 }
-.big-gap{
+
+.big-gap {
     gap: 35px;
 }

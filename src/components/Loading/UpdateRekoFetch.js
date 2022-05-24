@@ -19,7 +19,7 @@ function CircularIntegration(props) {
   const [loading3, setLoading3] = useState(false);
   const [success3, setSuccess3] = useState("false");
   /*end3 */
-  
+
   const [progress, setProgress] = useState(0);
   const [progress2, setProgress2] = useState(0);
 
@@ -74,6 +74,7 @@ function CircularIntegration(props) {
     if (!ids || ids.length === 0) {
       setSuccess2("failure");
       setSuccess3("failure");
+      setLoading2(false);
       return;
     }
 
@@ -86,6 +87,7 @@ function CircularIntegration(props) {
     );
     if (s3g.lenght === 0) {
       setSuccess3("failure");
+      setLoading3(false);
     }
 
     setProgressThree(s3g);
