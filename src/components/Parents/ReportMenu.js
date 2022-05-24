@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { gets3file, uploadarrtos3 } from "../../AWS/s3logic";
+import { gets3file, uploadarrtos3,getreportsparent } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 //import { ToastContainer, toast } from "react-toastify";
@@ -91,8 +91,8 @@ const ReportMenu = (props) => {
                     props.authedUser.jwtToken,
                   ],
                 },
-                getS3files: {
-                  reqFunction: gets3file,
+                getreports: {
+                  reqFunction: getreportsparent,
                   params: [props.authedUser.jwtToken, "passerbybucket"],
                 },
               }}

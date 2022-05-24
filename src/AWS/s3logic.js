@@ -305,6 +305,58 @@ export async function getreports(id, Bucket) {
   
   
 }
+export async function getreportsparent(id,token,Bucket) {
+  console.log("abaaaaaaa",id);
+  var y=await gets3file(id,token,"passerbybucket");
+    
+    const metadataarr=[];
+    const matchesmap = new Map();
+    for(let i=0;i<id.length;i++)
+    {
+        const x=await  gets3fileheadobject(id[i],"passerbybucket")
+        console.log("metadata for loop : ",x);
+        console.log("abaaaaaa",id[i]);
+        const metdata=JSON.stringify({
+          lat:x["Metadata"]["lat"],
+          name:x["Metadata"]["name"],
+          lng:x["Metadata"]["lng"],
+          writenaddress:x["Metadata"]["writenaddress"],
+          phonenumber:x["Metadata"]["phonenumber"],
+          })
+        console.log("metadata",metdata);
+        if(matchesmap.has(metdata))
+        {
+            const uriarr=matchesmap.get(metdata)
+            uriarr.push(y[i])
+            matchesmap.set(metdata,uriarr)
+
+
+        }
+        else
+        {
+            matchesmap.set(metdata,[y[i]])
+        }
+    
+
+        metadataarr.push(x["Metadata"]);
+
+
+    }
+    const outarr=[]
+    for (const i of matchesmap.entries()) {
+        const out={
+            photosuri:i[1],
+            metadata:JSON.parse(i[0])
+
+        }
+        outarr.push(out)
+      }
+    console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
+    return outarr;
+    
+  
+  
+}
 
 export async function gets3fileheadobject(id, Bucket) {
   const s3 = new S3({
