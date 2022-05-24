@@ -66,12 +66,25 @@ function CircularIntegration(props) {
     setProgressOne();
 
     console.log(uploadSucces);
+    const matchesset = new Set()
+    for (let i = 0; i <1; i++)
+    {
+      const ids = await props.reqFunctions.searchForSim.reqFunction(
+        ...props.reqFunctions.searchForSim.params
+      );
+        for (let j = 0; j< ids.length; j++)
+        {
+            matchesset.add(ids[j])
 
-    const ids = await props.reqFunctions.searchForSim.reqFunction(
-      ...props.reqFunctions.searchForSim.params
-    );
-    console.log(ids);
-    if (!ids || ids.length === 0) {
+        }
+
+    }
+    const photoidarr=[]
+    matchesset.forEach(v => photoidarr.push(v));
+
+    
+    console.log(photoidarr);
+    if (!photoidarr || photoidarr.length === 0) {
       setSuccess2("failure");
       setSuccess3("failure");
       setLoading2(false);
@@ -81,9 +94,9 @@ function CircularIntegration(props) {
     setSuccess2("true");
     setProgressTwo();
 
-    const s3g = await props.reqFunctions.getS3files.reqFunction(
-      ids,
-      ...props.reqFunctions.getS3files.params
+    const s3g = await props.reqFunctions.getreports.reqFunction(
+      photoidarr,
+      ...props.reqFunctions.getreports.params
     );
     if (s3g.lenght === 0) {
       setSuccess3("failure");
