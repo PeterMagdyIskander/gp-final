@@ -29,8 +29,7 @@ body {
 
 a,
 
-a:focus,
-a:active {
+a:focus {
     text-decoration: none;
     color: inherit;
 }
@@ -43,24 +42,34 @@ a:active {
     padding: 0 50px;
 }
 
-.sub-navbar{
+.sub-navbar {
     width: 40%;
     justify-content: space-around;
 }
 
-.nav-li {
+.active {
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    color: #fff;
+}
+
+li {
     list-style: none;
+}
+
+.nav-li {
+
     margin-left: 1rem;
     margin-right: 1rem;
 }
 
-a:hover{
-    color:white;
+a:hover {
+    color: white;
 }
 
 .logo {
     padding-left: 4rem;
-    
+
 }
 
 .container-centered {
@@ -346,7 +355,7 @@ styling for selected image
 
 .found-options-container {
     width: 50%;
-    margin: 10% auto;
+    margin: 7% auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -362,6 +371,8 @@ styling for selected image
     margin: 5px;
     padding: 15px;
     background-color: #FFFBFF;
+    height: 396px;
+    justify-content: space-around;
 }
 
 .bg-main-menu-card {

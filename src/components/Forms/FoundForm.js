@@ -1,5 +1,4 @@
 import { useState } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -90,7 +89,6 @@ export default function FoundForm({
         <Form>
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-              <CssBaseline />
               <Box
                 sx={{
                   marginTop: 8,

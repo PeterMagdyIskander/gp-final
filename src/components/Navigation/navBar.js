@@ -22,37 +22,34 @@ import ParentNavbar from "./ParentNavbar";
 import UserNavbar from "./UserNavbar";
 const NavBar = (props) => {
   const theme = useTheme();
-
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-
-  const { dispatch, authedUser } = props;
   const navigate = useNavigate();
-  const location = useLocation();
-  const [value, setValue] = useState(location.pathname);
-  const signOut = () => {
-    console.log("Successufully Signed out");
-    dispatch(setAuthedUser(null));
-    setValue("/login");
-    navigate("/login");
-  };
-  console.log(value);
-  const signIn = () => navigate("/login");
-  const signUp = () => navigate("/signup");
-  useEffect(() => {
-    console.log("sadasdas");
-
-    setValue(location.pathname);
-  }, [authedUser]);
+  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  
   return (
     <div className="navbar">
-      <Link to="/" className="logo">
+      <Link
+        to={props.authedUser ? "/Status" : "/"}
+        className="logo"
+        onClick={() => {
+          if (props.authedUser) {
+            navigate("/Status");
+          } else {
+            navigate("/");
+          }
+        }}
+      >
         <h1> Lost&Found</h1>
       </Link>
-      {props.authedUser ? <ParentNavbar /> : <UserNavbar />}
+      {props.authedUser ? (
+        <ParentNavbar
+        />
+      ) : (
+        <UserNavbar
+        />
+      )}
     </div>
   );
 };
-
 function mapStateToProps({ authedUser }) {
   return {
     authedUser,

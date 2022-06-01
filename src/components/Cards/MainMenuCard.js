@@ -9,24 +9,13 @@ export default function MainMenuCard(props) {
   return (
     <div className="found-options bg-main-menu-card">
       <div className="request-loader">
-        <span
-          onClick={() => {
-            navigate(`/${props.type}`);
-          }}
-          style={{ cursor: "pointer" }}
-        >
-          {props.type === "Found" ? <RiUserSearchFill /> : <FiFlag />}
-        </span>
+        {props.type === "Found" ? <RiUserSearchFill size={78}/> : <FiFlag size={78}/>}
       </div>
-      <h3
-        onClick={() => {
+      
+      <button className="found-button" onClick={() => {
           navigate(`/${props.type}`);
-        }}
-        style={{ cursor: "pointer" }}
-      >
-        {" "}
-        {props.message}
-      </h3>
+        }}>
+        {props.message}</button>
     </div>
   );
 }

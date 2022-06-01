@@ -12,7 +12,7 @@ const SignIn = (props) => {
   const { dispatch } = props;
   let location = useLocation();
   let navigate = useNavigate();
-  let from = location.state?.from?.pathname || "/";
+  let from = location.state?.from?.pathname || "/Report";
   const Login = (email, password) => {
     const user = new CognitoUser({
       Username: email,

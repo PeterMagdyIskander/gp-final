@@ -1,24 +1,33 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../../styles/app.css";
-const UserNavbar = () => {
+const UserNavbar = (props) => {
   return (
     <ul className="flex sub-navbar">
-     <li className="nav-li">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? "nav-li active" : "nav-li")}
+        >
           <h1>Home</h1>
-        </Link>
+        </NavLink>
       </li>
-      <li className="nav-li">
-        <Link to="/Found">
+      <li>
+        <NavLink
+          to="/Found"
+          className={({ isActive }) => (isActive ? "nav-li active" : "nav-li")}
+        >
           <h1>Found</h1>
-        </Link>
+        </NavLink>
       </li>
-      <li className="nav-li">
-        <Link to="/Login">
+      <li>
+        <NavLink
+          to="/Login"
+          className={({ isActive }) => (isActive ? "nav-li active" : "nav-li")}
+        >
           <h1>Login</h1>
-        </Link>
+        </NavLink>
       </li>
     </ul>
   );
 };
-export default UserNavbar
+export default UserNavbar;

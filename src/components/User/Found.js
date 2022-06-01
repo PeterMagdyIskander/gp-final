@@ -12,7 +12,6 @@ import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import CircularIntegration from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import FoundItemForm from "../Forms/FoundItemForm";
@@ -61,7 +60,6 @@ const Found = (props) => {
       {sendReq && !done && (
         <ThemeProvider theme={theme}>
           <Container component="main">
-            <CssBaseline />
             <CircularIntegration
               setImgs={setImgs}
               file={files}
