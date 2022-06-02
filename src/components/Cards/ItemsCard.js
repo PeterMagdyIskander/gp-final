@@ -20,9 +20,9 @@ export default function ItemsCard(props) {
         justifyContent: "space-around",
       }}
     >
-      {props.type === "Car" ? (
+      {props.type === "car" ? (
         <FaCar size={72} />
-      ) : props.type === "Wallet" ? (
+      ) : props.type === "wallet" ? (
         <FaWallet size={72} />
       ) : (
         <MdOutlineDevicesOther size={72} />

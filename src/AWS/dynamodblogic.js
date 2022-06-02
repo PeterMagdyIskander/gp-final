@@ -155,4 +155,56 @@ export async function updatedynamodb(TableName,Key,signintoken)
 
 }
 
+
+export async function quaryfromdynamodbgetitem(TableNamee,mail,signintoken)
+{
+    
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            logins: {
+                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': signintoken,
+            }
+        })
+    });
+    const params = {
+        TableName: TableNamee,
+        ExpressionAttributeValues: {
+            ':s': {S: mail},
+          },
+        KeyConditionExpression: 'mail = :s', 
+        
+      };
+      try 
+      {
+       
+       
+        const data = await client.send(new QueryCommand(params));
+        
+        var statusArr=[];   
+        console.log("appppppppppppppppppppppppppppppp",data)
+        for(let i=0;i<data.Items.length;i++)
+        {
+            const itemid = data.Items[i]["id"]["S"];
+            const type=data.Items[i]["itemtype"]["S"];
+            const statobject={
+                type:type,
+                id:itemid
+            }
+
+            statusArr.push(statobject)
+        }
+        console.log("abadeeeeeeeeeer",statusArr)
+        
+        
+        return statusArr;
+    } catch (err) {
+        console.log("Error", err);
+    }
+     
+
+}
+
   

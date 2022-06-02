@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { quaryfromdynamodb } from "../../AWS/dynamodblogic";
+import { quaryfromdynamodb ,quaryfromdynamodbgetitem} from "../../AWS/dynamodblogic";
 import StatusCard from "../Cards/StatusCard";
 import Skeleton from "@mui/material/Skeleton";
 import { Container } from "@mui/material";
@@ -48,11 +48,9 @@ const StatusMenu = (props) => {
       setChildren(completedStatus);
 
       //set items here
-      setItems([
-        { id: 11232131, type: "Car" },
-        { id: 2123313123, type: "Wallet" },
-        { id: 312312321, type: "Electronics" },
-      ]);
+      
+      
+      setItems(await quaryfromdynamodbgetitem("itemslostuserdata", props.authedUser.email,props.authedUser.jwtToken));
       console.log("called", completedStatus, items);
       setLoading(false);
     });
