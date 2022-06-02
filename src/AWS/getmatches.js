@@ -57,7 +57,7 @@ export async function Getmatches(photosnamearr)
     console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
     
    const output={
-        imguri:y,
+        photosuri:y,
         metadata:metadataarr
     }
     
@@ -67,4 +67,12 @@ export async function Getmatches(photosnamearr)
      
 
 }
+export async function Getmatchesitem(itemtype,id)
+{
+    console.log(itemtype);
+    console.log(id);
+    const match=await getfromdynamodb("itemsfound",itemtype,id,token);
+    return match
+}
+
 
