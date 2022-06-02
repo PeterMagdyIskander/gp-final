@@ -1,9 +1,15 @@
-import {uploadarrtos3,gets3files,gets3file,gets3fileheadobject} from '../AWSLOGIC/s3logic';
-import{token,email,userid,phone}from '../AWSLOGIC/sessonstate';
-import{searchforsim} from '../AWSLOGIC/rekognitionlogic';
-import {getfromdynamodb,quaryfromdynamodb} from '../AWSLOGIC/dynamodblogic'
-export async function Getmatches(photosnamearr)
+import {uploadarrtos3,gets3files,gets3file,gets3fileheadobject,linktoid} from '../AWS/s3logic';
+import{searchforsim} from '../AWS/rekognitionlogic';
+import {getfromdynamodb,quaryfromdynamodb} from '../AWS/dynamodblogic'
+export async function Getmatches(photoslinkarr,token)
 {
+    const photosnamearr=[]
+    
+    for(let i=0;i<photoslinkarr.length;i++)
+    {
+        photosnamearr[i]=linktoid(photoslinkarr[i]["img"])
+    }
+    console.log("aaaaaaaaaaaaaaaaaaaa",photosnamearr);
     const matchesset = new Set()
     for(let i=0;i<photosnamearr.length;i++)
     {
@@ -14,15 +20,19 @@ export async function Getmatches(photosnamearr)
 
         }
     }
+    
     const photoidarr=[]
     matchesset.forEach(v => photoidarr.push(v));
-    var y=await gets3file(token,photoidarr,null,"passerbybucket");
+    console.log("maaaaaaaaaaaaaaaaaaaaaaaaatch",photoidarr);
+    console.log("toooooooooooken",token);
+    var y=await gets3file(photoidarr,token,"passerbybucket");
     const metadataarr=[];
     const matchesmap = new Map();
     for (let i=0;i<photoidarr.length;i++)
     {
     
-       var x=await gets3fileheadobject(photoidarr[i], null, "passerbybucket")
+       var x=await gets3fileheadobject(photoidarr[i], "passerbybucket")
+       console.log("peeeeeeeeeeee",x);
        const metdata=JSON.stringify({
         lat:x["Metadata"]["lat"],
         name:x["Metadata"]["name"],
@@ -67,7 +77,7 @@ export async function Getmatches(photosnamearr)
      
 
 }
-export async function Getmatchesitem(itemtype,id)
+export async function Getmatchesitem(itemtype,id,token)
 {
     console.log(itemtype);
     console.log(id);
