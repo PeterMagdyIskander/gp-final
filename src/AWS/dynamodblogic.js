@@ -307,7 +307,7 @@ export async function getfromdynamodb(TableName,itype,unid,signintoken)
         if(data.Item==null)
         {
             console.log("nullll reterened")
-            return null
+            return []
         }
         const ret=[{
             address:data.Item["address"]["S"],
