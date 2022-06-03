@@ -13,11 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const theme = createTheme();
-export default function FoundItemForm({
-  setData,
-  onSubmit,
-}) {
-  const [selected, setSelected] = React.useState("Car");
+export default function FoundItemForm({ setData, onSubmit }) {
+  const [selected, setSelected] = React.useState("car");
 
   const handleChange = (event) => {
     setSelected(event.target.value);
@@ -37,6 +34,7 @@ export default function FoundItemForm({
         setData({
           address: values.address,
           id: values.id,
+          type:selected,
           reporterPhone: values.reporterPhone,
         });
         onSubmit(true);
@@ -69,11 +67,11 @@ export default function FoundItemForm({
                   label="Item"
                   onChange={handleChange}
                 >
-                  <MenuItem value={"Car"} selected>
+                  <MenuItem value={"car"} selected>
                     Car
                   </MenuItem>
-                  <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                  <MenuItem value={"Wallet"}>Wallet</MenuItem>
+                  <MenuItem value={"elec"}>Electronics</MenuItem>
+                  <MenuItem value={"wallet"}>Wallet</MenuItem>
                 </Select>
               </FormControl>
 

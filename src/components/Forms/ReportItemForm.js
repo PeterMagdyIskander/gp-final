@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 const theme = createTheme();
 export default function ReportItemForm({ setData, onSubmit }) {
-  const [selected, setSelected] = React.useState("Car");
+  const [selected, setSelected] = React.useState("car");
 
   const handleChange = (event) => {
     setSelected(event.target.value);
@@ -30,6 +30,7 @@ export default function ReportItemForm({ setData, onSubmit }) {
         });
         setData({
           id: values.id,
+          type:selected,
         });
         onSubmit(true);
       }}
@@ -61,11 +62,11 @@ export default function ReportItemForm({ setData, onSubmit }) {
                   label="Item"
                   onChange={handleChange}
                 >
-                  <MenuItem value={"Car"} selected>
+                  <MenuItem value={"car"} selected>
                     Car
                   </MenuItem>
-                  <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                  <MenuItem value={"Wallet"}>Wallet</MenuItem>
+                  <MenuItem value={"elec"}>Electronics</MenuItem>
+                  <MenuItem value={"wallet"}>Wallet</MenuItem>
                 </Select>
               </FormControl>
 
