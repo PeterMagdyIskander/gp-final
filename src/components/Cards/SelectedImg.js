@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { useState } from "react";
 const SelectedImg = (props) => {

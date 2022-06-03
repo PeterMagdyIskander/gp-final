@@ -16,7 +16,7 @@ export default function MatchedDetailsMenu(props) {
   };
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Box sx={{ width: "30%" }}>
+      <Box sx={{ width: "30%", height: "85vh", overflowY: "scroll" }}>
         {props.matches.map((match, index) => {
           return (
             <MatchedCard
@@ -33,7 +33,7 @@ export default function MatchedDetailsMenu(props) {
           boxShadow: 1,
           borderRadius: "30px",
           padding: "10px",
-          height: "90%",
+          height: "75vh",
           width: "90%",
           margin: "15px",
         }}

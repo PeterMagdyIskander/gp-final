@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FiInfo, FiEdit } from "react-icons/fi";
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Input } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ImageList from "@mui/material/ImageList";
@@ -28,10 +28,10 @@ const StatusCard = (props) => {
   const handleOpenMatchesModal = () => setOpenMatches(true);
   const handleCloseMatchesModal = () => setOpenMatches(false);
 
-  const [selectedMatch, setSelectedMacth] = useState(props.child.matches[0]);
-
   const [editing, setEditing] = useState(false);
-  const [selectedImgs, setSelectedImgs] = useState([]);
+  const [imgs, setImages] = useState(props.child.imgs);
+  const [uploadImgs, setUploadImgs] = useState([]);
+
   const styleInfo = {
     position: "absolute",
     top: "50%",
@@ -70,12 +70,50 @@ const StatusCard = (props) => {
       props.loading(refresh);
     }
   };
+
   const handleEditing = () => {
-    console.log(props.child.imgs)
+    console.log(props.child.imgs);
     setEditing(!editing);
   };
 
- 
+  const handleRemove = () => {
+    let toBeDeleted = imgs.filter((img) => img.selected);
+    console.log(toBeDeleted);
+    //to be deleted is the images to be deleted uri
+    //call the delete api here
+    let success = true;
+    if (success) {
+      let notDeleted = imgs.filter((img) => !img.selected);
+
+      console.log("not deleted", notDeleted);
+      setImages(notDeleted);
+    }
+  };
+
+  const onFileUpload = (e) => {
+    if (e.target.files.length > 10 - imgs.length) {
+      alert(`please upload ${10 - imgs.length} images only`);
+      return;
+    }
+    setUploadImgs(e.target.files);
+    //call the upload function here on the new images -> uploadImgs
+    //any use data is in -> props.authedUser
+    let success = true;
+    if (success) {
+      let addedImgs = Object.keys(e.target.files).map((img) => {
+        if (e.target.files && e.target.files[img]) {
+          return URL.createObjectURL(e.target.files[img]);
+        }
+        return "";
+      });
+      console.log(addedImgs);
+      let selectedImages = addedImgs.map((img) => {
+        return { img, selected: false };
+      });
+      setImages([...imgs, ...selectedImages]);
+    }
+  };
+
   return (
     <>
       <CardContent
@@ -130,26 +168,26 @@ const StatusCard = (props) => {
             Child Info
           </Typography>
           <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
-            {props.child.imgs.map((img, index) => (
+            {imgs.map((img, index) => (
               <ImageListItem key={index}>
-                <SelectedImg
-                  key={index}
-                  img={img}
-                  editable={editing}
-                  selectedImgs={selectedImgs}
-                />
+                <SelectedImg key={index} img={img} editable={editing} />
               </ImageListItem>
             ))}
           </ImageList>
 
           <div className="flex flex-space-between">
-            <Button
-              onClick={handleRemoveChild}
-              disabled={props.child.imgs.length === 10 || !editing}
-            >
+            <Button component="label" disabled={imgs.length === 10 || !editing}>
               Add Images
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => onFileUpload(e)}
+                multiple
+                required
+                hidden
+              />
             </Button>
-            <Button onClick={handleEditing} disabled={!editing}>
+            <Button onClick={handleRemove} disabled={!editing}>
               Remove Images
             </Button>
           </div>
@@ -220,10 +258,7 @@ const StatusCard = (props) => {
           <Typography id="modal-modal-title" variant="h4" component="h2">
             {props.child.matches.length} Matches
           </Typography>
-          <MatchedDetailsMenu
-            matches={props.child.matches}
-            setSelectedMatch={setSelectedMacth}
-          />
+          <MatchedDetailsMenu matches={props.child.matches} />
         </Box>
       </Modal>
     </>
