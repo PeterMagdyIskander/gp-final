@@ -1,4 +1,4 @@
-import { DynamoDBClient, GetItemCommand,QueryCommand} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand,QueryCommand,PutItemCommand} from "@aws-sdk/client-dynamodb";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 
@@ -207,4 +207,104 @@ export async function quaryfromdynamodbgetitem(TableNamee,mail,signintoken)
 
 }
 
+export async function additemdb(itemtype,uniqid,phone,email,signintoken)
+{
+    const client = new DynamoDBClient( {
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            logins: {
+                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': signintoken,
+            }
+        })
+    });
+
+    var command = new PutItemCommand({
+        Item: { 
+            itemtype: { S: itemtype },
+            id: { S: uniqid },
+            phone: { S: phone },
+            email: { S: email }
+        },
+        TableName : "itemslost"
+    });
+    var response = await client.send(command);
+    console.log(response);
+    command = new PutItemCommand({
+        Item: { 
+            itemtype: { S: itemtype },
+            id: { S: uniqid },
+            mail: { S: email }
+        },
+        TableName : "itemslostuserdata"
+    });
+    response = await client.send(command);
+    console.log(response);
+}
+
+export async function additemdbpasserby(itemtype,uniqid,phone,address,lat,lng)
+{
+    console.log("abadeeeeeeeeeeeeer",itemtype);
+    const client = new DynamoDBClient( {
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            
+        })
+    });
+
+    const command = new PutItemCommand({
+        Item: { 
+            itemtype: { S: itemtype },
+            id: { S: uniqid },
+            phone: { S: phone },
+            address: { S: address },
+            lat: { S: lat },
+            lng: { S: lng },
+        },
+        TableName : "itemsfound"
+    });
+    const response = await client.send(command);
+    console.log(response);
+}
+export async function getfromdynamodbpasserby(TableName,itype,unid)
+{
+    console.log("called");
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            
+        })
+    });
+    const params = {
+        TableName: TableName, 
+        Key: {
+            itemtype:{S: itype},
+            id:{S: unid},
+
+          },
+      };
+      try {
+        const data = await client.send(new GetItemCommand(params));
+        console.log("Success", data.Item);
+        const ret={
+           
+            id:data.Item["id"]["S"],
+            itemtype:data.Item["itemtype"]["S"],
+            email:data.Item["email"]["S"],
+            phone:data.Item["phone"]["S"],
+            
+        }
+        console.log("Success", ret);
+        return ret
+    } catch (err) {
+        console.log("Error", err);
+    }
+     
+
+}
   

@@ -8,6 +8,10 @@ import {
   gets3filepasserby,
   getreports,
 } from "../../AWS/s3logic";
+import {
+  additemdbpasserby,
+  getfromdynamodbpasserby
+} from "../../AWS/dynamodblogic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
@@ -116,16 +120,16 @@ const Found = (props) => {
                 reqFunctions={{
                   uploadToS3: {
                     //add function here
-                    reqFunction: getreports,
+                    reqFunction: additemdbpasserby,
                     params: [
-                      //add params here
+                      data.type,data.id,data.reporterPhone.toString(),data.address,"32","21"
                     ],
                   },
                   getreports: {
                     //add function here
-                    reqFunction: getreports,
+                    reqFunction: getfromdynamodbpasserby,
                     params: [
-                      //add params here
+                      "itemslost",data.type,data.id
                     ],
                   },
                 }}
