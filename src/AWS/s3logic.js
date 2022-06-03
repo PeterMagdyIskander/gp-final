@@ -173,7 +173,7 @@ export async function Deleteobjects(signintoken, oid, Bucket) {
   for (let i = 0; i < oid.length; i++) {
     const Params = {
       Bucket: Bucket,
-      Key: oid[i],
+      Key: linktoid(oid[i]['img']),
     };
     try {
       const data = await s3.send(new DeleteObjectCommand(Params));
