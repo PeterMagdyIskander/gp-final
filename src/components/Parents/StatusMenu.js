@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { quaryfromdynamodb ,quaryfromdynamodbgetitem} from "../../AWS/dynamodblogic";
-import { Getmatches} from "../../AWS/getmatches";
+import {
+  quaryfromdynamodb,
+  quaryfromdynamodbgetitem,
+} from "../../AWS/dynamodblogic";
+import { Getmatches } from "../../AWS/getmatches";
 
 import StatusCard from "../Cards/StatusCard";
 import Skeleton from "@mui/material/Skeleton";
@@ -22,7 +25,7 @@ const StatusMenu = (props) => {
       props.authedUser.jwtToken
     ).then(async (res) => {
       let completedStatus = [...res];
-      console.log("abapaaaaaaaa",completedStatus);
+      console.log("abapaaaaaaaa", completedStatus);
       for (let i = 0; i < completedStatus.length; i++) {
         let images = await gets3file(
           completedStatus[i].photos,
@@ -33,15 +36,23 @@ const StatusMenu = (props) => {
           return { img, selected: false };
         });
         completedStatus[i].photos = selectedImages;
-        completedStatus[i].matches =await Getmatches(completedStatus[i].photos,props.authedUser.jwtToken)
+        completedStatus[i].matches = await Getmatches(
+          completedStatus[i].photos,
+          props.authedUser.jwtToken
+        );
       }
 
       setChildren(completedStatus);
 
       //set items here
-      
-      
-      setItems(await quaryfromdynamodbgetitem("itemslostuserdata", props.authedUser.email,props.authedUser.jwtToken));
+
+      setItems(
+        await quaryfromdynamodbgetitem(
+          "itemslostuserdata",
+          props.authedUser.email,
+          props.authedUser.jwtToken
+        )
+      );
       console.log("called", completedStatus, items);
       setLoading(false);
     });
@@ -57,15 +68,21 @@ const StatusMenu = (props) => {
       }}
       component="main"
     >
-      {loading ? (
+      {loading && (
         <Skeleton
           variant="rectangular"
           height={234}
           sx={{ borderRadius: "30px" }}
           animation="wave"
         />
-      ) : children.length === 0 ? (
-        <MatchedCard img={"/assets/warning.png"} name="No Reports Found" />
+      )}
+
+      {children.length === 0 && !loading ? (
+        <ItemsCard
+          img={"/assets/warning.png"}
+          id="No Child Reports Found"
+          type="error"
+        />
       ) : (
         <>
           {children.map((child, index) => {
@@ -85,6 +102,16 @@ const StatusMenu = (props) => {
               />
             );
           })}
+        </>
+      )}
+      {items.length === 0 && !loading ? (
+        <ItemsCard
+          img={"/assets/warning.png"}
+          id="No Item Reports Found"
+          type="error"
+        />
+      ) : (
+        <>
           {items.map((item) => {
             return <ItemsCard id={item.id} type={item.type} key={item.id} />;
           })}
