@@ -87,9 +87,9 @@ function UpdateFetch(props) {
           success={success1}
           number={1}
           message={{
-            success: "Uploaded Successfuly",
-            fail: "Failed to Upload",
-            pending: "Uploading Pictures",
+            success: "Sent Successfuly",
+            fail: "Failed to Send Data",
+            pending: "Sending Data",
           }}
         />
         <LinearProgress

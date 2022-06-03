@@ -32,6 +32,7 @@ const Found = (props) => {
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
+  console.log("items form data", data);
   return (
     <>
       {selecting === "" && (
