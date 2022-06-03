@@ -13,6 +13,58 @@ import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
 const region = "us-east-1";
 
+
+export async function uploadarrtos3editreport(
+  signintoken,
+  file,
+  owneremailaddress,
+  uid,
+  lostchildid,
+  address,
+  phone,
+  Bucket) 
+  {
+    const picname=convertstringtoascii((uid+lostchildid+"added"+Date.now()));
+    console.log("abaaaaaaaaaaaaaaaaaa",file);
+  
+    const s3 = new S3Client({
+    region: region,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: region }),
+      identityPoolId: identitypoolid,
+      logins: {
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+      },
+    }),
+  });
+  var success = true;
+  for (let i = 0; i < Object.keys(file).length; i++) {
+    console.log(Object.keys(file).length);
+    console.log(file[i]);
+
+    const uploadParams = {
+      Bucket: Bucket,
+      Key: picname + i,
+      Body: file[i],
+      Metadata: {
+        owner: owneremailaddress,
+        lostchildid: lostchildid,
+        imgid: picname + i,
+        address: address,
+        phonenumber: phone,
+      },
+    };
+    try {
+      const data = await s3.send(new PutObjectCommand(uploadParams));
+      console.log("Success", data);
+    } catch (err) {
+      console.log("Error", err);
+      success = false;
+    }
+  }
+  return success;
+}
+
 export async function uploadarrtos3(
   signintoken,
   file,
@@ -21,10 +73,11 @@ export async function uploadarrtos3(
   lostchildid,
   address,
   phone,
-  Bucket
-) {
-  console.log(uid, address);
-  const s3 = new S3Client({
+  Bucket) 
+  {
+    console.log("abaaaaaaaaaaaaaaaaaa",file);
+  
+    const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
       client: new CognitoIdentityClient({ region: region }),
@@ -388,4 +441,15 @@ export  function linktoid(link) {
   return output
   
   
+}
+export  function convertstringtoascii(s)
+{
+    var output=""
+    for (let index = 0; index < s.length; index++) {
+        output=output+s.charCodeAt(index)
+                  
+        }
+    return output
+        
+
 }

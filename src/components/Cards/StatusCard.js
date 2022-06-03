@@ -15,9 +15,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { FiMapPin, FiUser } from "react-icons/fi";
 import { connect } from "react-redux";
-import { Deleteobjects } from "../../AWS/s3logic";
+import { Deleteobjects,uploadarrtos3editreport} from "../../AWS/s3logic";
 import SelectedImg from "./SelectedImg";
 import MatchedDetailsMenu from "./MatchedDetailsMenu";
+
 const StatusCard = (props) => {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
@@ -76,12 +77,16 @@ const StatusCard = (props) => {
     setEditing(!editing);
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
     let toBeDeleted = imgs.filter((img) => img.selected);
     console.log(toBeDeleted);
     //to be deleted is the images to be deleted uri
     //call the delete api here
-    let success = true;
+    let success = await Deleteobjects(
+      props.authedUser.jwtToken,
+      toBeDeleted,
+      "lostchildrenbucket"
+    );
     if (success) {
       let notDeleted = imgs.filter((img) => !img.selected);
 
@@ -90,15 +95,23 @@ const StatusCard = (props) => {
     }
   };
 
-  const onFileUpload = (e) => {
+  const onFileUpload  = async (e) => {
     if (e.target.files.length > 10 - imgs.length) {
       alert(`please upload ${10 - imgs.length} images only`);
       return;
     }
-    setUploadImgs(e.target.files);
+    await setUploadImgs(e.target.files);
     //call the upload function here on the new images -> uploadImgs
     //any use data is in -> props.authedUser
-    let success = true;
+    console.log("abaaaaaaaa",e.target.files);
+    let success = await uploadarrtos3editreport(props.authedUser.jwtToken,
+      e.target.files,
+      props.authedUser.email,
+      props.authedUser.cognitoUserId,
+      props.child.nameOfChild,
+      props.child.location,
+      props.authedUser.phoneNumber,"lostchildrenbucket");
+      console.log("abaaa",success);
     if (success) {
       let addedImgs = Object.keys(e.target.files).map((img) => {
         if (e.target.files && e.target.files[img]) {
