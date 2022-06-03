@@ -211,6 +211,7 @@ export async function additemdb(itemtype,uniqid,phone,email,signintoken)
     });
     response = await client.send(command);
     console.log(response);
+    return true
 }
 
 export async function additemdbpasserby(itemtype,uniqid,phone,address,lat,lng)
@@ -238,6 +239,7 @@ export async function additemdbpasserby(itemtype,uniqid,phone,address,lat,lng)
     });
     const response = await client.send(command);
     console.log(response);
+    return true;
 }
 export async function getfromdynamodbpasserby(TableName,itype,unid)
 {
@@ -261,14 +263,14 @@ export async function getfromdynamodbpasserby(TableName,itype,unid)
       try {
         const data = await client.send(new GetItemCommand(params));
         console.log("Success", data.Item);
-        const ret={
+        const ret=[{
            
             id:data.Item["id"]["S"],
-            itemtype:data.Item["itemtype"]["S"],
+            type:data.Item["itemtype"]["S"],
             email:data.Item["email"]["S"],
             phone:data.Item["phone"]["S"],
             
-        }
+        }]
         console.log("Success", ret);
         return ret
     } catch (err) {
@@ -307,15 +309,15 @@ export async function getfromdynamodb(TableName,itype,unid,signintoken)
             console.log("nullll reterened")
             return null
         }
-        const ret={
+        const ret=[{
             address:data.Item["address"]["S"],
             id:data.Item["id"]["S"],
-            itemtype:data.Item["itemtype"]["S"],
+            type:data.Item["itemtype"]["S"],
             lat:data.Item["lat"]["S"],
             lng:data.Item["lng"]["S"],
             phone:data.Item["phone"]["S"],
             
-        }
+        }]
         return ret
     } catch (err) {
         console.log("Error", err);
