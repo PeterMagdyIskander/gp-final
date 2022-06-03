@@ -10,16 +10,18 @@ import {
 } from "../../AWS/s3logic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
-import CircularIntegration from "../Loading/UpdateRekoFetch";
+import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import FoundItemForm from "../Forms/FoundItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
+import UpdateFetch from "../Loading/UpdateFetch";
 
+import ItemsCard from "../Cards/ItemsCard";
 const theme = createTheme();
 const Found = (props) => {
-  const [imgs, setImgs] = useState([]);
+  const [matches, setMatches] = useState([]);
   const [files, setFile] = useState([]);
   const [sendReq, setSendReq] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -50,44 +52,84 @@ const Found = (props) => {
         <FoundItemForm setData={setData} onSubmit={setSendReq} />
       )}
       <div>
-        {imgs.length === 0 && done && (
+        {matches.length === 0 && done && (
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
         )}
-        {imgs.length !== 0 && done && (
-          <MatchedDetailsMenu matches={imgs} />
-        )}
+        {matches.length !== 0 &&
+          done &&
+          (selecting === "child" ? (
+            <MatchedDetailsMenu matches={matches} />
+          ) : (
+            <Container
+              sx={{
+                mt: "64px",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+              }}
+              component="main"
+            >
+              {matches.map((item) => {
+                return (
+                  <ItemsCard id={item.id} type={item.type} key={item.id} />
+                );
+              })}
+            </Container>
+          ))}
       </div>
       {sendReq && !done && (
         <ThemeProvider theme={theme}>
           <Container component="main">
-            <CircularIntegration
-              setImgs={setImgs}
-              file={files}
-              setDone={setDone}
-              reqFunctions={{
-                uploadToS3: {
-                  reqFunction: uploadarrtos3passerby,
-                  params: [
-                    files[0],
-                    data.coordinates.lat,
-                    data.coordinates.lng,
-                    data.address,
-                    data.childName,
-                    data.reporterPhone,
-                    fileName,
-                    "passerbybucket",
-                  ],
-                },
-                searchForSim: {
-                  reqFunction: searchforsimpasserby,
-                  params: ["lostchildren", "passerbybucket", fileName],
-                },
-                getreports: {
-                  reqFunction: getreports,
-                  params: ["lostchildrenbucket"],
-                },
-              }}
-            />
+            {selecting === "child" ? (
+              <UpdateRekoFetch
+                setMatches={setMatches}
+                setDone={setDone}
+                reqFunctions={{
+                  uploadToS3: {
+                    reqFunction: uploadarrtos3passerby,
+                    params: [
+                      files[0],
+                      data.coordinates.lat,
+                      data.coordinates.lng,
+                      data.address,
+                      data.childName,
+                      data.reporterPhone,
+                      fileName,
+                      "passerbybucket",
+                    ],
+                  },
+                  searchForSim: {
+                    reqFunction: searchforsimpasserby,
+                    params: ["lostchildren", "passerbybucket", fileName],
+                  },
+                  getreports: {
+                    reqFunction: getreports,
+                    params: ["lostchildrenbucket"],
+                  },
+                }}
+              />
+            ) : (
+              <UpdateFetch
+                setMatches={setMatches}
+                setDone={setDone}
+                reqFunctions={{
+                  uploadToS3: {
+                    //add function here
+                    reqFunction: getreports,
+                    params: [
+                      //add params here
+                    ],
+                  },
+                  getreports: {
+                    //add function here
+                    reqFunction: getreports,
+                    params: [
+                      //add params here
+                    ],
+                  },
+                }}
+              />
+            )}
           </Container>
         </ThemeProvider>
       )}

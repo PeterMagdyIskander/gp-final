@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import CircularComponent from "./CircularComponent";
-function UpdateRekoFetch(props) {
+
+function UpdateFetch(props) {
   /*start of circular comp 1 */
   const [success1, setSuccess1] = useState("false");
 
@@ -15,13 +16,7 @@ function UpdateRekoFetch(props) {
   const [success2, setSuccess2] = useState("false");
   /*end2 */
 
-  /*start of circular comp 3 */
-  const [loading3, setLoading3] = useState(false);
-  const [success3, setSuccess3] = useState("false");
-  /*end3 */
-
   const [progress, setProgress] = useState(0);
-  const [progress2, setProgress2] = useState(0);
 
   const setProgressOne = () => {
     setTimeout(() => {
@@ -33,19 +28,8 @@ function UpdateRekoFetch(props) {
       }, 250);
     }, 200);
   };
-
-  const setProgressTwo = () => {
-    setTimeout(() => {
-      setProgress2((prevProgress) =>
-        prevProgress >= 100 ? 100 : prevProgress + 100
-      );
-      setTimeout(() => {
-        setLoading3(true);
-      }, 250);
-    }, 200);
-  };
-  const setProgressThree = (s3g) => {
-    setSuccess3(true);
+  const setProgressTwo = (s3g) => {
+    setSuccess2(true);
     setTimeout(() => {
       props.setMatches(s3g);
       props.setDone(true);
@@ -59,46 +43,21 @@ function UpdateRekoFetch(props) {
     if (!uploadSucces) {
       setSuccess1("failure");
       setSuccess2("failure");
-      setSuccess3("failure");
       return;
     }
     setSuccess1("true");
     setProgressOne();
 
-    console.log(uploadSucces);
-    const matchesset = new Set();
-    for (let i = 0; i < 1; i++) {
-      const ids = await props.reqFunctions.searchForSim.reqFunction(
-        ...props.reqFunctions.searchForSim.params
-      );
-      for (let j = 0; j < ids.length; j++) {
-        matchesset.add(ids[j]);
-      }
-    }
-    const photoidarr = [];
-    matchesset.forEach((v) => photoidarr.push(v));
-
-    console.log(photoidarr);
-    if (!photoidarr || photoidarr.length === 0) {
-      setSuccess2("failure");
-      setSuccess3("failure");
-      setLoading2(false);
-      return;
-    }
-
-    setSuccess2("true");
-    setProgressTwo();
-
     const s3g = await props.reqFunctions.getreports.reqFunction(
-      photoidarr,
       ...props.reqFunctions.getreports.params
     );
-    if (s3g.lenght === 0) {
-      setSuccess3("failure");
-      setLoading3(false);
+    //if failure
+    if (s3g) {
+      setSuccess2("failure");
+      setLoading2(false);
     }
-
-    setProgressThree(s3g);
+    //succes
+    setProgressTwo(s3g);
   }, []);
 
   return (
@@ -136,29 +95,13 @@ function UpdateRekoFetch(props) {
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%" ,  top:" -29px"}}
+          sx={{ width: "30%", top: " -29px" }}
           value={progress}
         />
         <CircularComponent
           loading={loading2}
           success={success2}
           number={2}
-          message={{
-            success: "Analyzed Successfuly",
-            fail: "No Matches Matches",
-            pending: "Analyzing Faces",
-          }}
-        />
-        <LinearProgress
-          color="success"
-          variant="determinate"
-          sx={{ width: "30%" ,  top:" -29px"}}
-          value={progress2}
-        />
-        <CircularComponent
-          loading={loading3}
-          success={success3}
-          number={3}
           message={{
             success: "Matches Found",
             fail: "No Matches",
@@ -169,10 +112,9 @@ function UpdateRekoFetch(props) {
     </Box>
   );
 }
-
 function mapStateToProps({ authedUser }) {
   return {
     authedUser,
   };
 }
-export default connect(mapStateToProps)(UpdateRekoFetch);
+export default connect(mapStateToProps)(UpdateFetch);

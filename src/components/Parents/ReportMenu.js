@@ -1,18 +1,22 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { gets3file, uploadarrtos3,getreportsparent } from "../../AWS/s3logic";
+import { gets3file, uploadarrtos3, getreportsparent } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 //import { ToastContainer, toast } from "react-toastify";
 import MatchedCard from "../Cards/MatchedCard";
-import CircularIntegration from "../Loading/UpdateRekoFetch";
+import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import ReportItemForm from "../Forms/ReportItemForm";
+import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
+import UpdateFetch from "../Loading/UpdateFetch";
+
+import ItemsCard from "../Cards/ItemsCard";
 const theme = createTheme();
 const ReportMenu = (props) => {
-  const [imgs, setImgs] = useState([]);
+  const [matches, setMatches] = useState([]);
   const [files, setFile] = useState([]);
   const [data, setData] = useState({});
   const [sendReq, setSendReq] = useState(false);
@@ -21,10 +25,6 @@ const ReportMenu = (props) => {
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
-  // var id;
-  // function loadingToast() {
-  //   id = toast.loading("Please wait...");
-  // }
 
   return (
     <>
@@ -44,61 +44,93 @@ const ReportMenu = (props) => {
         />
       )}
       {!sendReq && selecting === "items" && (
-        <ReportItemForm
-          setData={setData}
-          onSubmit={setSendReq}
-        />
+        <ReportItemForm setData={setData} onSubmit={setSendReq} />
       )}
 
-      <div className="status">
-        {imgs.length === 0 && done ? (
+      <div>
+        {matches.length === 0 && done && (
           <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
-        ) : (
-          imgs.map((img, index) => {
-            return <MatchedCard img={img.photosuri[0]} key={index} />;
-          })
         )}
+        {matches.length !== 0 &&
+          done &&
+          (selecting === "child" ? (
+            <MatchedDetailsMenu matches={matches} />
+          ) : (
+            <Container
+              sx={{
+                mt: "64px",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+              }}
+              component="main"
+            >
+              {matches.map((item) => {
+                return (
+                  <ItemsCard id={item.id} type={item.type} key={item.id} />
+                );
+              })}
+            </Container>
+          ))}
       </div>
-      {sendReq && !done ? (
+      {sendReq && !done && (
         <ThemeProvider theme={theme}>
           <Container component="main">
-            <CircularIntegration
-              setImgs={setImgs}
-              file={files}
-              setDone={setDone}
-              reqFunctions={{
-                uploadToS3: {
-                  reqFunction: uploadarrtos3,
-                  params: [
-                    props.authedUser.jwtToken,
-                    files,
-                    props.authedUser.email,
-                    props.authedUser.cognitoUserId,
-                    data.childName,
-                    data.location,
-                    props.authedUser.phoneNumber,
-                    "lostchildrenbucket",
-                  ],
-                },
-                searchForSim: {
-                  reqFunction: searchforsim,
-                  params: [
-                    "waitingslistfaces",
-                    "lostchildrenbucket",
-                    props.authedUser.cognitoUserId + data.childName + "0",
-                    props.authedUser.jwtToken,
-                  ],
-                },
-                getreports: {
-                  reqFunction: getreportsparent,
-                  params: [props.authedUser.jwtToken, "passerbybucket"],
-                },
-              }}
-            />
+            {selecting === "child" ? (
+              <UpdateRekoFetch
+                setMatches={setMatches}
+                setDone={setDone}
+                reqFunctions={{
+                  uploadToS3: {
+                    reqFunction: uploadarrtos3,
+                    params: [
+                      props.authedUser.jwtToken,
+                      files,
+                      props.authedUser.email,
+                      props.authedUser.cognitoUserId,
+                      data.childName,
+                      data.location,
+                      props.authedUser.phoneNumber,
+                      "lostchildrenbucket",
+                    ],
+                  },
+                  searchForSim: {
+                    reqFunction: searchforsim,
+                    params: [
+                      "waitingslistfaces",
+                      "lostchildrenbucket",
+                      props.authedUser.cognitoUserId + data.childName + "0",
+                      props.authedUser.jwtToken,
+                    ],
+                  },
+                  getreports: {
+                    reqFunction: getreportsparent,
+                    params: [props.authedUser.jwtToken, "passerbybucket"],
+                  },
+                }}
+              />
+            ) : (
+              <UpdateFetch
+                setMatches={setMatches}
+                setDone={setDone}
+                reqFunctions={{
+                  uploadToS3: {
+                    reqFunction: searchforsim, //add function here
+                    params: [
+                      //add params here
+                    ],
+                  },
+                  getreports: {
+                    reqFunction: searchforsim, //add function here
+                    params: [
+                      //add params here
+                    ],
+                  },
+                }}
+              />
+            )}
           </Container>
         </ThemeProvider>
-      ) : (
-        <></>
       )}
     </>
   );
