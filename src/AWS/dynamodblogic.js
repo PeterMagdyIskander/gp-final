@@ -6,36 +6,6 @@ const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
 const reg = "us-east-1";
 
 
-//legacy function
-export async function getfromdynamodb(TableName,Key,signintoken)
-{
-    
-    const client = new DynamoDBClient({
-        region: reg,
-        credentials: fromCognitoIdentityPool({
-            client: new CognitoIdentityClient({ region: reg }),
-            identityPoolId: identitypoolid,
-            logins: {
-                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': signintoken,
-            }
-        })
-    });
-    const params = {
-        TableName: TableName, 
-        Key: {
-            email:{S: Key},
-          },
-      };
-      try {
-        const data = await client.send(new GetItemCommand(params));
-        console.log("Success", data.Item);
-        return data
-    } catch (err) {
-        console.log("Error", err);
-    }
-     
-
-}
 
 //used function
 export async function quaryfromdynamodb(TableName,Key,signintoken)
@@ -307,4 +277,49 @@ export async function getfromdynamodbpasserby(TableName,itype,unid)
      
 
 }
-  
+export async function getfromdynamodb(TableName,itype,unid,signintoken)
+{
+    
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            logins: {
+                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': signintoken,
+            }
+        })
+    });
+    const params = {
+        TableName: TableName, 
+        Key: {
+            itemtype:{S: itype},
+            id:{S: unid},
+
+          },
+      };
+      try {
+        const data = await client.send(new GetItemCommand(params));
+        console.log("Success", data.Item);
+        
+        if(data.Item==null)
+        {
+            console.log("nullll reterened")
+            return null
+        }
+        const ret={
+            address:data.Item["address"]["S"],
+            id:data.Item["id"]["S"],
+            itemtype:data.Item["itemtype"]["S"],
+            lat:data.Item["lat"]["S"],
+            lng:data.Item["lng"]["S"],
+            phone:data.Item["phone"]["S"],
+            
+        }
+        return ret
+    } catch (err) {
+        console.log("Error", err);
+    }
+     
+
+}

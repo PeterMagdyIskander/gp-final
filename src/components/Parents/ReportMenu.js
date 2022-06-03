@@ -12,6 +12,10 @@ import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import ReportItemForm from "../Forms/ReportItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
+import {
+  additemdb,
+  getfromdynamodb
+} from "../../AWS/dynamodblogic";
 
 import ItemsCard from "../Cards/ItemsCard";
 const theme = createTheme();
@@ -115,15 +119,15 @@ const ReportMenu = (props) => {
                 setDone={setDone}
                 reqFunctions={{
                   uploadToS3: {
-                    reqFunction: searchforsim, //add function here
+                    reqFunction: additemdb, //add function here
                     params: [
-                      //add params here
+                      data.type,data.id,props.authedUser.phoneNumber,props.authedUser.email,props.authedUser.jwtToken
                     ],
                   },
                   getreports: {
-                    reqFunction: searchforsim, //add function here
+                    reqFunction: getfromdynamodb, //add function here
                     params: [
-                      //add params here
+                      "itemsfound", data.type,data.id,props.authedUser.jwtToken
                     ],
                   },
                 }}
