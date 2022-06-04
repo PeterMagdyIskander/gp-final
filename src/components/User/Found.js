@@ -10,7 +10,7 @@ import {
 } from "../../AWS/s3logic";
 import {
   additemdbpasserby,
-  getfromdynamodbpasserby
+  getfromdynamodbpasserby,
 } from "../../AWS/dynamodblogic";
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
@@ -23,6 +23,7 @@ import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
 
 import ItemsCard from "../Cards/ItemsCard";
+import ErrorCard from "../Cards/ErrorCard";
 const theme = createTheme();
 const Found = (props) => {
   const [matches, setMatches] = useState([]);
@@ -58,7 +59,7 @@ const Found = (props) => {
       )}
       <div>
         {matches.length === 0 && done && (
-          <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
+          <ErrorCard message="No Matches Found" />
         )}
         {matches.length !== 0 &&
           done &&
@@ -122,15 +123,18 @@ const Found = (props) => {
                     //add function here
                     reqFunction: additemdbpasserby,
                     params: [
-                      data.type,data.id,data.reporterPhone.toString(),data.address,"32","21"
+                      data.type,
+                      data.id,
+                      data.reporterPhone.toString(),
+                      data.address,
+                      "32",
+                      "21",
                     ],
                   },
                   getreports: {
                     //add function here
                     reqFunction: getfromdynamodbpasserby,
-                    params: [
-                      "itemslost",data.type,data.id
-                    ],
+                    params: ["itemslost", data.type, data.id],
                   },
                 }}
               />

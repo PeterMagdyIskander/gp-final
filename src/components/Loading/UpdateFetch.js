@@ -52,7 +52,7 @@ function UpdateFetch(props) {
       ...props.reqFunctions.getreports.params
     );
     //if failure
-    if (s3g) {
+    if (s3g.length === 0) {
       setSuccess2("failure");
       setLoading2(false);
     }

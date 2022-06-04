@@ -12,6 +12,7 @@ import { Container } from "@mui/material";
 import { gets3file } from "../../AWS/s3logic";
 import MatchedCard from "../Cards/MatchedCard";
 import ItemsCard from "../Cards/ItemsCard";
+import ErrorCard from "../Cards/ErrorCard";
 const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -78,11 +79,7 @@ const StatusMenu = (props) => {
       )}
 
       {children.length === 0 && !loading ? (
-        <ItemsCard
-          img={"/assets/warning.png"}
-          id="No Child Reports Found"
-          type="error"
-        />
+        <ErrorCard message="No Child Reports Found" />
       ) : (
         <>
           {children.map((child, index) => {
@@ -105,15 +102,24 @@ const StatusMenu = (props) => {
         </>
       )}
       {items.length === 0 && !loading ? (
-        <ItemsCard
-          img={"/assets/warning.png"}
-          id="No Item Reports Found"
-          type="error"
-        />
+        <ErrorCard message="No Item Reports Found" />
       ) : (
         <>
           {items.map((item) => {
-            return <ItemsCard id={item.id} type={item.type} key={item.id} />;
+            return (
+              <ItemsCard
+                id={item.id}
+                type={item.type}
+                key={item.id}
+                matches={[
+                  {
+                    type: "wallet",
+                    phone: "01273482010",
+                    address: "12 genint el hagar",
+                  },
+                ]}
+              />
+            );
           })}
         </>
       )}

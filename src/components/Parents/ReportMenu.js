@@ -12,12 +12,10 @@ import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import ReportItemForm from "../Forms/ReportItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
-import {
-  additemdb,
-  getfromdynamodb
-} from "../../AWS/dynamodblogic";
+import { additemdb, getfromdynamodb } from "../../AWS/dynamodblogic";
 
 import ItemsCard from "../Cards/ItemsCard";
+import ErrorCard from "../Cards/ErrorCard";
 const theme = createTheme();
 const ReportMenu = (props) => {
   const [matches, setMatches] = useState([]);
@@ -30,6 +28,7 @@ const ReportMenu = (props) => {
     setSelecting(selecting);
   };
   console.log("items form data", data);
+  console.log("matches", matches);
   return (
     <>
       {selecting === "" && (
@@ -53,7 +52,9 @@ const ReportMenu = (props) => {
 
       <div>
         {matches.length === 0 && done && (
-          <MatchedCard img={"/assets/x-circle.png"} name="Not Found" />
+          <ErrorCard
+            message="No Matches Found"
+          />
         )}
         {matches.length !== 0 &&
           done &&
@@ -121,13 +122,20 @@ const ReportMenu = (props) => {
                   uploadToS3: {
                     reqFunction: additemdb, //add function here
                     params: [
-                      data.type,data.id,props.authedUser.phoneNumber,props.authedUser.email,props.authedUser.jwtToken
+                      data.type,
+                      data.id,
+                      props.authedUser.phoneNumber,
+                      props.authedUser.email,
+                      props.authedUser.jwtToken,
                     ],
                   },
                   getreports: {
                     reqFunction: getfromdynamodb, //add function here
                     params: [
-                      "itemsfound", data.type,data.id,props.authedUser.jwtToken
+                      "itemsfound",
+                      data.type,
+                      data.id,
+                      props.authedUser.jwtToken,
                     ],
                   },
                 }}

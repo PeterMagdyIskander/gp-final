@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FiInfo, FiEdit } from "react-icons/fi";
 import { useState } from "react";
-import { Box, Input } from "@mui/material";
+import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ImageList from "@mui/material/ImageList";
@@ -15,9 +15,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { FiMapPin, FiUser } from "react-icons/fi";
 import { connect } from "react-redux";
-import { Deleteobjects,uploadarrtos3editreport} from "../../AWS/s3logic";
+import { Deleteobjects, uploadarrtos3editreport } from "../../AWS/s3logic";
 import SelectedImg from "./SelectedImg";
 import MatchedDetailsMenu from "./MatchedDetailsMenu";
+import ErrorCard from "./ErrorCard";
 
 const StatusCard = (props) => {
   let iconSize = 24;
@@ -31,7 +32,6 @@ const StatusCard = (props) => {
 
   const [editing, setEditing] = useState(false);
   const [imgs, setImages] = useState(props.child.imgs);
-  const [uploadImgs, setUploadImgs] = useState([]);
 
   const styleInfo = {
     position: "absolute",
@@ -95,23 +95,24 @@ const StatusCard = (props) => {
     }
   };
 
-  const onFileUpload  = async (e) => {
+  const onFileUpload = async (e) => {
     if (e.target.files.length > 10 - imgs.length) {
       alert(`please upload ${10 - imgs.length} images only`);
       return;
     }
-    await setUploadImgs(e.target.files);
     //call the upload function here on the new images -> uploadImgs
     //any use data is in -> props.authedUser
-    console.log("abaaaaaaaa",e.target.files);
-    let success = await uploadarrtos3editreport(props.authedUser.jwtToken,
+    let success = await uploadarrtos3editreport(
+      props.authedUser.jwtToken,
       e.target.files,
       props.authedUser.email,
       props.authedUser.cognitoUserId,
       props.child.nameOfChild,
       props.child.location,
-      props.authedUser.phoneNumber,"lostchildrenbucket");
-      console.log("abaaa",success);
+      props.authedUser.phoneNumber,
+      "lostchildrenbucket"
+    );
+    console.log("abaaa", success);
     if (success) {
       let addedImgs = Object.keys(e.target.files).map((img) => {
         if (e.target.files && e.target.files[img]) {
@@ -153,20 +154,21 @@ const StatusCard = (props) => {
         />
         <div className="flex big-gap">
           <div className="options-container">
-            <h4 className="options-title">Matches</h4>
+            {" "}
             <FiInfo
               size={iconSize}
               style={{ cursor: "pointer" }}
               onClick={handleOpenMatchesModal}
             />
+            <h4 className="options-title">Matches</h4>
           </div>
           <div className="options-container">
-            <h4 className="options-title">Edit</h4>
             <FiEdit
               size={iconSize}
               style={{ cursor: "pointer" }}
               onClick={handleOpenInfoModal}
             />
+            <h4 className="options-title">Edit</h4>
           </div>
         </div>
       </CardContent>
@@ -268,10 +270,17 @@ const StatusCard = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleMatch}>
-          <Typography id="modal-modal-title" variant="h4" component="h2">
-            {props.child.matches.length} Matches
-          </Typography>
-          <MatchedDetailsMenu matches={props.child.matches} />
+          {props.child.matches.length === 0 ? (
+            <ErrorCard message="No Matches Found" />
+          ) : (
+            <>
+              <Typography id="modal-modal-title" variant="h4" component="h2">
+                {props.child.matches.length} Matches
+              </Typography>
+
+              <MatchedDetailsMenu matches={props.child.matches} />
+            </>
+          )}
         </Box>
       </Modal>
     </>
