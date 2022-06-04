@@ -46,15 +46,26 @@ const StatusMenu = (props) => {
       setChildren(completedStatus);
 
       //set items here
-
-      setItems(
-        await quaryfromdynamodbgetitem(
-          "itemslostuserdata",
-          props.authedUser.email,
-          props.authedUser.jwtToken
-        )
+      let completeItems = await quaryfromdynamodbgetitem(
+        "itemslostuserdata",
+        props.authedUser.email,
+        props.authedUser.jwtToken
       );
-      console.log("called", completedStatus, items);
+
+      for (let i = 0; i < completeItems.length; i++) {
+        //remove the array and add the function to get matches -> if theres a match -> array index of 1
+        //no match array of 0
+        completeItems[i].matches = [
+          {
+            type: "wallet",
+            phone: "01273482010",
+            address: "12 genint el hagar",
+          },
+        ];
+      }
+
+      console.log("allITems", completeItems);
+      setItems(completeItems);
       setLoading(false);
     });
   }, []);
@@ -111,13 +122,7 @@ const StatusMenu = (props) => {
                 id={item.id}
                 type={item.type}
                 key={item.id}
-                matches={[
-                  {
-                    type: "wallet",
-                    phone: "01273482010",
-                    address: "12 genint el hagar",
-                  },
-                ]}
+                matches={item.matches}
               />
             );
           })}

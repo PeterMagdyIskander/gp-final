@@ -9,6 +9,7 @@ import { Box, Button, Input, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ErrorCard from "./ErrorCard";
 import Modal from "@mui/material/Modal";
+import { connect } from "react-redux";
 function ItemsCard(props) {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
