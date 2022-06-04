@@ -9,7 +9,7 @@ import { Box, Button, Input, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ErrorCard from "./ErrorCard";
 import Modal from "@mui/material/Modal";
-export default function ItemsCard(props) {
+function ItemsCard(props) {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
   const handleOpenInfoModal = () => setOpenInfo(true);
@@ -22,6 +22,9 @@ export default function ItemsCard(props) {
   const [newId, setNewId] = useState(props.id);
   const saveChange = () => {
     //handle save here
+    //oldId= props.id;
+    //newId = newId
+    //jwt = props.authedUser.jwtToken
   };
   const styleInfo = {
     position: "absolute",
@@ -143,8 +146,9 @@ export default function ItemsCard(props) {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "space-around", ml: "auto",
-            mr: "auto",
+                      justifyContent: "space-around",
+                      ml: "auto",
+                      mr: "auto",
                     }}
                   >
                     {match.type === "car" ? (
@@ -166,3 +170,9 @@ export default function ItemsCard(props) {
     </CardContent>
   );
 }
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
+}
+export default connect(mapStateToProps)(ItemsCard);
