@@ -23,6 +23,8 @@ export async function Getmatches(photoslinkarr,token)
     
     const photoidarr=[]
     matchesset.forEach(v => photoidarr.push(v));
+    if(photoidarr.length==0)
+        return [];
     console.log("maaaaaaaaaaaaaaaaaaaaaaaaatch",photoidarr);
     console.log("toooooooooooken",token);
     var y=await gets3file(photoidarr,token,"passerbybucket");
