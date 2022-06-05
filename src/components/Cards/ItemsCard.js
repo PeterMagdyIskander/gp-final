@@ -27,8 +27,23 @@ function ItemsCard(props) {
     //oldId= props.id;
     //newId = newId
     //jwt = props.authedUser.jwtToken
-    const x= await deleteitem(props.id,props.authedUser.email,props.authedUser.jwtToken,props.type)
-    const y= await additemdb(props.type,newId,props.authedUser.phoneNumber,props.authedUser.email,props.authedUser.jwtToken)
+    const x = await deleteitem(
+      props.id,
+      props.authedUser.email,
+      props.authedUser.jwtToken,
+      props.type
+    );
+    const y = await additemdb(
+      props.type,
+      newId,
+      props.authedUser.phoneNumber,
+      props.authedUser.email,
+      props.authedUser.jwtToken
+    );
+    handleCloseInfoModal();
+  };
+  const handleChangeId = (e) => {
+    setNewId(e.target.value);
   };
   const styleInfo = {
     position: "absolute",
@@ -117,7 +132,7 @@ function ItemsCard(props) {
             label="New ID"
             value={newId}
             onChange={(e) => {
-              setNewId(e);
+              handleChangeId(e);
             }}
           />
           <Button onClick={saveChange}>Save Changes</Button>
