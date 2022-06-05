@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import ErrorCard from "./ErrorCard";
 import Modal from "@mui/material/Modal";
 import { connect } from "react-redux";
+import { additemdb, deleteitem } from "../../AWS/dynamodblogic";
 function ItemsCard(props) {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
@@ -21,11 +22,13 @@ function ItemsCard(props) {
   const handleCloseMatchesModal = () => setOpenMatches(false);
 
   const [newId, setNewId] = useState(props.id);
-  const saveChange = () => {
+  const saveChange = async () => {
     //handle save here
     //oldId= props.id;
     //newId = newId
     //jwt = props.authedUser.jwtToken
+    const x= await deleteitem(props.id,props.authedUser.email,props.authedUser.jwtToken,props.type)
+    const y= await additemdb(props.type,newId,props.authedUser.phoneNumber,props.authedUser.email,props.authedUser.jwtToken)
   };
   const styleInfo = {
     position: "absolute",

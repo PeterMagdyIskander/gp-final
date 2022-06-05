@@ -1,4 +1,4 @@
-import { DynamoDBClient, GetItemCommand,QueryCommand,PutItemCommand} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand,QueryCommand,PutItemCommand,DeleteItemCommand} from "@aws-sdk/client-dynamodb";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 
@@ -323,5 +323,56 @@ export async function getfromdynamodb(TableName,itype,unid,signintoken)
         console.log("Error", err);
     }
      
+
+}
+export async function deleteitem(itemid,email,signintoken,itemtype)
+{
+    
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            logins: {
+                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': signintoken,
+            }
+        })
+    });
+    var params = 
+    {
+        TableName: "itemslostuserdata", 
+        Key: {
+            mail :{S: email},
+            id:{S: itemid},
+        },
+    }
+    
+
+          
+      
+      try 
+      {
+        const data = await client.send(new DeleteItemCommand(params));
+        console.log("Success");
+        
+    } catch (err) {
+        console.log("Error", err);
+    }
+    params = 
+    {
+        TableName: "itemslost", 
+        Key: {
+            itemtype :{S: itemtype},
+            id:{S: itemid},
+        },
+    }
+    try 
+    {
+      const data = await client.send(new DeleteItemCommand(params));
+      console.log("Success");
+      return data
+  } catch (err) {
+      console.log("Error", err);
+  }
 
 }
