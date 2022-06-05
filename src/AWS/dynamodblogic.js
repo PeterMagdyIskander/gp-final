@@ -263,6 +263,11 @@ export async function getfromdynamodbpasserby(TableName,itype,unid)
       try {
         const data = await client.send(new GetItemCommand(params));
         console.log("Success", data.Item);
+        if (data.Item==null) {
+           console.log("null ret");
+            return [];
+            
+        }
         const ret=[{
            
             id:data.Item["id"]["S"],
