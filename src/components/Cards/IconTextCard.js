@@ -23,14 +23,19 @@ export default function IconTextCard(props) {
             height: "40vh",
           }}
         >
-          {props.component}
           {props.function != null ? (
-            <button className="card-title clickable" onClick={props.function}>
-              {" "}
-              {props.message}
-            </button>
+            <>
+              <div className="clickable" onClick={props.function}>{props.component}</div>
+              <button className="card-title clickable" onClick={props.function}>
+                {" "}
+                {props.message}
+              </button>
+            </>
           ) : (
-            <p className="card-title"> {props.message}</p>
+            <>
+              {props.component}
+              <p className="card-title"> {props.message}</p>
+            </>
           )}
         </CardContent>
       </Container>
