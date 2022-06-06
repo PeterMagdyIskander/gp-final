@@ -10,8 +10,10 @@ import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-id
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 
-const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
-const region = "us-east-1";
+const identitypoolid = process.env.REACT_APP_IDENTITY_POOL_ID;
+const region = process.env.REACT_APP_REGION;
+const COGNITO_IDP = process.env.REACT_APP_COGNITO_IDP;
+
 
 
 export async function uploadarrtos3editreport(

@@ -4,15 +4,17 @@ import {
 } from "@aws-sdk/client-rekognition";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
-const reg = "us-east-1";
-const identitypoolid = "us-east-1:2b404e3d-6bdf-404a-8f21-701f364fb12f";
+const identitypoolid = process.env.REACT_APP_IDENTITY_POOL_ID;
+const reg = process.env.REACT_APP_REGION;
+const COGNITO_IDP = process.env.REACT_APP_COGNITO_IDP;
+
 export async function searchforsim(
   searchcollection,
   targetfacebucket,
   targetfaceimagename,
   signintoken
 ) {
-  console.log("iaiodiojdioj",targetfaceimagename);
+  console.log("iaiodiojdioj", targetfaceimagename);
   const client = new RekognitionClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -44,8 +46,7 @@ export async function searchforsim(
 export async function searchforsimpasserby(
   searchcollection,
   targetfacebucket,
-  targetfaceimagename,
-  callbackfn
+  targetfaceimagename
 ) {
   const client = new RekognitionClient({
     region: reg,
@@ -70,5 +71,4 @@ export async function searchforsimpasserby(
     photoidarray.push(element["Face"]["ExternalImageId"]);
   }
   return photoidarray;
-  //callbackfn();
 }

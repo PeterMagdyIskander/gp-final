@@ -1,9 +1,5 @@
-import React, { useState, useCallback} from "react";
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import React, { useState, useCallback } from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -22,7 +18,7 @@ const GoogleMaps = (props) => {
   const [address, setAddress] = useState("");
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDLCaL4NEybKGfsw_SYedrBpiClAFIej9I",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
@@ -34,7 +30,7 @@ const GoogleMaps = (props) => {
   };
 
   const handleSelect = (address) => {
-    console.log(address)
+    console.log(address);
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
@@ -135,7 +131,7 @@ const GoogleMaps = (props) => {
                         style,
                       })}
                     >
-                      <FiMapPin  />
+                      <FiMapPin />
                       <span>{suggestion.formattedSuggestion.mainText}</span>
                     </div>
                   );
