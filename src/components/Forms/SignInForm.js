@@ -34,7 +34,7 @@ export default function SignInForm({ onSubmit }) {
   const [loading, setLoading] = React.useState(false);
   return (
     <Formik
-      initialValues={{ email: "abadeer@hotmail.com", password: "abadir_2000" }}
+      initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
         onSubmit(values);
         setLoading(true);
