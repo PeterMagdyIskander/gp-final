@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { FiPhone, FiMapPin, FiMap } from "react-icons/fi";
@@ -8,19 +7,22 @@ import MatchedCard from "./MatchedCard";
 import { useState } from "react";
 export default function MatchedDetailsMenu(props) {
   console.log(props);
-
   const [selectedMatch, setSelectedMacth] = useState(props.matches[0]);
-  const setSelectedMatch = (match) => {
-    console.log(matchMedia);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const setSelectedMatch = (match, index) => {
+    console.log(selectedMatch);
     setSelectedMacth(match);
+    setSelectedIndex(index);
   };
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Box sx={{ width: "30%", height: "85vh", overflowY: "scroll" }}>
+      <Box sx={{ width: "25vw", height: "85vh", overflowY: "scroll" }}>
         {props.matches.map((match, index) => {
           return (
             <MatchedCard
               key={index}
+              index={index}
+              selectedIndex={selectedIndex}
               img={match.photosuri[0]}
               match={match}
               setSelectedMatch={setSelectedMatch}
@@ -30,12 +32,12 @@ export default function MatchedDetailsMenu(props) {
       </Box>
       <Box
         sx={{
-          boxShadow: 1,
+          boxShadow: 10,
           borderRadius: "30px",
-          padding: "10px",
-          height: "75vh",
-          width: "90%",
-          margin: "15px",
+          height: "85vh",
+          width: "75vw",
+          p: "0 20px",
+          m: "0 10px",
         }}
       >
         <ImageList
@@ -61,30 +63,40 @@ export default function MatchedDetailsMenu(props) {
             </ImageListItem>
           ))}
         </ImageList>
-        <Typography
-          sx={{ m: "10px" }}
-          id="modal-modal-title"
-          variant="p"
-          component="p"
-        >
-          <FiPhone /> Phone Numeber {selectedMatch.metadata.phonenumber}
-        </Typography>{" "}
-        <Typography
-          sx={{ m: "10px" }}
-          id="modal-modal-title"
-          variant="p"
-          component="p"
-        >
-          <FiMap /> Written Address {selectedMatch.metadata.address}
-        </Typography>{" "}
-        {/* <Typography
-          sx={{ m: "10px" }}
-          id="modal-modal-title"
-          variant="p"
-          component="p"
-        >
-          <FiMapPin /> Location {selectedMatch.location}
-        </Typography> */}
+        <div className="flex big-gap">
+          <FiPhone />
+          <p>
+            {" "}
+            Please Call{" "}
+            {selectedMatch.metadata.phonenumber === ""
+              ? "Not Entered"
+              : selectedMatch.metadata.phonenumber}
+          </p>
+        </div>
+        <div className="flex big-gap">
+          <FiMap />
+          <p>
+            {" "}
+            Written Address{" "}
+            {selectedMatch.metadata.writenaddress === ""
+              ? "Not Entered"
+              : selectedMatch.metadata.address}
+          </p>
+        </div>
+        <div className="flex big-gap">
+          <FiMapPin color="red" />
+          <p
+            className="important"
+            onClick={() => {
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${selectedMatch.metadata.lat}%2C${selectedMatch.metadata.lng}`
+              );
+            }}
+          >
+            {" "}
+            Go to Google Maps
+          </p>
+        </div>
       </Box>
     </Box>
   );

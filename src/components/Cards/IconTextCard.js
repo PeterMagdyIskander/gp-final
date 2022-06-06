@@ -1,33 +1,37 @@
 import React from "react";
 import CardContent from "@mui/material/CardContent";
-import { FiXCircle } from "react-icons/fi";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Container } from "@mui/material";
 const theme = createTheme();
-export default function ErrorCard(props) {
+
+export default function IconTextCard(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CardContent
           variant="outlined"
           sx={{
-            mt: "5%",
-            mb: "5%",
-            boxShadow: 10,
-            borderRadius: "30px",
-            bgcolor: "#fafafa",
-            width: "232px",
-            height: "283.6px",
+            m: "5% auto",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "space-around",
-            ml: "auto",
-            mr: "auto",
+            boxShadow: 10,
+            borderRadius: "30px",
+            bgcolor: "#fafafa",
+            width: "20vw",
+            height: "40vh",
           }}
         >
-          <FiXCircle size={72} color="red" />
-          <h2 style={{ textAlign: "center" }}>{props.message}</h2>
+          {props.component}
+          {props.function != null ? (
+            <button className="card-title clickable" onClick={props.function}>
+              {" "}
+              {props.message}
+            </button>
+          ) : (
+            <p className="card-title"> {props.message}</p>
+          )}
         </CardContent>
       </Container>
     </ThemeProvider>

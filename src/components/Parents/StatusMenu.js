@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   quaryfromdynamodb,
   quaryfromdynamodbgetitem,
-  getfromdynamodb
+  getfromdynamodb,
 } from "../../AWS/dynamodblogic";
 import { Getmatches } from "../../AWS/getmatches";
 
@@ -13,7 +13,9 @@ import { Container } from "@mui/material";
 import { gets3file } from "../../AWS/s3logic";
 import MatchedCard from "../Cards/MatchedCard";
 import ItemsCard from "../Cards/ItemsCard";
-import ErrorCard from "../Cards/ErrorCard";
+import { FiXCircle } from "react-icons/fi";
+
+import IconTextCard from "../Cards/IconTextCard";
 const StatusMenu = (props) => {
   const [children, setChildren] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -52,13 +54,18 @@ const StatusMenu = (props) => {
         props.authedUser.email,
         props.authedUser.jwtToken
       );
-      console.log("abadeer item",completeItems);
+      console.log("abadeer item", completeItems);
 
       for (let i = 0; i < completeItems.length; i++) {
         //remove the array and add the function to get matches -> if theres a match -> array index of 1
         //no match array of 0
-        const match=await getfromdynamodb("itemsfound",completeItems[i].type,completeItems[i].id,props.authedUser.jwtToken);
-        
+        const match = await getfromdynamodb(
+          "itemsfound",
+          completeItems[i].type,
+          completeItems[i].id,
+          props.authedUser.jwtToken
+        );
+
         completeItems[i].matches = match;
       }
 
@@ -88,7 +95,11 @@ const StatusMenu = (props) => {
       )}
 
       {children.length === 0 && !loading ? (
-        <ErrorCard message="No Child Reports Found" />
+        <IconTextCard
+          component={<FiXCircle size={"7vw"} color="red" />}
+          message="No Child Reports Found"
+          function={null}
+        />
       ) : (
         <>
           {children.map((child, index) => {
@@ -111,7 +122,11 @@ const StatusMenu = (props) => {
         </>
       )}
       {items.length === 0 && !loading ? (
-        <ErrorCard message="No Item Reports Found" />
+        <IconTextCard
+          component={<FiXCircle size={"7vw"} color="red" />}
+          message="No Item Reports Found"
+          function={null}
+        />
       ) : (
         <>
           {items.map((item) => {

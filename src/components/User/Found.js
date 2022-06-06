@@ -17,13 +17,16 @@ import MatchedCard from "../Cards/MatchedCard";
 import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import FoundItemForm from "../Forms/FoundItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
+import IconTextCard from "../Cards/IconTextCard";
 
+import { FaCar, FaWallet } from "react-icons/fa";
+import { FiXCircle } from "react-icons/fi";
 import ItemsCard from "../Cards/ItemsCard";
-import ErrorCard from "../Cards/ErrorCard";
+import { FiUser } from "react-icons/fi";
+import { MdOutlineDevicesOther } from "react-icons/md";
 const theme = createTheme();
 const Found = (props) => {
   const [matches, setMatches] = useState([]);
@@ -33,7 +36,6 @@ const Found = (props) => {
   const [data, setData] = useState({});
   const [done, setDone] = useState(false);
   const [selecting, setSelecting] = useState("");
-
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
@@ -42,8 +44,16 @@ const Found = (props) => {
     <>
       {selecting === "" && (
         <div className="found-options-container">
-          <FoundOptionsCard type="child" select={handleSelect} report={false} />
-          <FoundOptionsCard type="items" select={handleSelect} report={false} />
+          <IconTextCard
+            component={<FiUser size={"7vw"} />}
+            message="Found a Child"
+            function={() => handleSelect("child")}
+          />
+          <IconTextCard
+            component={<MdOutlineDevicesOther size={"7vw"} />}
+            message="Found an Item"
+            function={() => handleSelect("items")}
+          />
         </div>
       )}
       {!sendReq && selecting === "child" && (
@@ -59,7 +69,11 @@ const Found = (props) => {
       )}
       <div>
         {matches.length === 0 && done && (
-          <ErrorCard message="No Matches Found" />
+          <IconTextCard
+            component={<FiXCircle size={"7vw"} color="red" />}
+            message="No Matches Found"
+            function={null}
+          />
         )}
         {matches.length !== 0 &&
           done &&
@@ -77,7 +91,20 @@ const Found = (props) => {
             >
               {matches.map((item) => {
                 return (
-                  <ItemsCard id={item.id} type={item.type} key={item.id} />
+                  <IconTextCard
+                    message={item.id}
+                    component={
+                      item.type === "car" ? (
+                        <FaCar size="7vw" />
+                      ) : props.type === "wallet" ? (
+                        <FaWallet size="7vw" />
+                      ) : (
+                        <MdOutlineDevicesOther size="7vw" />
+                      )
+                    }
+                    key={item.id}
+                    function={null}
+                  />
                 );
               })}
             </Container>

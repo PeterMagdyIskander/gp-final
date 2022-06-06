@@ -3,19 +3,22 @@ import { connect } from "react-redux";
 import { gets3file, uploadarrtos3, getreportsparent } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
-//import { ToastContainer, toast } from "react-toastify";
+import { FaCar, FaWallet } from "react-icons/fa";
 import MatchedCard from "../Cards/MatchedCard";
 import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
 import { Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import FoundOptionsCard from "../Cards/FoundOptionsCard";
 import ReportItemForm from "../Forms/ReportItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
 import { additemdb, getfromdynamodb } from "../../AWS/dynamodblogic";
-
+import { FiUser } from "react-icons/fi";
+import { MdOutlineDevicesOther } from "react-icons/md";
 import ItemsCard from "../Cards/ItemsCard";
-import ErrorCard from "../Cards/ErrorCard";
+import IconTextCard from "../Cards/IconTextCard";
+
+import { FiXCircle } from "react-icons/fi";
+
 const theme = createTheme();
 const ReportMenu = (props) => {
   const [matches, setMatches] = useState([]);
@@ -33,8 +36,16 @@ const ReportMenu = (props) => {
     <>
       {selecting === "" && (
         <div className="found-options-container">
-          <FoundOptionsCard type="child" select={handleSelect} report={true} />
-          <FoundOptionsCard type="items" select={handleSelect} report={true} />
+          <IconTextCard
+            component={<FiUser size={"7vw"} />}
+            message="Report a Child"
+            function={() => handleSelect("child")}
+          />
+          <IconTextCard
+            component={<MdOutlineDevicesOther size={"7vw"} />}
+            message="Report an Item"
+            function={() => handleSelect("items")}
+          />
         </div>
       )}
 
@@ -52,8 +63,10 @@ const ReportMenu = (props) => {
 
       <div>
         {matches.length === 0 && done && (
-          <ErrorCard
+          <IconTextCard
+            component={<FiXCircle size={"7vw"} color="red" />}
             message="No Matches Found"
+            function={null}
           />
         )}
         {matches.length !== 0 &&
@@ -72,7 +85,20 @@ const ReportMenu = (props) => {
             >
               {matches.map((item) => {
                 return (
-                  <ItemsCard id={item.id} type={item.type} key={item.id} />
+                  <IconTextCard
+                    message={item.id}
+                    component={
+                      item.type === "car" ? (
+                        <FaCar size="7vw" />
+                      ) : props.type === "wallet" ? (
+                        <FaWallet size="7vw" />
+                      ) : (
+                        <MdOutlineDevicesOther size="7vw" />
+                      )
+                    }
+                    key={item.id}
+                    function={null}
+                  />
                 );
               })}
             </Container>

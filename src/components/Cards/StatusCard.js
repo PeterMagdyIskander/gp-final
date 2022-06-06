@@ -18,8 +18,11 @@ import { connect } from "react-redux";
 import { Deleteobjects, uploadarrtos3editreport } from "../../AWS/s3logic";
 import SelectedImg from "./SelectedImg";
 import MatchedDetailsMenu from "./MatchedDetailsMenu";
-import ErrorCard from "./ErrorCard";
 
+import { FiXCircle } from "react-icons/fi";
+
+import GenericStatusCard from "./GenericStatusCard";
+import IconTextCard from "../Cards/IconTextCard";
 const StatusCard = (props) => {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
@@ -53,6 +56,19 @@ const StatusCard = (props) => {
     transform: "translate(-50%, -50%)",
     width: "90%",
     height: "90%",
+    overflowY: "auto",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+  const styleNoMatch = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "30%",
+    height: "50%",
     overflowY: "auto",
     bgcolor: "background.paper",
     border: "2px solid #000",
@@ -130,48 +146,18 @@ const StatusCard = (props) => {
 
   return (
     <>
-      <CardContent
-        variant="outlined"
-        sx={{
-          // display: "grid",
-          // gridTemplateColumns: "200px 300px",
-          // gap: "10px",
-          mt: "5%",
-          mb: "5%",
-          boxShadow: 10,
-          borderRadius: "30px",
-          bgcolor: "#fafafa",
-          maxWidth: "350px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <img
-          className="lost-child-img"
-          alt={props.child.nameOfChild}
-          src={props.child.imgs[0].img}
-        />
-        <div className="flex big-gap">
-          <div className="options-container">
-            {" "}
-            <FiInfo
-              size={iconSize}
-              style={{ cursor: "pointer" }}
-              onClick={handleOpenMatchesModal}
-            />
-            <h4 className="options-title">Matches</h4>
-          </div>
-          <div className="options-container">
-            <FiEdit
-              size={iconSize}
-              style={{ cursor: "pointer" }}
-              onClick={handleOpenInfoModal}
-            />
-            <h4 className="options-title">Edit</h4>
-          </div>
-        </div>
-      </CardContent>
+      <GenericStatusCard
+        component={
+          <img
+            className="lost-child-img"
+            alt={props.child.nameOfChild}
+            src={props.child.imgs[0].img}
+          />
+        }
+        message={""}
+        handleOpenMatchesModal={handleOpenMatchesModal}
+        handleOpenInfoModal={handleOpenInfoModal}
+      />
       <Modal
         open={openInfo}
         onClose={handleCloseInfoModal}
@@ -269,18 +255,25 @@ const StatusCard = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={styleMatch}>
+        <Box sx={props.child.matches.length == 0 ? styleNoMatch : styleMatch}>
           {props.child.matches.length === 0 ? (
-            <ErrorCard message="No Matches Found" />
+            <IconTextCard
+              component={<FiXCircle size={"7vw"} color="red" />}
+              message="No Matches Found"
+              function={() => handleCloseMatchesModal()}
+            />
           ) : (
-            <>
-              <Typography id="modal-modal-title" variant="h4" component="h2">
-                {props.child.matches.length} Matches
-              </Typography>
-
-              <MatchedDetailsMenu matches={props.child.matches} />
-            </>
+            <MatchedDetailsMenu
+              matches={props.child.matches}
+              handleClose={handleCloseMatchesModal}
+            />
           )}
+          <Button
+            sx={{ color: "red", float: "right", p: "0 0", mt: "9px" }}
+            onClick={() => handleCloseMatchesModal()}
+          >
+            Close
+          </Button>
         </Box>
       </Modal>
     </>

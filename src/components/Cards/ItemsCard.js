@@ -7,10 +7,12 @@ import { FiInfo, FiEdit } from "react-icons/fi";
 import { useState } from "react";
 import { Box, Button, Input, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import ErrorCard from "./ErrorCard";
 import Modal from "@mui/material/Modal";
 import { connect } from "react-redux";
 import { additemdb, deleteitem } from "../../AWS/dynamodblogic";
+
+import IconTextCard from "../Cards/IconTextCard";
+import GenericStatusCard from "./GenericStatusCard";
 function ItemsCard(props) {
   let iconSize = 24;
   const [openInfo, setOpenInfo] = useState(false);
@@ -74,51 +76,23 @@ function ItemsCard(props) {
     boxShadow: 24,
     p: 4,
   };
-
+  console.log("matches", props);
   return (
-    <CardContent
-      variant="outlined"
-      sx={{
-        mt: "5%",
-        mb: "5%",
-        boxShadow: 10,
-        borderRadius: "30px",
-        bgcolor: "#fafafa",
-        width: "232px",
-        height: "283.6px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-around",
-      }}
-    >
-      {props.type === "car" ? (
-        <FaCar size={72} />
-      ) : props.type === "wallet" ? (
-        <FaWallet size={72} />
-      ) : (
-        <MdOutlineDevicesOther size={72} />
-      )}
-      <h2 style={{ textAlign: "center" }}>{props.id}</h2>
-      <div className="flex big-gap">
-        <div className="options-container">
-          {" "}
-          <FiInfo
-            size={iconSize}
-            style={{ cursor: "pointer" }}
-            onClick={handleOpenMatchesModal}
-          />
-          <h4 className="options-title">Matches</h4>
-        </div>
-        <div className="options-container">
-          <FiEdit
-            size={iconSize}
-            style={{ cursor: "pointer" }}
-            onClick={handleOpenInfoModal}
-          />
-          <h4 className="options-title">Edit</h4>
-        </div>
-      </div>
+    <>
+      <GenericStatusCard
+        component={
+          props.type === "car" ? (
+            <FaCar size="7vw" />
+          ) : props.type === "wallet" ? (
+            <FaWallet size="7vw" />
+          ) : (
+            <MdOutlineDevicesOther size="7vw" />
+          )
+        }
+        message={props.id}
+        handleOpenMatchesModal={handleOpenMatchesModal}
+        handleOpenInfoModal={handleOpenInfoModal}
+      />
       <Modal
         open={openInfo}
         onClose={handleCloseInfoModal}
@@ -145,8 +119,12 @@ function ItemsCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleMatch}>
-          {props.matches.length === 0 ? (
-            <ErrorCard message="No Matches Found" />
+          {!props.matches.length ? (
+            <IconTextCard
+              component={<FiXCircle size={"7vw"} color="red" />}
+              message="No Matches Found"
+              function={null}
+            />
           ) : (
             <>
               {props.matches.map((match, index) => {
@@ -186,7 +164,7 @@ function ItemsCard(props) {
           )}
         </Box>
       </Modal>
-    </CardContent>
+    </>
   );
 }
 function mapStateToProps({ authedUser }) {
