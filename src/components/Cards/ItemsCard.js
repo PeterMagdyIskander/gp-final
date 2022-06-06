@@ -3,14 +3,11 @@ import CardContent from "@mui/material/CardContent";
 import { MdOutlineDevicesOther } from "react-icons/md";
 import { FaCar, FaWallet } from "react-icons/fa";
 import { FiXCircle } from "react-icons/fi";
-import { FiInfo, FiEdit } from "react-icons/fi";
 import { useState } from "react";
 import { Box, Button, Input, TextField } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { connect } from "react-redux";
 import { additemdb, deleteitem } from "../../AWS/dynamodblogic";
-
 import IconTextCard from "../Cards/IconTextCard";
 import GenericStatusCard from "./GenericStatusCard";
 function ItemsCard(props) {

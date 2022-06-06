@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { FiInfo, FiEdit } from "react-icons/fi";
+import React from "react";
 import { useState } from "react";
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -7,7 +6,6 @@ import Modal from "@mui/material/Modal";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -18,9 +16,7 @@ import { connect } from "react-redux";
 import { Deleteobjects, uploadarrtos3editreport } from "../../AWS/s3logic";
 import SelectedImg from "./SelectedImg";
 import MatchedDetailsMenu from "./MatchedDetailsMenu";
-
 import { FiXCircle } from "react-icons/fi";
-
 import GenericStatusCard from "./GenericStatusCard";
 import IconTextCard from "../Cards/IconTextCard";
 const StatusCard = (props) => {

@@ -1,4 +1,3 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FiInfo } from "react-icons/fi";
 import CardContent from "@mui/material/CardContent";
 const MatchedCard = (props) => {
