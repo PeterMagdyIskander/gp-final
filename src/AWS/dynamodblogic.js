@@ -19,7 +19,7 @@ export async function quaryfromdynamodb(TableName, Key, signintoken) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -78,7 +78,7 @@ export async function updatedynamodb(TableName, Key, signintoken) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -112,7 +112,7 @@ export async function quaryfromdynamodbgetitem(TableNamee, mail, signintoken) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -153,7 +153,7 @@ export async function additemdb(itemtype, uniqid, phone, email, signintoken) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -258,7 +258,7 @@ export async function getfromdynamodb(TableName, itype, unid, signintoken) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -299,7 +299,7 @@ export async function deleteitem(itemid, email, signintoken, itemtype) {
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });

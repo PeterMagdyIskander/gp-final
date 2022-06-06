@@ -14,8 +14,6 @@ const identitypoolid = process.env.REACT_APP_IDENTITY_POOL_ID;
 const region = process.env.REACT_APP_REGION;
 const COGNITO_IDP = process.env.REACT_APP_COGNITO_IDP;
 
-
-
 export async function uploadarrtos3editreport(
   signintoken,
   file,
@@ -24,18 +22,20 @@ export async function uploadarrtos3editreport(
   lostchildid,
   address,
   phone,
-  Bucket) 
-  {
-    const picname=convertstringtoascii((uid+lostchildid+"added"+Date.now()));
-    console.log("abaaaaaaaaaaaaaaaaaa",file);
-  
-    const s3 = new S3Client({
+  Bucket
+) {
+  const picname = convertstringtoascii(
+    uid + lostchildid + "added" + Date.now()
+  );
+  console.log("abaaaaaaaaaaaaaaaaaa", file);
+
+  const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -75,17 +75,17 @@ export async function uploadarrtos3(
   lostchildid,
   address,
   phone,
-  Bucket) 
-  {
-    console.log("abaaaaaaaaaaaaaaaaaa",file);
-  
-    const s3 = new S3Client({
+  Bucket
+) {
+  console.log("abaaaaaaaaaaaaaaaaaa", file);
+
+  const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -133,7 +133,7 @@ export async function singuploadtos3(
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -158,14 +158,14 @@ export async function singuploadtos3(
   }
 }
 export async function gets3file(id, signintoken, Bucket) {
-  console.log("iddddddddddddddddd",id);
+  console.log("iddddddddddddddddd", id);
   const s3 = new S3({
     region: region,
     credentials: fromCognitoIdentityPool({
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -196,7 +196,7 @@ export async function Deleteobject(signintoken, oid, Bucket) {
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -220,7 +220,7 @@ export async function Deleteobjects(signintoken, oid, Bucket) {
       client: new CognitoIdentityClient({ region: region }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
@@ -228,7 +228,7 @@ export async function Deleteobjects(signintoken, oid, Bucket) {
   for (let i = 0; i < oid.length; i++) {
     const Params = {
       Bucket: Bucket,
-      Key: linktoid(oid[i]['img']),
+      Key: linktoid(oid[i]["img"]),
     };
     try {
       const data = await s3.send(new DeleteObjectCommand(Params));
@@ -310,107 +310,81 @@ export async function gets3filepasserby(id, Bucket) {
   return uriarr;
 }
 export async function getreports(id, Bucket) {
-  console.log("abaaaaaaa",id);
-  var y=await gets3filepasserby(id,"lostchildrenbucket");
-    
-    const metadataarr=[];
-    const matchesmap = new Map();
-    for(let i=0;i<id.length;i++)
-    {
-        const x=await  gets3fileheadobject(id[i],"lostchildrenbucket")
-        console.log("metadata for loop : ",x);
-        console.log("abaaaaaa",id[i]);
-        const metdata=JSON.stringify({
-            owner:x["Metadata"]["owner"],
-            address:x["Metadata"]["address"],
-            lostchildid:x["Metadata"]["lostchildid"],
-            phonenumber:x["Metadata"]["phonenumber"]
-        })
-        console.log("metadata",metdata);
-        if(matchesmap.has(metdata))
-        {
-            const uriarr=matchesmap.get(metdata)
-            uriarr.push(y[i])
-            matchesmap.set(metdata,uriarr)
+  console.log("abaaaaaaa", id);
+  var y = await gets3filepasserby(id, "lostchildrenbucket");
 
-
-        }
-        else
-        {
-            matchesmap.set(metdata,[y[i]])
-        }
-    
-
-        metadataarr.push(x["Metadata"]);
-
-
+  const metadataarr = [];
+  const matchesmap = new Map();
+  for (let i = 0; i < id.length; i++) {
+    const x = await gets3fileheadobject(id[i], "lostchildrenbucket");
+    console.log("metadata for loop : ", x);
+    console.log("abaaaaaa", id[i]);
+    const metdata = JSON.stringify({
+      owner: x["Metadata"]["owner"],
+      address: x["Metadata"]["address"],
+      lostchildid: x["Metadata"]["lostchildid"],
+      phonenumber: x["Metadata"]["phonenumber"],
+    });
+    console.log("metadata", metdata);
+    if (matchesmap.has(metdata)) {
+      const uriarr = matchesmap.get(metdata);
+      uriarr.push(y[i]);
+      matchesmap.set(metdata, uriarr);
+    } else {
+      matchesmap.set(metdata, [y[i]]);
     }
-    const outarr=[]
-    for (const i of matchesmap.entries()) {
-        const out={
-            photosuri:i[1],
-            metadata:JSON.parse(i[0])
 
-        }
-        outarr.push(out)
-      }
-    console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
-    return outarr;
-    
-  
-  
+    metadataarr.push(x["Metadata"]);
+  }
+  const outarr = [];
+  for (const i of matchesmap.entries()) {
+    const out = {
+      photosuri: i[1],
+      metadata: JSON.parse(i[0]),
+    };
+    outarr.push(out);
+  }
+  console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);
+  return outarr;
 }
-export async function getreportsparent(id,token,Bucket) {
-  console.log("abaaaaaaa",id);
-  var y=await gets3file(id,token,"passerbybucket");
-    
-    const metadataarr=[];
-    const matchesmap = new Map();
-    for(let i=0;i<id.length;i++)
-    {
-        const x=await  gets3fileheadobject(id[i],"passerbybucket")
-        console.log("metadata for loop : ",x);
-        console.log("abaaaaaa",id[i]);
-        const metdata=JSON.stringify({
-          lat:x["Metadata"]["lat"],
-          name:x["Metadata"]["name"],
-          lng:x["Metadata"]["lng"],
-          writenaddress:x["Metadata"]["writenaddress"],
-          phonenumber:x["Metadata"]["phonenumber"],
-          })
-        console.log("metadata",metdata);
-        if(matchesmap.has(metdata))
-        {
-            const uriarr=matchesmap.get(metdata)
-            uriarr.push(y[i])
-            matchesmap.set(metdata,uriarr)
+export async function getreportsparent(id, token, Bucket) {
+  console.log("abaaaaaaa", id);
+  var y = await gets3file(id, token, "passerbybucket");
 
-
-        }
-        else
-        {
-            matchesmap.set(metdata,[y[i]])
-        }
-    
-
-        metadataarr.push(x["Metadata"]);
-
-
+  const metadataarr = [];
+  const matchesmap = new Map();
+  for (let i = 0; i < id.length; i++) {
+    const x = await gets3fileheadobject(id[i], "passerbybucket");
+    console.log("metadata for loop : ", x);
+    console.log("abaaaaaa", id[i]);
+    const metdata = JSON.stringify({
+      lat: x["Metadata"]["lat"],
+      name: x["Metadata"]["name"],
+      lng: x["Metadata"]["lng"],
+      writenaddress: x["Metadata"]["writenaddress"],
+      phonenumber: x["Metadata"]["phonenumber"],
+    });
+    console.log("metadata", metdata);
+    if (matchesmap.has(metdata)) {
+      const uriarr = matchesmap.get(metdata);
+      uriarr.push(y[i]);
+      matchesmap.set(metdata, uriarr);
+    } else {
+      matchesmap.set(metdata, [y[i]]);
     }
-    const outarr=[]
-    for (const i of matchesmap.entries()) {
-        const out={
-            photosuri:i[1],
-            metadata:JSON.parse(i[0])
 
-        }
-        outarr.push(out)
-      }
-    console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
-    return outarr;
-    
-  
-  
+    metadataarr.push(x["Metadata"]);
+  }
+  const outarr = [];
+  for (const i of matchesmap.entries()) {
+    const out = {
+      photosuri: i[1],
+      metadata: JSON.parse(i[0]),
+    };
+    outarr.push(out);
+  }
+  console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);
+  return outarr;
 }
 
 export async function gets3fileheadobject(id, Bucket) {
@@ -438,20 +412,14 @@ export async function gets3fileheadobject(id, Bucket) {
     console.log("Error", err);
   }
 }
-export  function linktoid(link) {
-  var output = link.substring(54,link.indexOf('?'));
-  return output
-  
-  
+export function linktoid(link) {
+  var output = link.substring(54, link.indexOf("?"));
+  return output;
 }
-export  function convertstringtoascii(s)
-{
-    var output=""
-    for (let index = 0; index < s.length; index++) {
-        output=output+s.charCodeAt(index)
-                  
-        }
-    return output
-        
-
+export function convertstringtoascii(s) {
+  var output = "";
+  for (let index = 0; index < s.length; index++) {
+    output = output + s.charCodeAt(index);
+  }
+  return output;
 }

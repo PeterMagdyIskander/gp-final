@@ -21,7 +21,7 @@ export async function searchforsim(
       client: new CognitoIdentityClient({ region: reg }),
       identityPoolId: identitypoolid,
       logins: {
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5": signintoken,
+        [COGNITO_IDP]: signintoken,
       },
     }),
   });
