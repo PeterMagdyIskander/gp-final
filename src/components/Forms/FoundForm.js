@@ -5,8 +5,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
-import { Button } from "@mui/material";
-import Modal from "@mui/material/Modal";
+import { Button, Grid } from "@mui/material";
 import GoogleMaps from "../Google/GoogleMaps";
 import { toast, ToastContainer } from "react-toastify";
 const theme = createTheme();
@@ -16,34 +15,14 @@ export default function FoundForm({
   setFileName,
   onSubmit,
 }) {
+  const [loc, setLoc] = useState("Tahrir Square, Egypt");
   const [numberError, setNumberError] = useState(false);
-  const [coordinates, setCoordinates] = useState({});
+  const [coordinates, setCoordinates] = useState({
+    lat: 30.0444,
+    lng: 31.2357,
+  });
   const [file, setFile] = useState(null);
-  const [open, setOpen] = useState(false);
-  const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = (save) => {
-    if (!save) {
-      setCoordinates({
-        lat: 30.068513,
-        lng: 31.243771,
-      });
-    }
-    setOpen(false);
-  };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "750px",
-    height: "70%",
-    overflowY: "auto",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
   const formatName = (name, address, lat, long) => {
     const filename = (name + address + lat + long + Date.now()).toString();
     const filename1 = filename.replace(/\./g, "d");
@@ -56,10 +35,11 @@ export default function FoundForm({
   };
 
   return (
-    <div>
+    <>
       <Formik
+        enableReinitialize={true}
         initialValues={{
-          address: "",
+          address: loc,
           childName: "",
           reporterPhone: "",
         }}
@@ -114,86 +94,76 @@ export default function FoundForm({
         }}
       >
         <Form>
-          <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <Box
-                sx={{
-                  marginTop: 8,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+          <Container
+            sx={{ display: "flex", justifyContent: "space-between" }}
+            maxWidth="xl"
+          >
+            <Box sx={{ width: "65vw", mr: "20px" }}>
+              <GoogleMaps
+                setCoordinates={setCoordinates}
+                setLoc={setLoc}
+                latLng={coordinates}
+                loc={loc}
+              />
+            </Box>
+            <Box
+              sx={{
+                marginTop: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "30vw",
+              }}
+            >
+              <Button component="label">
+                Upload Picture
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => onFileUpload(e)}
+                  hidden
+                />
+              </Button>
+              <Field
+                id="address"
+                label="Address"
+                name="address"
+                autoComplete="address"
+                required={false}
+                component={MyField}
+              />
+              <Field
+                name="childName"
+                label="Child Name"
+                type="text"
+                id="childName"
+                required={false}
+                component={MyField}
+              />
+              <Field
+                name="reporterPhone"
+                label="Phone Number"
+                type="number"
+                id="reporterPhone"
+                helperText="Invalid Number Format"
+                error={numberError}
+                required={false}
+                component={MyField}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
               >
-                <Button component="label">
-                  Upload Picture
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => onFileUpload(e)}
-                    hidden
-                  />
-                </Button>
-                <Button onClick={handleOpenModal}>Location</Button>
-                <Field
-                  id="address"
-                  label="Address"
-                  name="address"
-                  autoComplete="address"
-                  required={false}
-                  component={MyField}
-                />
-                <Field
-                  name="childName"
-                  label="Child Name"
-                  type="text"
-                  id="childName"
-                  required={false}
-                  component={MyField}
-                />
-                <Field
-                  name="reporterPhone"
-                  label="Phone Number"
-                  type="number"
-                  id="reporterPhone"
-                  helperText="Invalid Number Format"
-                  error={numberError}
-                  required={false}
-                  component={MyField}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Submit Found Report
-                </Button>
-                <ToastContainer />
-              </Box>
-            </Container>
-          </ThemeProvider>
+                Submit Found Report
+              </Button>
+
+              <ToastContainer />
+            </Box>
+          </Container>
         </Form>
       </Formik>
-      <Modal
-        open={open}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h3">
-            Address
-          </Typography>
-
-          <GoogleMaps setCoordinates={setCoordinates} />
-          <Button
-            onClick={() => handleCloseModal(true)}
-            sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}
-          >
-            CONFIRM
-          </Button>
-        </Box>
-      </Modal>
-    </div>
+    </>
   );
 }

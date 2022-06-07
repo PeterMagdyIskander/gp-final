@@ -227,12 +227,6 @@ Circles {
     margin-right: 10px;
 }
 
-.suggestion-item {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    padding-left: 10px;
-}
 
 .matched-name {
     text-align: center;
@@ -370,4 +364,31 @@ NEW START
     height: 100px;
     object-fit: cover;
     border-radius: 30px;
+}
+
+.suggestion-marker {
+    margin: 5px 15px;
+    min-width: 22px;
+    min-height: 22px;
+}
+
+.suggestion-main-text {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #181818;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.suggestion-sec-text {
+    color: #c7c9cb;
+    font-size: 0.9rem;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    width: 400px;
 }

@@ -9,12 +9,12 @@ export const MyField = ({
   id,
   error,
   helperText,
+  loc,
 }) => {
   let helper = helperText;
   if (!error) {
     helper = "";
   }
-
   return (
     <TextField
       margin="normal"

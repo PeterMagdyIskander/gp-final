@@ -7,15 +7,11 @@ import PlacesAutocomplete, {
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import { FiMapPin } from "react-icons/fi";
+import { SiGooglemaps } from "react-icons/si";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 const GoogleMaps = (props) => {
-  const [coordinates, setCoordinates] = useState({
-    lat: 30.068513,
-    lng: 31.243771,
-  });
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(props.loc);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -30,18 +26,18 @@ const GoogleMaps = (props) => {
   };
 
   const handleSelect = (address) => {
-    console.log(address);
+    setAddress(address);
+    props.setLoc(address);
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
-        setCoordinates(latLng);
         props.setCoordinates(latLng);
       })
       .catch((error) => console.error("Error", error));
   };
   const containerStyle = {
-    width: "600px",
-    height: "350px",
+    width: "100%",
+    height: "75vh",
   };
   const createMapOptions = {
     zoomControl: true,
@@ -51,19 +47,18 @@ const GoogleMaps = (props) => {
     rotateControl: false,
     fullscreenControl: true,
   };
-  console.log("coor", coordinates);
   const arr = ["places"];
   return (
     <Box sx={{ position: "relative" }}>
       <Box>
         <GoogleMap
           mapContainerStyle={containerStyle}
-          initialCenter={coordinates}
-          center={coordinates}
+          initialCenter={props.latLng}
+          center={props.latLng}
           zoom={16} //minimum zoom & max zoom
           options={createMapOptions}
         >
-          <Marker position={coordinates} />
+          <Marker position={props.latLng} />
         </GoogleMap>
       </Box>
       <Box sx={{ top: 0, position: "absolute" }}>
@@ -91,6 +86,7 @@ const GoogleMaps = (props) => {
               >
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
+                  value={address}
                   placeholder="Search Google Maps"
                   {...getInputProps({
                     placeholder: "Search Places ...",
@@ -114,13 +110,13 @@ const GoogleMaps = (props) => {
                 }}
               >
                 {loading && <div>Loading...</div>}
+
                 {suggestions.map((suggestion) => {
                   const className = suggestion.active
-                    ? "suggestion-item--active"
+                    ? "suggestion-item"
                     : "suggestion-item";
-                  // inline style for demonstration purpose
                   const style = suggestion.active
-                    ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                    ? { backgroundColor: "#eee", cursor: "pointer" }
                     : { backgroundColor: "#ffffff", cursor: "pointer" };
                   return (
                     <div
@@ -131,8 +127,19 @@ const GoogleMaps = (props) => {
                         style,
                       })}
                     >
-                      <FiMapPin />
-                      <span>{suggestion.formattedSuggestion.mainText}</span>
+                      {/* <FiMapPin /> */}
+                      <SiGooglemaps
+                        size="22px"
+                        color="#70757a"
+                        className="suggestion-marker"
+                      />
+                      <p className="suggestion-main-text">
+                        {suggestion.formattedSuggestion.mainText + " "}
+                        <span className="suggestion-sec-text">
+                          {suggestion.formattedSuggestion.secondaryText}
+                        </span>
+                      </p>
+                      <p className="suggestion-sec-text"></p>
                     </div>
                   );
                 })}
