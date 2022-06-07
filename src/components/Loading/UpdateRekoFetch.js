@@ -45,7 +45,7 @@ function UpdateRekoFetch(props) {
     }, 200);
   };
   const setProgressThree = (s3g) => {
-    setSuccess3(true);
+    setSuccess3("true");
     setTimeout(() => {
       props.setMatches(s3g);
       props.setDone(true);
@@ -60,6 +60,10 @@ function UpdateRekoFetch(props) {
       setSuccess1("failure");
       setSuccess2("failure");
       setSuccess3("failure");
+      setTimeout(() => {
+        props.setMatches([]);
+        props.setDone(true);
+      }, 1500);
       return;
     }
     setSuccess1("true");
@@ -83,7 +87,10 @@ function UpdateRekoFetch(props) {
       setLoading2(false);
       setSuccess2("failure");
       setSuccess3("failure");
-      console.log('hsbc')
+      setTimeout(() => {
+        props.setMatches([]);
+        props.setDone(true);
+      }, 1500);
       return;
     }
 
@@ -94,12 +101,18 @@ function UpdateRekoFetch(props) {
       photoidarr,
       ...props.reqFunctions.getreports.params
     );
+    console.log("s3g", s3g);
+
     if (s3g.lenght === 0) {
       setSuccess3("failure");
       setLoading3(false);
+      setTimeout(() => {
+        props.setMatches([]);
+        props.setDone(true);
+      }, 1500);
+    } else {
+      setProgressThree(s3g);
     }
-
-    setProgressThree(s3g);
   }, []);
 
   return (
@@ -114,7 +127,7 @@ function UpdateRekoFetch(props) {
         mt: "64px",
       }}
     >
-      <Typography sx={{ mb: "50px", ml: "30px" }} variant="h5">
+      <Typography sx={{ mb: "25px", ml: "30px" }} variant="h5">
         Processing...
       </Typography>
 
@@ -129,15 +142,15 @@ function UpdateRekoFetch(props) {
           success={success1}
           number={1}
           message={{
-            success: "Uploaded Successfuly",
-            fail: "Failed to Upload",
-            pending: "Uploading Pictures",
+            success: "Uploaded",
+            fail: "Failed",
+            pending: "Uploading",
           }}
         />
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%" ,  top:" -29px"}}
+          sx={{ width: "30%" }}
           value={progress}
         />
         <CircularComponent
@@ -145,15 +158,15 @@ function UpdateRekoFetch(props) {
           success={success2}
           number={2}
           message={{
-            success: "Analyzed Successfuly",
-            fail: "No Matches Found",
-            pending: "Analyzing Faces",
+            success: "Analyzed",
+            fail: "No Matches",
+            pending: "Analyzing",
           }}
         />
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%" ,  top:" -29px"}}
+          sx={{ width: "30%" }}
           value={progress2}
         />
         <CircularComponent
@@ -161,7 +174,7 @@ function UpdateRekoFetch(props) {
           success={success3}
           number={3}
           message={{
-            success: "Matches Found",
+            success: "Found",
             fail: "No Matches",
             pending: "Fetching Matches",
           }}

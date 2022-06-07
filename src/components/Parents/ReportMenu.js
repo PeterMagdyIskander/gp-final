@@ -30,7 +30,7 @@ const ReportMenu = (props) => {
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
-  console.log("items form data", data);
+  console.log("items form reko", done);
   console.log("matches", matches);
   return (
     <>

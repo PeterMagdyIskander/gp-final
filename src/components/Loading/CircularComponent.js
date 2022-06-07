@@ -27,7 +27,7 @@ function CircularComponent(props) {
       sx={{
         display: "flex",
         alignItems: "center",
-        width: "30%",
+        margin:"15px"
       }}
     >
       <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>

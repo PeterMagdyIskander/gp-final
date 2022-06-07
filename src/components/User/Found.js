@@ -39,7 +39,7 @@ const Found = (props) => {
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
-  console.log("items form data", data);
+  console.log("items form reko", done);
   return (
     <>
       {selecting === "" && (
@@ -61,12 +61,13 @@ const Found = (props) => {
           setFiles={setFile}
           setData={setData}
           setFileName={setFileName}
-          onSubmit={setSendReq}
+          setSendReq={setSendReq}
         />
       )}
       {!sendReq && selecting === "items" && (
         <FoundItemForm setData={setData} onSubmit={setSendReq} />
       )}
+
       <div>
         {matches.length === 0 && done && (
           <IconTextCard
@@ -75,6 +76,8 @@ const Found = (props) => {
             function={null}
           />
         )}
+
+        {/* IF THERE ARE MATCHES */}
         {matches.length !== 0 &&
           done &&
           (selecting === "child" ? (
@@ -110,6 +113,7 @@ const Found = (props) => {
             </Container>
           ))}
       </div>
+
       {sendReq && !done && (
         <ThemeProvider theme={theme}>
           <Container component="main">

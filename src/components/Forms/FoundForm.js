@@ -13,7 +13,7 @@ export default function FoundForm({
   setFiles,
   setData,
   setFileName,
-  onSubmit,
+  setSendReq,
 }) {
   const [loc, setLoc] = useState("Tahrir Square, Egypt");
   const [numberError, setNumberError] = useState(false);
@@ -87,7 +87,7 @@ export default function FoundForm({
               reporterPhone: values.reporterPhone,
               coordinates: coordinates,
             });
-            onSubmit(true);
+            setSendReq(true);
           } else {
             setNumberError(true);
           }

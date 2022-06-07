@@ -55,9 +55,13 @@ function UpdateFetch(props) {
     if (s3g.length === 0) {
       setSuccess2("failure");
       setLoading2(false);
+      setTimeout(() => {
+        props.setMatches([]);
+        props.setDone(true);
+      }, 1500);
+    } else {
+      setProgressTwo(s3g);
     }
-    //succes
-    setProgressTwo(s3g);
   }, []);
 
   return (
@@ -67,12 +71,10 @@ function UpdateFetch(props) {
         alignItems: "center",
         boxShadow: 10,
         borderRadius: "30px",
-        width: "70%",
-        margin: "auto",
         mt: "64px",
       }}
     >
-      <Typography sx={{ mb: "50px", ml: "30px" }} variant="h5">
+      <Typography sx={{ mb: "25px", ml: "30px" }} variant="h5">
         Processing...
       </Typography>
 
@@ -80,6 +82,7 @@ function UpdateFetch(props) {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent:"space-around"
         }}
       >
         <CircularComponent
@@ -87,15 +90,15 @@ function UpdateFetch(props) {
           success={success1}
           number={1}
           message={{
-            success: "Sent Successfuly",
-            fail: "Failed to Send Data",
-            pending: "Sending Data",
+            success: "Success",
+            fail: "Failed",
+            pending: "Sending",
           }}
         />
         <LinearProgress
           color="success"
           variant="determinate"
-          sx={{ width: "30%", top: " -29px" }}
+          sx={{ width: "65%" }}
           value={progress}
         />
         <CircularComponent
@@ -103,9 +106,9 @@ function UpdateFetch(props) {
           success={success2}
           number={2}
           message={{
-            success: "Matches Found",
+            success: "Matched",
             fail: "No Matches",
-            pending: "Fetching Matches",
+            pending: "Analyzing",
           }}
         />
       </Box>
