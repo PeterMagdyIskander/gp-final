@@ -25,7 +25,9 @@ export default function IconTextCard(props) {
         >
           {props.function != null ? (
             <>
-              <div className="clickable" onClick={props.function}>{props.component}</div>
+              <div className="clickable" onClick={props.function}>
+                {props.component}
+              </div>
               <button className="card-title clickable" onClick={props.function}>
                 {" "}
                 {props.message}

@@ -8,11 +8,12 @@ import { Button } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
+
+import { toast, ToastContainer } from "react-toastify";
 const theme = createTheme();
 
-export default function ReportForm({ onSubmit,setData, setFiles }) {
+export default function ReportForm({ onSubmit, setData, setFiles }) {
   const [file, setFile] = useState([]);
-  const [imgs, setImgs] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
@@ -49,8 +50,20 @@ export default function ReportForm({ onSubmit,setData, setFiles }) {
         console.log({
           ...values,
         });
-        setData(values);
-        onSubmit(true);
+        if (file.length === 0) {
+          toast.error("Please Add pictures", {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          setData(values);
+          onSubmit(true);
+        }
       }}
     >
       <Form>
@@ -64,7 +77,7 @@ export default function ReportForm({ onSubmit,setData, setFiles }) {
                 alignItems: "center",
               }}
             >
-              <Button  component="label">
+              <Button component="label">
                 Upload Child Images
                 <input
                   type="file"
@@ -136,6 +149,7 @@ export default function ReportForm({ onSubmit,setData, setFiles }) {
                   </ImageList>
                 </Box>
               </Modal>
+              <ToastContainer />
             </Box>
           </Container>
         </ThemeProvider>

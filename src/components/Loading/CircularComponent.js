@@ -17,9 +17,9 @@ function CircularComponent(props) {
   const [loading, setLoading] = useState(props.loading);
   useEffect(() => {
     if (props.success === "true") setLoading(false);
-  }, [props.success, props.loading]);
+  }, [props.success,props.loading]);
   useEffect(() => {
-    if (props.loading) setLoading(props.loading);
+    setLoading(props.loading);
   }, [props.loading]);
 
   return (

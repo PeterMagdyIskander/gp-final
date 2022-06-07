@@ -15,6 +15,8 @@ import Select from "@mui/material/Select";
 const theme = createTheme();
 export default function FoundItemForm({ setData, onSubmit }) {
   const [selected, setSelected] = React.useState("car");
+  const [numberError, setNumberError] = React.useState(false);
+  const [idError, setIdError] = React.useState(false);
 
   const handleChange = (event) => {
     setSelected(event.target.value);
@@ -31,13 +33,46 @@ export default function FoundItemForm({ setData, onSubmit }) {
         console.log({
           ...values,
         });
-        setData({
-          address: values.address,
-          id: values.id,
-          type:selected,
-          reporterPhone: values.reporterPhone,
-        });
-        onSubmit(true);
+
+        if (/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)) {
+          if (numberError) setNumberError(false);
+          let passed = false;
+          switch (selected) {
+            case "wallet":
+              if (
+                /^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(
+                  values.id
+                )
+              ) {
+                passed = true;
+              }
+              break;
+            case "elec":
+              if (/^([0-9a-fA-F]){8}$/.test(values.id)) {
+                passed = true;
+              }
+              break;
+            case "car":
+              passed = true;
+              break;
+            default:
+              console.error("invalid params");
+          }
+          if (passed) {
+            setData({
+              address: values.address,
+              id: values.id.toString(),
+              type: selected,
+              reporterPhone: `0${values.reporterPhone}`,
+            });
+            onSubmit(true);
+          } else {
+            setIdError(true);
+          }
+        } else {
+          console.log("faas");
+          setNumberError(true);
+        }
       }}
     >
       <Form>
@@ -78,15 +113,23 @@ export default function FoundItemForm({ setData, onSubmit }) {
               <Field
                 name="id"
                 label={
-                  selected === "Car"
+                  selected === "car"
                     ? "Car Numbers"
-                    : selected === "Electronics"
+                    : selected === "elec"
                     ? "Serial Number"
                     : "ID"
                 }
-                type="text"
+                type={
+                  selected === "car"
+                    ? "text"
+                    : selected === "elec"
+                    ? "text"
+                    : "number"
+                }
                 id="id"
                 required={false}
+                helperText="Invalid id Format"
+                error={idError}
                 component={MyField}
               />
               <Field
@@ -95,6 +138,8 @@ export default function FoundItemForm({ setData, onSubmit }) {
                 type="number"
                 id="reporterPhone"
                 required={false}
+                helperText="Invalid Number Format"
+                error={numberError}
                 component={MyField}
               />
               <Field

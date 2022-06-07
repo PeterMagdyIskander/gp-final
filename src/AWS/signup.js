@@ -32,7 +32,7 @@ export async function Signup(username, password, email, phone, name, lastname) {
   };
   const command = new SignUpCommand(input);
   const response = await client.send(command);
-  console.log(response);
+  return response;
 }
 
 export async function conSignup(username, con) {
@@ -52,5 +52,5 @@ export async function conSignup(username, con) {
   };
   const command = new ConfirmSignUpCommand(input);
   const response = await client.send(command);
-  console.log(response);
+  return response;
 }

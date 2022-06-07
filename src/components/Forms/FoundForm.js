@@ -8,14 +8,15 @@ import { MyField } from "./MyField";
 import { Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import GoogleMaps from "../Google/GoogleMaps";
+import { toast, ToastContainer } from "react-toastify";
 const theme = createTheme();
-
 export default function FoundForm({
   setFiles,
   setData,
   setFileName,
   onSubmit,
 }) {
+  const [numberError, setNumberError] = useState(false);
   const [coordinates, setCoordinates] = useState({});
   const [file, setFile] = useState(null);
   const [open, setOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function FoundForm({
     }
     setOpen(false);
   };
-  
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -53,7 +54,6 @@ export default function FoundForm({
     setFile(e.target.files);
     setFiles(e.target.files);
   };
-  
 
   return (
     <div>
@@ -69,21 +69,48 @@ export default function FoundForm({
             file,
             coordinates,
           });
-          setFileName(
-            formatName(
-              values.childName,
-              values.address,
-              coordinates.lat,
-              coordinates.lng
-            )
-          );
-          setData({
-            address: values.address,
-            childName: values.childName,
-            reporterPhone: values.reporterPhone,
-            coordinates: coordinates,
-          });
-          onSubmit(true);
+
+          if (file === null) {
+            toast.error("Please Add pictures", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          } else if (Object.keys(coordinates).length === 0) {
+            toast.error("Please add your location", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+          if (/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)) {
+            if (numberError) setNumberError(false);
+            setFileName(
+              formatName(
+                values.childName,
+                values.address,
+                coordinates.lat,
+                coordinates.lng
+              )
+            );
+            setData({
+              address: values.address,
+              childName: values.childName,
+              reporterPhone: values.reporterPhone,
+              coordinates: coordinates,
+            });
+            onSubmit(true);
+          } else {
+            setNumberError(true);
+          }
         }}
       >
         <Form>
@@ -103,7 +130,6 @@ export default function FoundForm({
                     type="file"
                     accept="image/*"
                     onChange={(e) => onFileUpload(e)}
-                    required
                     hidden
                   />
                 </Button>
@@ -129,6 +155,8 @@ export default function FoundForm({
                   label="Phone Number"
                   type="number"
                   id="reporterPhone"
+                  helperText="Invalid Number Format"
+                  error={numberError}
                   required={false}
                   component={MyField}
                 />
@@ -140,6 +168,7 @@ export default function FoundForm({
                 >
                   Submit Found Report
                 </Button>
+                <ToastContainer />
               </Box>
             </Container>
           </ThemeProvider>
@@ -156,7 +185,7 @@ export default function FoundForm({
             Address
           </Typography>
 
-          <GoogleMaps setCoordinates={setCoordinates}/>
+          <GoogleMaps setCoordinates={setCoordinates} />
           <Button
             onClick={() => handleCloseModal(true)}
             sx={{ color: "red", position: "absolute", right: 0, bottom: 0 }}

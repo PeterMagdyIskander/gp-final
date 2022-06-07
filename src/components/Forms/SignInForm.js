@@ -8,7 +8,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
-
+import { connect } from "react-redux";
+import {
+  setAuthedUser,
+  runLogoutTimer,
+} from "../../ReduxStore/actions/authedUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+import UserPool from "../../AWS/UserPool";
 import { Link as Redirect } from "react-router-dom";
 function Copyright(props) {
   return (
@@ -30,20 +37,62 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInForm({ onSubmit }) {
+function SignInForm(props) {
+  const { dispatch } = props;
+  let location = useLocation();
+  let navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/Report";
+
   const [loading, setLoading] = React.useState(false);
+  const [signedUpEmailError, setSignedUpEmailError] = React.useState(false);
+  const [signedUpPasswordError, setSignedUpPasswordError] =
+    React.useState(false);
+
+  const Login = (email, password) => {
+    const user = new CognitoUser({
+      Username: email,
+      Pool: UserPool,
+    });
+
+    const authDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (data) => {
+        dispatch(setAuthedUser(data.getIdToken()));
+        runLogoutTimer(
+          dispatch,
+          new Date(data.getIdToken().payload.exp * 1000).getTime() -
+            new Date().getTime()
+        );
+        console.log("from", from);
+        navigate(from, { replace: true });
+      },
+      onFailure: (err) => {
+        setLoading(false);
+        setSignedUpPasswordError(true);
+        setSignedUpEmailError(true);
+        console.error("onFailure: ", err);
+      },
+      newPasswordRequired: (data) => {
+        console.log("newPasswordRequired: ", data);
+      },
+    });
+  };
+
   return (
     <Formik
       initialValues={{ email: "abadeer@hotmail.com", password: "abadir_2000" }}
       onSubmit={(values) => {
-        onSubmit(values);
+        Login(values.email, values.password);
         setLoading(true);
       }}
     >
       <Form>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
-            
             <Box
               sx={{
                 marginTop: 8,
@@ -64,6 +113,8 @@ export default function SignInForm({ onSubmit }) {
                 autoComplete="email"
                 autoFocus
                 component={MyField}
+                helperText="Incorrect username or password"
+                error={signedUpEmailError}
               />
               <Field
                 name="password"
@@ -72,6 +123,8 @@ export default function SignInForm({ onSubmit }) {
                 id="password"
                 autoComplete="current-password"
                 component={MyField}
+                error={signedUpPasswordError}
+                helperText="Incorrect username or password"
               />
               <LoadingButton
                 type="submit"
@@ -95,3 +148,4 @@ export default function SignInForm({ onSubmit }) {
     </Formik>
   );
 }
+export default connect()(SignInForm);

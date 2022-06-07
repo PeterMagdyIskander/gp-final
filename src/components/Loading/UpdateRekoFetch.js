@@ -80,9 +80,10 @@ function UpdateRekoFetch(props) {
 
     console.log(photoidarr);
     if (!photoidarr || photoidarr.length === 0) {
+      setLoading2(false);
       setSuccess2("failure");
       setSuccess3("failure");
-      setLoading2(false);
+      console.log('hsbc')
       return;
     }
 
@@ -145,7 +146,7 @@ function UpdateRekoFetch(props) {
           number={2}
           message={{
             success: "Analyzed Successfuly",
-            fail: "No Matches Matches",
+            fail: "No Matches Found",
             pending: "Analyzing Faces",
           }}
         />

@@ -14,7 +14,7 @@ import Select from "@mui/material/Select";
 const theme = createTheme();
 export default function ReportItemForm({ setData, onSubmit }) {
   const [selected, setSelected] = React.useState("car");
-
+  const [idError, setIdError] = React.useState(false);
   const handleChange = (event) => {
     setSelected(event.target.value);
   };
@@ -28,11 +28,37 @@ export default function ReportItemForm({ setData, onSubmit }) {
         console.log({
           ...values,
         });
-        setData({
-          id: values.id,
-          type:selected,
-        });
-        onSubmit(true);
+        let passed = false;
+        switch (selected) {
+          case "wallet":
+            if (
+              /^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(
+                values.id
+              )
+            ) {
+              passed = true;
+            }
+            break;
+          case "elec":
+            if (/^([0-9a-fA-F]){8}$/.test(values.id)) {
+              passed = true;
+            }
+            break;
+          case "car":
+            passed = true;
+            break;
+          default:
+            console.error("invalid params");
+        }
+        if (passed) {
+          setData({
+            id: values.id,
+            type: selected,
+          });
+          onSubmit(true);
+        } else {
+          setIdError(true);
+        }
       }}
     >
       <Form>
@@ -73,16 +99,24 @@ export default function ReportItemForm({ setData, onSubmit }) {
               <Field
                 name="id"
                 label={
-                  selected === "Car"
+                  selected === "car"
                     ? "Car Numbers"
-                    : selected === "Electronics"
+                    : selected === "elec"
                     ? "Serial Number"
                     : "ID"
                 }
-                type="text"
+                type={
+                  selected === "car"
+                    ? "text"
+                    : selected === "elec"
+                    ? "text"
+                    : "number"
+                }
                 id="id"
                 required={false}
                 component={MyField}
+                helperText="Invalid id Format"
+                error={idError}
               />
               <Button
                 type="submit"
