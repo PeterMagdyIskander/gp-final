@@ -20,13 +20,11 @@ import { checkAutoLogin } from "../ReduxStore/actions/authedUser";
 import RequireAuth from "./Navigation/RequireAuth";
 
 function App() {
-
   const dispatch = useDispatch();
   useEffect(() => {
     checkAutoLogin(dispatch);
   }, [dispatch]);
 
-  
   return (
     <Fragment>
       <NavBar />
@@ -66,3 +64,12 @@ function App() {
   );
 }
 export default App;
+
+/**
+ * <div class="innerYellow">
+
+      </div>
+      <div class="triangle-up">
+
+      </div>
+ */

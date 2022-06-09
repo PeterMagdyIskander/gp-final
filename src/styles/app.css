@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto+Mono:wght@100&display=swap');
+
 html {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Quicksand', sans-serif;
     font-size: 18px;
+    overflow: hidden;
 }
 
 body {
@@ -322,14 +325,14 @@ NEW START
     all: unset;
     cursor: pointer;
     text-align: center;
-    padding: 5px 15px;
+    padding: 0 15px;
     margin: 30px 15px;
     font-weight: bold;
     font-size: 2vw;
 }
 
 .clickable:hover {
-    padding: 5px 15px;
+    padding: 0 15px;
     border-radius: 25px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
@@ -392,3 +395,35 @@ NEW START
     align-items: center;
     width: 400px;
 }
+/* 
+
+.innerYellow {
+    width: 100%;
+    height: 100%;
+    background-color: #073944;
+    position: absolute;
+    border-radius: 10% 10% 10% 10%;
+    top: -93vh;
+    left: 42vw;
+    opacity: 0.95;
+    transform: rotate(152deg);
+}
+
+.triangle-up {
+    width: 100%;
+    height: 40vh;
+    background-color: #faf6f5;
+    bottom: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.triangle-up:before {
+    content: '';
+    border-left: 63vw solid transparent;
+    border-right: 128vw solid transparent;
+    border-bottom: 32vh solid #faf6f5;
+    position: absolute;
+    top: -32vh;
+    z-index: -1;
+} */
