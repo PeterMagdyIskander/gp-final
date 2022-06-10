@@ -27,9 +27,9 @@ function Copyright(props) {
     >
       {"Copyright © "}
 
-      <Redirect to="/">Lost and Found</Redirect>
+      <Redirect to="/">Lost&Found</Redirect>
 
-      {new Date().getFullYear()}
+      {" " + new Date().getFullYear()}
       {"."}
     </Typography>
   );

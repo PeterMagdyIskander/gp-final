@@ -15,7 +15,7 @@ const NavBar = (props) => {
   const isBurger = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <div className="navbar">
+    <nav className="navbar">
       <Link
         to={props.authedUser ? "/Status" : "/"}
         className="logo"
@@ -36,7 +36,7 @@ const NavBar = (props) => {
       ) : (
         <UserNavbar />
       )}
-    </div>
+    </nav>
   );
 };
 function mapStateToProps({ authedUser }) {

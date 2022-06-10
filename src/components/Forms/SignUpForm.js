@@ -21,10 +21,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link>
-        <Redirect to="/">Lost and Found</Redirect>
-      </Link>
-      {new Date().getFullYear()}
+      <Redirect to="/">Lost&Found</Redirect>
+
+      {" " + new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -169,9 +168,7 @@ export default function SignUpForm() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    <Redirect to="/signin">Already have an account?</Redirect>
-                  </Link>
+                  <Redirect to="/login">Already have an account?</Redirect>
                 </Grid>
               </Grid>
             </Box>
