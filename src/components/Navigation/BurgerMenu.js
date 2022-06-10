@@ -20,9 +20,13 @@ const BurgerMenu = (props) => {
   const { dispatch } = props;
   const signOut = () => {
     console.log("Successufully Signed out");
-    setOpenDrawer(false);
+
     dispatch(setAuthedUser(null));
     navigate("/signin");
+    closeDrawer();
+  };
+  const closeDrawer = () => {
+    setOpenDrawer(false);
   };
   const navigate = useNavigate();
   const signIn = () => {
@@ -41,7 +45,7 @@ const BurgerMenu = (props) => {
       <FiMenu
         className="burger-button"
         size="4vh"
-        onClick={() => setOpenDrawer(!openDrawer)}
+        onClick={() => setOpenDrawer(true)}
       />
 
       <Drawer
@@ -62,14 +66,18 @@ const BurgerMenu = (props) => {
             className="burger-button"
             size="4vh"
             style={{ alignSelf: "flex-end" }}
-            onClick={() => setOpenDrawer(!openDrawer)}
+            onClick={() => closeDrawer()}
           />
 
           {props.authedUser !== null ? (
             <nav className="burger-menu">
               <h1>Lost&Found</h1>
-              <NavLink to="/Status">Status</NavLink>
-              <NavLink to="/Report">Report</NavLink>
+              <NavLink to="/Status" onClick={() => closeDrawer()}>
+                Status
+              </NavLink>
+              <NavLink to="/Report" onClick={() => closeDrawer()}>
+                Report
+              </NavLink>
               <NavLink to="/" onClick={signOut}>
                 Sign out
               </NavLink>
@@ -77,9 +85,15 @@ const BurgerMenu = (props) => {
           ) : (
             <nav className="burger-menu">
               <h1>Lost&Found</h1>
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/Found">Found</NavLink>
-              <NavLink to="/Login">Login</NavLink>
+              <NavLink to="/" onClick={() => closeDrawer()}>
+                Home
+              </NavLink>
+              <NavLink to="/Found" onClick={() => closeDrawer()}>
+                Found
+              </NavLink>
+              <NavLink to="/Login" onClick={() => closeDrawer()}>
+                Login
+              </NavLink>
             </nav>
           )}
         </Box>
