@@ -1,22 +1,11 @@
 import { connect } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
-import { useEffect, useState } from "react";
+
 import "../../styles/app.css";
 import {
-  AppBar,
-  Button,
-  Tab,
-  Tabs,
-  Toolbar,
-  Typography,
   useMediaQuery,
-  Box,
   useTheme,
 } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import { FiUser, FiSearch, FiActivity, FiLogOut, FiHome } from "react-icons/fi";
-import { RiUserSearchFill } from "react-icons/ri";
 import BurgerMenu from "./BurgerMenu";
 import ParentNavbar from "./ParentNavbar";
 import UserNavbar from "./UserNavbar";

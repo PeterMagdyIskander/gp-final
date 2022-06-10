@@ -273,6 +273,12 @@ styling for selected image
     align-items: center;
 }
 
+@media (max-width: 600px) {
+    .found-options-container {
+        flex-direction: column;
+    }
+}
+
 .found-options {
     width: 40%;
     display: flex;

@@ -28,7 +28,7 @@ export default function IconTextCard(props) {
             sx={{
               textTransform: "none",
               fontWeight: "100",
-              fontSize: "2vw",
+              fontSize: "1.2rem",
               fontFamily: "Quicksand",
               borderRadius: "15px",
               backgroundColor: "#171717",
