@@ -23,8 +23,8 @@ import UserNavbar from "./UserNavbar";
 const NavBar = (props) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  
+  const isBurger = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <div className="navbar">
       <Link
@@ -38,14 +38,14 @@ const NavBar = (props) => {
           }
         }}
       >
-        <h1> Lost&Found</h1>
+       Lost&Found
       </Link>
-      {props.authedUser ? (
-        <ParentNavbar
-        />
+      {isBurger ? (
+        <BurgerMenu />
+      ) : props.authedUser ? (
+        <ParentNavbar />
       ) : (
-        <UserNavbar
-        />
+        <UserNavbar />
       )}
     </div>
   );

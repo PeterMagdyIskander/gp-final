@@ -8,20 +8,13 @@ import {
   ListItemText,
   Box,
 } from "@mui/material";
+import { NavLink, Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import MenuIcon from "@mui/icons-material/Menu";
 import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  FiUser,
-  FiSearch,
-  FiActivity,
-  FiLogOut,
-  FiLogIn,
-  FiUserPlus,
-} from "react-icons/fi";
-import { RiUserSearchFill } from "react-icons/ri";
+import { FiX, FiMenu } from "react-icons/fi";
 const BurgerMenu = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const { dispatch } = props;
@@ -42,77 +35,53 @@ const BurgerMenu = (props) => {
   };
   console.log(props);
   const sxForIcons = { minWidth: 32 };
-  const redirect = (to) => {
-    setOpenDrawer(false);
-    navigate(to);
-  };
+
   return (
     <>
-      <IconButton
-        sx={{ color: "white", marginLeft: "auto" }}
+      <FiMenu
+        className="burger-button"
+        size="4vh"
         onClick={() => setOpenDrawer(!openDrawer)}
-      >
-        <MenuIcon color="white" />
-      </IconButton>
+      />
 
       <Drawer
         anchor="right"
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
       >
-        <Box sx={{ width: 250 }}>
-          <List>
-            {props.authedUser !== null ? (
-              <>
-                <ListItem button onClick={() => redirect("/Report")}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <RiUserSearchFill />
-                  </ListItemIcon>
-                  <ListItemText primary={"Report"} />
-                </ListItem>
-                <ListItem button onClick={() => redirect("/Found")}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiSearch />
-                  </ListItemIcon>
-                  <ListItemText primary={"Found"} />
-                </ListItem>
-                <ListItem button onClick={() => redirect("/Status")}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiActivity />
-                  </ListItemIcon>
-                  <ListItemText primary={"Status"} />
-                </ListItem>
-                <ListItem button onClick={() => redirect("/Profile")}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiUser />
-                  </ListItemIcon>
-                  <ListItemText primary={"Profile"} />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={signOut}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiLogOut />
-                  </ListItemIcon>
-                  <ListItemText>Log out</ListItemText>
-                </ListItem>
-              </>
-            ) : (
-              <>
-                <ListItem button onClick={signIn}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiLogIn />
-                  </ListItemIcon>
-                  <ListItemText>Login</ListItemText>
-                </ListItem>
-                <ListItem button onClick={signUp}>
-                  <ListItemIcon sx={sxForIcons}>
-                    <FiUserPlus />
-                  </ListItemIcon>
-                  <ListItemText>Sign Up</ListItemText>
-                </ListItem>
-              </>
-            )}
-          </List>
+        <Box
+          sx={{
+            width: "100vw",
+            backgroundImage: "linear-gradient(to right, #89b0ae, #c9ada7)",
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <FiX
+            className="burger-button"
+            size="4vh"
+            style={{ alignSelf: "flex-end" }}
+            onClick={() => setOpenDrawer(!openDrawer)}
+          />
+
+          {props.authedUser !== null ? (
+            <nav className="burger-menu">
+              <h1>Lost&Found</h1>
+              <NavLink to="/Status">Status</NavLink>
+              <NavLink to="/Report">Report</NavLink>
+              <NavLink to="/" onClick={signOut}>
+                Sign out
+              </NavLink>
+            </nav>
+          ) : (
+            <nav className="burger-menu">
+              <h1>Lost&Found</h1>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/Found">Found</NavLink>
+              <NavLink to="/Login">Login</NavLink>
+            </nav>
+          )}
         </Box>
       </Drawer>
     </>

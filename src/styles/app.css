@@ -31,18 +31,26 @@ body {
 }
 
 a,
-
 a:focus {
     text-decoration: none;
     color: inherit;
+    font-size: 4vh;
+}
+
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
 }
 
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 15px;
-    padding: 0 50px;
 }
 
 .sub-navbar {
@@ -50,7 +58,7 @@ a:focus {
     justify-content: space-around;
 }
 
-.active {
+nav a.active {
     text-decoration: underline;
     text-underline-offset: 10px;
     color: #fff;
@@ -68,11 +76,6 @@ li {
 
 a:hover {
     color: white;
-}
-
-.logo {
-    padding-left: 4rem;
-
 }
 
 .container-centered {
@@ -395,6 +398,19 @@ NEW START
     align-items: center;
     width: 400px;
 }
+
+.burger-button {
+    margin: 25px;
+}
+
+.burger-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 50vh;
+    align-items: center;
+}
+
 /* 
 
 .innerYellow {
