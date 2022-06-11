@@ -47,7 +47,6 @@ export default function IconTextCard(props) {
           </Button>
         ) : (
           <>
-            {props.component}
             <p className="card-title"> {props.message}</p>
           </>
         )}

@@ -3,7 +3,7 @@
 html {
     font-family: 'Quicksand', sans-serif;
     font-size: 18px;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 body {
@@ -36,7 +36,7 @@ a:focus {
     color: inherit;
 }
 
-nav{
+nav {
     font-size: 4vh;
 }
 
@@ -330,7 +330,7 @@ NEW START
     overflow-Y: auto;
     height: 20%;
     font-weight: bold;
-    font-size: 2vw;
+    font-size: 1.2rem;
 }
 
 .clickable {

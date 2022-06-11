@@ -9,7 +9,7 @@ export const MyField = ({
   id,
   error,
   helperText,
-  loc,
+  fullWidth,
 }) => {
   let helper = helperText;
   if (!error) {

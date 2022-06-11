@@ -19,14 +19,22 @@ const MatchedCard = (props) => {
       }}
     >
       <img className="matched-child-img" alt="Matched child" src={img} />
-      <div className="options-container">
+      <div
+        className="options-container"
+        style={{ cursor: "pointer" }}
+        onClick={() => props.setSelectedMatch(props.match, props.index)}
+      >
         <FiInfo
           size={24}
-          style={{ cursor: "pointer" }}
           color={props.index === props.selectedIndex ? "red" : ""}
-          onClick={() => props.setSelectedMatch(props.match, props.index)}
         />
-        <h4 className={props.index === props.selectedIndex ?"options-title important":"options-title"}>
+        <h4
+          className={
+            props.index === props.selectedIndex
+              ? "options-title important"
+              : "options-title"
+          }
+        >
           {props.index === props.selectedIndex ? "Selected" : "Select"}
         </h4>
       </div>

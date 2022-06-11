@@ -84,7 +84,7 @@ function SignInForm(props) {
 
   return (
     <Formik
-      initialValues={{ email: "abadeer@hotmail.com", password: "abadir_2000" }}
+      initialValues={{ email: "PeterMagdyIskander@gmail.com", password: "Peter123" }}
       onSubmit={(values) => {
         Login(values.email, values.password);
         setLoading(true);

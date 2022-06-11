@@ -148,7 +148,7 @@ export default function SignUpForm() {
                     required
                     fullWidth
                     error={signedUpPasswordError}
-                    helperText="Please add an uppercase character"
+                    helperText="Must contain more than 8 characters and has an uppercase and a lowercase character"
                     name="password"
                     label="Password"
                     type="password"
