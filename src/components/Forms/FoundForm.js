@@ -121,6 +121,7 @@ export default function FoundForm({
                   type="file"
                   accept="image/*"
                   onChange={(e) => onFileUpload(e)}
+                  multiple
                   hidden
                 />
               </Button>
