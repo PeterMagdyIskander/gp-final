@@ -26,7 +26,7 @@ export async function quaryfromdynamodb(TableName, Key, signintoken) {
   const params = {
     TableName: "userdata",
     ExpressionAttributeValues: {
-      ":s": { S: "abadeer@hotmail.com" },
+      ":s": { S: Key },
     },
     KeyConditionExpression: "email = :s",
   };
