@@ -8,7 +8,7 @@ export default function GenericStatusCard(props) {
     <CardContent
       variant="outlined"
       sx={{
-        m: "5% 0",
+        m: "2% 0",
         boxShadow: 10,
         borderRadius: "30px",
         bgcolor: "#fafafa",

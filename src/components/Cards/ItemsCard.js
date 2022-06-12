@@ -43,6 +43,9 @@ function ItemsCard(props) {
         pending: "Deleting Item",
         success: "Item Deleted Successfully",
         error: "Deletion Failed",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
       }
     );
     if (response.$metadata.httpStatusCode === 200) {
@@ -74,11 +77,17 @@ function ItemsCard(props) {
   };
   const saveChange = async () => {
     setSentReq(true);
-    const response = await toast.promise(editItem, {
-      pending: "Editing Item",
-      success: "Item Edited Successfully",
-      error: "Editing Failed",
-    });
+    const response = await toast.promise(
+      editItem,
+      {
+        pending: "Editing Item",
+        success: "Item Edited Successfully",
+        error: "Editing Failed",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      }
+    );
     console.log(response);
     if (response) {
       let newItemsArr = props.items;
@@ -103,7 +112,7 @@ function ItemsCard(props) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "30%",
-    height: "30%",
+    height: "fit-content",
     overflowY: "auto",
     bgcolor: "background.paper",
     border: "2px solid #000",
@@ -158,14 +167,45 @@ function ItemsCard(props) {
             onChange={(e) => {
               handleChangeId(e);
             }}
-          />
-          <Button onClick={deleteItem} disabled={sentReq}>
-            Delete Item
-          </Button>
-          <Button onClick={saveChange} disabled={sentReq}>
+          />{" "}
+          <Button
+            sx={{
+              m: "15px 0",
+              borderRadius: "15px",
+              "&:hover": {
+                color: "#1976d2",
+                fontWeight: "600",
+                backgroundColor: "white",
+                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+              },
+            }}
+            variant="contained"
+            onClick={saveChange}
+            disabled={sentReq}
+          >
             Save Changes
           </Button>
-          )
+          <Button
+            sx={{
+              textTransform: "none",
+              fontWeight: "100",
+              fontSize: "1.2rem",
+              fontFamily: "Quicksand",
+              borderRadius: "15px",
+              backgroundColor: "red",
+              "&:hover": {
+                color: "red",
+                fontWeight: "600",
+                backgroundColor: "white",
+                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+              },
+            }}
+            variant="contained"
+            onClick={deleteItem}
+            disabled={sentReq}
+          >
+            Delete Item
+          </Button>
         </Box>
       </Modal>
       <Modal

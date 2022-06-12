@@ -20,7 +20,6 @@ import { FiXCircle } from "react-icons/fi";
 import GenericStatusCard from "./GenericStatusCard";
 import IconTextCard from "../Cards/IconTextCard";
 import { setChildren } from "../../ReduxStore/actions/children";
-import CircularComponent from "../Loading/CircularComponent";
 import { toast, ToastContainer } from "react-toastify";
 const StatusCard = (props) => {
   const dispatch = useDispatch();
@@ -87,6 +86,9 @@ const StatusCard = (props) => {
         pending: "Deleting Report",
         success: "Report Deleted Successfully",
         error: "Deletion Failed",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
       }
     );
     if (success) {
@@ -114,37 +116,96 @@ const StatusCard = (props) => {
     console.log(toBeDeleted);
     //to be deleted is the images to be deleted uri
     //call the delete api here
-    let success = await Deleteobjects(
-      props.authedUser.jwtToken,
-      toBeDeleted,
-      "lostchildrenbucket"
-    );
-    if (success) {
-      let notDeleted = imgs.filter((img) => !img.selected);
+    if (toBeDeleted.length === imgs.length) {
+      toast.error("Can't Remove All Pictures", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (toBeDeleted.length === 0) {
+      toast.error("Please select images to remove", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      let success = await toast.promise(
+        Deleteobjects(
+          props.authedUser.jwtToken,
+          toBeDeleted,
+          "lostchildrenbucket"
+        ),
+        {
+          pending: "Removing Pictures",
+          success: "Pictures Deleted Successfully",
+          error: "Removal Failed",
+        },
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        }
+      );
+      if (success) {
+        let notDeleted = imgs.filter((img) => !img.selected);
 
-      console.log("not deleted", notDeleted);
-      setImages(notDeleted);
+        setImages(notDeleted);
+      }
     }
   };
 
   const onFileUpload = async (e) => {
     if (e.target.files.length > 10 - imgs.length) {
-      alert(`please upload ${10 - imgs.length} images only`);
+      toast.error(`Please upload ${10 - imgs.length} images only`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    } else if (e.target.files.length === 0) {
+      toast.error(`Please select images first`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
     //call the upload function here on the new images -> uploadImgs
     //any use data is in -> props.authedUser
-    let success = await uploadarrtos3editreport(
-      props.authedUser.jwtToken,
-      e.target.files,
-      props.authedUser.email,
-      props.authedUser.cognitoUserId,
-      props.child.nameOfChild,
-      props.child.location,
-      props.authedUser.phoneNumber,
-      "lostchildrenbucket"
+    let success = await toast.promise(
+      uploadarrtos3editreport(
+        props.authedUser.jwtToken,
+        e.target.files,
+        props.authedUser.email,
+        props.authedUser.cognitoUserId,
+        props.child.nameOfChild,
+        props.child.location,
+        props.authedUser.phoneNumber,
+        "lostchildrenbucket"
+      ),
+      {
+        pending: "Adding Pictures",
+        success: "Pictures Added Successfully",
+        error: "Adding Pictures Failed",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      }
     );
-    console.log("abaaa", success);
     if (success) {
       let addedImgs = Object.keys(e.target.files).map((img) => {
         if (e.target.files && e.target.files[img]) {

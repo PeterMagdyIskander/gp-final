@@ -28,11 +28,13 @@ const StatusMenu = (props) => {
     console.log(props.authedUser);
     if (props.items) {
       setItemsStatus(props.items);
+      setItemsLoading(false);
     } else {
       getItems();
     }
     if (props.children) {
       setChildrenStatus(props.children);
+      setChildrenLoading(false);
     } else {
       getChildren();
     }
@@ -118,7 +120,6 @@ const StatusMenu = (props) => {
               color: "red",
               fontWeight: "600",
               backgroundColor: "white",
-              padding: "5px 15px",
               boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
             },
           }}
@@ -170,7 +171,7 @@ const StatusMenu = (props) => {
             message="No Child Reports Found"
             function={null}
           />
-        ) : (
+        ) : !childrenLoading && !itemsLoading ? (
           <>
             {children.map((child, index) => {
               return (
@@ -190,6 +191,8 @@ const StatusMenu = (props) => {
               );
             })}
           </>
+        ) : (
+          <></>
         )}
 
         {items.length === 0 && !childrenLoading && !itemsLoading ? (
@@ -198,7 +201,7 @@ const StatusMenu = (props) => {
             message="No Item Reports Found"
             function={null}
           />
-        ) : (
+        ) : !childrenLoading && !itemsLoading ? (
           <>
             {items.map((item) => {
               return (
@@ -213,6 +216,8 @@ const StatusMenu = (props) => {
               );
             })}
           </>
+        ) : (
+          <></>
         )}
       </Container>
     </>

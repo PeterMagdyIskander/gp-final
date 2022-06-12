@@ -7,7 +7,7 @@ export default function IconTextCard(props) {
       <CardContent
         variant="outlined"
         sx={{
-          m: "5% 0",
+          m: "2% 0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
