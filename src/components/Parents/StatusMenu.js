@@ -14,41 +14,21 @@ import { gets3file } from "../../AWS/s3logic";
 import MatchedCard from "../Cards/MatchedCard";
 import ItemsCard from "../Cards/ItemsCard";
 import { FiXCircle } from "react-icons/fi";
-
+import { useDispatch } from "react-redux";
 import IconTextCard from "../Cards/IconTextCard";
+import { setItems } from "../../ReduxStore/actions/items";
+import { setChildren } from "../../ReduxStore/actions/children";
 const StatusMenu = (props) => {
-  const [children, setChildren] = useState([]);
+  const dispatch = useDispatch();
+  const [children, setChildrenStatus] = useState([]);
+  const [items, setItemsStatus] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
-  useEffect(() => {
+  useEffect(async () => {
     console.log(props.authedUser);
-    quaryfromdynamodb(
-      "userdata",
-      props.authedUser.email,
-      props.authedUser.jwtToken
-    ).then(async (res) => {
-      let completedStatus = [...res];
-      console.log("abapaaaaaaaa", completedStatus);
-      for (let i = 0; i < completedStatus.length; i++) {
-        let images = await gets3file(
-          completedStatus[i].photos,
-          props.authedUser.jwtToken,
-          "lostchildrenbucket"
-        );
-        let selectedImages = images.map((img) => {
-          return { img, selected: false };
-        });
-        completedStatus[i].photos = selectedImages;
-        completedStatus[i].matches = await Getmatches(
-          completedStatus[i].photos,
-          props.authedUser.jwtToken
-        );
-      }
-
-      setChildren(completedStatus);
-
-      //set items here
+    if (props.items) {
+      setItemsStatus(props.items);
+    } else {
       let completeItems = await quaryfromdynamodbgetitem(
         "itemslostuserdata",
         props.authedUser.email,
@@ -69,10 +49,42 @@ const StatusMenu = (props) => {
         completeItems[i].matches = match;
       }
 
+      dispatch(setItems(completeItems));
       console.log("allITems", completeItems);
-      setItems(completeItems);
-      setLoading(false);
-    });
+      setItemsStatus(completeItems);
+    }
+    if (props.children) {
+      setChildrenStatus(props.children);
+    } else {
+      quaryfromdynamodb(
+        "userdata",
+        props.authedUser.email,
+        props.authedUser.jwtToken
+      ).then(async (res) => {
+        let completedStatus = [...res];
+        console.log("abapaaaaaaaa", completedStatus);
+        for (let i = 0; i < completedStatus.length; i++) {
+          let images = await gets3file(
+            completedStatus[i].photos,
+            props.authedUser.jwtToken,
+            "lostchildrenbucket"
+          );
+          let selectedImages = images.map((img) => {
+            return { img, selected: false };
+          });
+          completedStatus[i].photos = selectedImages;
+          completedStatus[i].matches = await Getmatches(
+            completedStatus[i].photos,
+            props.authedUser.jwtToken
+          );
+        }
+
+        dispatch(setChildren(completedStatus));
+        setChildrenStatus(completedStatus);
+        //set items here
+      });
+    }
+    setLoading(false);
   }, []);
 
   return (
@@ -86,12 +98,29 @@ const StatusMenu = (props) => {
       component="main"
     >
       {loading && (
-        <Skeleton
-          variant="rectangular"
-          height={234}
-          sx={{ borderRadius: "30px" }}
-          animation="wave"
-        />
+        <>
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="20vw"
+            sx={{ borderRadius: "30px" }}
+            animation="wave"
+          />
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="20vw"
+            sx={{ borderRadius: "30px" }}
+            animation="wave"
+          />
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="20vw"
+            sx={{ borderRadius: "30px" }}
+            animation="wave"
+          />
+        </>
       )}
 
       {children.length === 0 && !loading ? (
@@ -121,6 +150,7 @@ const StatusMenu = (props) => {
           })}
         </>
       )}
+      
       {items.length === 0 && !loading ? (
         <IconTextCard
           component={<FiXCircle size={"7vw"} color="red" />}
@@ -141,13 +171,16 @@ const StatusMenu = (props) => {
           })}
         </>
       )}
+
     </Container>
   );
 };
 
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ authedUser, items, children }) {
   return {
     authedUser,
+    items,
+    children,
   };
 }
 export default connect(mapStateToProps)(StatusMenu);

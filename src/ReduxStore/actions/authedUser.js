@@ -1,3 +1,4 @@
+
 export const SET_AUTHED_USER = "SET_AUTHED_USER";
 
 export function setAuthedUser(user) {
@@ -33,24 +34,6 @@ export function runLogoutTimer(dispatch, timer) {
     dispatch(setAuthedUser(null));
   }, timer);
 }
-export function checkAutoLogin(dispatch) {
-  const userDetails = localStorage.getItem("userDetails");
-  let tokenDetails = "";
-  if (userDetails === "null" || !userDetails) return false;
-
-  tokenDetails = JSON.parse(userDetails);
-  console.log(tokenDetails);
-  let expireDate = new Date(tokenDetails.payload.exp * 1000);
-  let todaysDate = new Date().getTime();
-  console.log(todaysDate, expireDate);
-  if (todaysDate > expireDate) return false;
-
-  console.log(tokenDetails);
-  dispatch(setAuthedUser(tokenDetails));
-
-  const timer = expireDate.getTime() - todaysDate;
-  runLogoutTimer(dispatch, timer);
-}
 
 export function isAuthedForRouting(dispatch) {
   const userDetails = localStorage.getItem("userDetails");
@@ -58,12 +41,14 @@ export function isAuthedForRouting(dispatch) {
   if (userDetails === "null" || !userDetails) return false;
 
   tokenDetails = JSON.parse(userDetails);
-  console.log(tokenDetails);
+  console.log("yo", tokenDetails);
   let expireDate = new Date(tokenDetails.payload.exp * 1000);
   let todaysDate = new Date().getTime();
   console.log(todaysDate, expireDate);
   if (todaysDate > expireDate) return false;
 
   dispatch(setAuthedUser(tokenDetails));
+  const timer = expireDate.getTime() - todaysDate;
+  runLogoutTimer(dispatch, timer);
   return true;
 }

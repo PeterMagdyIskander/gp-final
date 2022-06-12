@@ -15,16 +15,9 @@ import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
 import ProfileMenu from "./Parents/ProfileMenu";
-import { useEffect } from "react";
-import { checkAutoLogin } from "../ReduxStore/actions/authedUser";
 import RequireAuth from "./Navigation/RequireAuth";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    checkAutoLogin(dispatch);
-  }, [dispatch]);
-
   return (
     <Fragment>
       <NavBar />

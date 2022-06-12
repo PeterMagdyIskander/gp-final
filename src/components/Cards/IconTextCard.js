@@ -1,20 +1,18 @@
 import React from "react";
 import CardContent from "@mui/material/CardContent";
-import { Container } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function IconTextCard(props) {
   return (
-    <Container component="main" maxWidth="xs">
       <CardContent
         variant="outlined"
         sx={{
-          m: "5% auto",
+          m: "5% 0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-around",
-          boxShadow: 24,
+          boxShadow: 10,
           borderRadius: "30px",
           bgcolor: "#fafafa",
           width: "20vw",
@@ -51,6 +49,5 @@ export default function IconTextCard(props) {
           </>
         )}
       </CardContent>
-    </Container>
   );
 }
