@@ -18,7 +18,9 @@ const ProfileMenu = ({ authedUser }) => {
   };
   const saveChange = () => {
     if (/^(010|011|012|015)[0-9]{8}$/.test(`${newPhone}`)) {
+      sentReq(true);
       //call function
+      sentReq(false);
       setError(false);
       handleCloseModal();
     } else {
@@ -85,6 +87,7 @@ const ProfileMenu = ({ authedUser }) => {
             }}
           />{" "}
           <Button
+            disable={sentReq}
             sx={{
               m: "15px 0",
               borderRadius: "15px",
@@ -102,6 +105,7 @@ const ProfileMenu = ({ authedUser }) => {
             Save Changes
           </Button>
           <Button
+            disable={sentReq}
             sx={{
               m: "15px 0",
               borderRadius: "15px",
