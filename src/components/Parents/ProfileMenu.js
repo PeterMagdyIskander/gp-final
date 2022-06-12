@@ -64,7 +64,7 @@ const ProfileMenu = ({ authedUser }) => {
       </div>
       <div className="row">
         <p className="card-title">Phone Number: {newPhone}</p>
-        <FiEdit style={{ cursor: "pointer" }} onClick={handleOpenModal} />
+        <FiEdit style={{ cursor: "pointer" }}  />
       </div>
       <div className="row">
         <p className="card-title">Email: {authedUser.email}</p>
