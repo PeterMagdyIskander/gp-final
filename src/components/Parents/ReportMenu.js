@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { gets3file, uploadarrtos3, getreportsparent } from "../../AWS/s3logic";
 import { searchforsim } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
@@ -11,14 +11,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ReportItemForm from "../Forms/ReportItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
 import UpdateFetch from "../Loading/UpdateFetch";
-import { additemdb, getfromdynamodb } from "../../AWS/dynamodblogic";
+import {
+  additemdb,
+  getfromdynamodb,
+  quaryfromdynamodb,
+  quaryfromdynamodbgetitem,
+} from "../../AWS/dynamodblogic";
 import { FiUser } from "react-icons/fi";
 import { MdOutlineDevicesOther } from "react-icons/md";
-import ItemsCard from "../Cards/ItemsCard";
 import IconTextCard from "../Cards/IconTextCard";
-
 import { FiXCircle } from "react-icons/fi";
-
+import { setItems } from "../../ReduxStore/actions/items";
+import { setChildren } from "../../ReduxStore/actions/children";
+import { Getmatches } from "../../AWS/getmatches";
 const theme = createTheme();
 const ReportMenu = (props) => {
   const [matches, setMatches] = useState([]);
@@ -27,6 +32,7 @@ const ReportMenu = (props) => {
   const [sendReq, setSendReq] = useState(false);
   const [done, setDone] = useState(false);
   const [selecting, setSelecting] = useState("");
+  const dispatch = useDispatch();
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
@@ -38,8 +44,8 @@ const ReportMenu = (props) => {
     setDone(false);
     setSelecting("");
   };
-  console.log("items form reko", done);
-  console.log("matches", matches);
+
+ 
   return (
     <>
       {sendReq && done && (

@@ -9,9 +9,8 @@ import { Getmatches } from "../../AWS/getmatches";
 
 import StatusCard from "../Cards/StatusCard";
 import Skeleton from "@mui/material/Skeleton";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { gets3file } from "../../AWS/s3logic";
-import MatchedCard from "../Cards/MatchedCard";
 import ItemsCard from "../Cards/ItemsCard";
 import { FiXCircle } from "react-icons/fi";
 import { useDispatch } from "react-redux";
@@ -29,151 +28,191 @@ const StatusMenu = (props) => {
     if (props.items) {
       setItemsStatus(props.items);
     } else {
-      let completeItems = await quaryfromdynamodbgetitem(
-        "itemslostuserdata",
-        props.authedUser.email,
-        props.authedUser.jwtToken
-      );
-      console.log("abadeer item", completeItems);
-
-      for (let i = 0; i < completeItems.length; i++) {
-        //remove the array and add the function to get matches -> if theres a match -> array index of 1
-        //no match array of 0
-        const match = await getfromdynamodb(
-          "itemsfound",
-          completeItems[i].type,
-          completeItems[i].id,
-          props.authedUser.jwtToken
-        );
-
-        completeItems[i].matches = match;
-      }
-
-      dispatch(setItems(completeItems));
-      console.log("allITems", completeItems);
-      setItemsStatus(completeItems);
+      getItems();
     }
     if (props.children) {
       setChildrenStatus(props.children);
     } else {
-      quaryfromdynamodb(
-        "userdata",
-        props.authedUser.email,
-        props.authedUser.jwtToken
-      ).then(async (res) => {
-        let completedStatus = [...res];
-        console.log("abapaaaaaaaa", completedStatus);
-        for (let i = 0; i < completedStatus.length; i++) {
-          let images = await gets3file(
-            completedStatus[i].photos,
-            props.authedUser.jwtToken,
-            "lostchildrenbucket"
-          );
-          let selectedImages = images.map((img) => {
-            return { img, selected: false };
-          });
-          completedStatus[i].photos = selectedImages;
-          completedStatus[i].matches = await Getmatches(
-            completedStatus[i].photos,
-            props.authedUser.jwtToken
-          );
-        }
-
-        dispatch(setChildren(completedStatus));
-        setChildrenStatus(completedStatus);
-        //set items here
-      });
+      getChildren();
     }
     setLoading(false);
   }, [refresh]);
 
+  const getItems = async () => {
+    let completeItems = await quaryfromdynamodbgetitem(
+      "itemslostuserdata",
+      props.authedUser.email,
+      props.authedUser.jwtToken
+    );
+    console.log("abadeer item", completeItems);
+
+    for (let i = 0; i < completeItems.length; i++) {
+      //remove the array and add the function to get matches -> if theres a match -> array index of 1
+      //no match array of 0
+      const match = await getfromdynamodb(
+        "itemsfound",
+        completeItems[i].type,
+        completeItems[i].id,
+        props.authedUser.jwtToken
+      );
+
+      completeItems[i].matches = match;
+    }
+
+    dispatch(setItems(completeItems));
+    setItemsStatus(completeItems);
+  };
+
+  const getChildren = async () => {
+    quaryfromdynamodb(
+      "userdata",
+      props.authedUser.email,
+      props.authedUser.jwtToken
+    ).then(async (res) => {
+      let completedStatus = [...res];
+      console.log("abapaaaaaaaa", completedStatus);
+      for (let i = 0; i < completedStatus.length; i++) {
+        let images = await gets3file(
+          completedStatus[i].photos,
+          props.authedUser.jwtToken,
+          "lostchildrenbucket"
+        );
+        let selectedImages = images.map((img) => {
+          return { img, selected: false };
+        });
+        completedStatus[i].photos = selectedImages;
+        completedStatus[i].matches = await Getmatches(
+          completedStatus[i].photos,
+          props.authedUser.jwtToken
+        );
+      }
+
+      dispatch(setChildren(completedStatus));
+      setChildrenStatus(completedStatus);
+    });
+  };
+  const refreshStatus = async () => {
+    setLoading(true);
+    setChildrenStatus([]);
+    setItemsStatus([]);
+    let x = await getChildren();
+    let y = await getItems();
+    setLoading(false);
+  };
+
   return (
-    <Container
-      sx={{
-        mt: "64px",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-evenly",
-      }}
-      component="main"
-    >
-      {loading && (
-        <>
-          <Skeleton
-            variant="rectangular"
-            height="40vh"
-            width="20vw"
-            sx={{ borderRadius: "30px" }}
-            animation="wave"
-          />
-          <Skeleton
-            variant="rectangular"
-            height="40vh"
-            width="20vw"
-            sx={{ borderRadius: "30px" }}
-            animation="wave"
-          />
-          <Skeleton
-            variant="rectangular"
-            height="40vh"
-            width="20vw"
-            sx={{ borderRadius: "30px" }}
-            animation="wave"
-          />
-        </>
-      )}
+    <>
+      <div className="found-options-container">
+        <Button
+          sx={{
+            textTransform: "none",
+            fontWeight: "100",
+            fontSize: "1.2rem",
+            fontFamily: "Quicksand",
+            borderRadius: "15px",
+            backgroundColor: "red",
+            "&:hover": {
+              color: "red",
+              fontWeight: "600",
+              backgroundColor: "white",
+              padding: "5px 15px",
+              boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+            },
+          }}
+          variant="contained"
+          onClick={refreshStatus}
+          disabled={loading}
+        >
+          Refresh Status
+        </Button>
+      </div>
+      <Container
+        sx={{
+          mt: "64px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
+        }}
+        component="main"
+      >
+        {loading && (
+          <>
+            <Skeleton
+              variant="rectangular"
+              height="40vh"
+              width="20vw"
+              sx={{ borderRadius: "30px" }}
+              animation="wave"
+            />
+            <Skeleton
+              variant="rectangular"
+              height="40vh"
+              width="20vw"
+              sx={{ borderRadius: "30px" }}
+              animation="wave"
+            />
+            <Skeleton
+              variant="rectangular"
+              height="40vh"
+              width="20vw"
+              sx={{ borderRadius: "30px" }}
+              animation="wave"
+            />
+          </>
+        )}
 
-      {children.length === 0 && !loading ? (
-        <IconTextCard
-          component={<FiXCircle size={"7vw"} color="red" />}
-          message="No Child Reports Found"
-          function={null}
-        />
-      ) : (
-        <>
-          {children.map((child, index) => {
-            return (
-              <StatusCard
-                key={index}
-                child={{
-                  imgs: child.photos,
-                  nameOfChild: child.name,
-                  ageOfChild: child.age,
-                  location: child.Location,
-                  status: child.match,
-                  matches: child.matches,
-                }}
-                refresh={refresh}
-                setRefresh={setRefresh}
-              />
-            );
-          })}
-        </>
-      )}
+        {children.length === 0 && !loading ? (
+          <IconTextCard
+            component={<FiXCircle size={"7vw"} color="red" />}
+            message="No Child Reports Found"
+            function={null}
+          />
+        ) : (
+          <>
+            {children.map((child, index) => {
+              return (
+                <StatusCard
+                  key={index}
+                  child={{
+                    imgs: child.photos,
+                    nameOfChild: child.name,
+                    ageOfChild: child.age,
+                    location: child.Location,
+                    status: child.match,
+                    matches: child.matches,
+                  }}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
+              );
+            })}
+          </>
+        )}
 
-      {items.length === 0 && !loading ? (
-        <IconTextCard
-          component={<FiXCircle size={"7vw"} color="red" />}
-          message="No Item Reports Found"
-          function={null}
-        />
-      ) : (
-        <>
-          {items.map((item) => {
-            return (
-              <ItemsCard
-                id={item.id}
-                type={item.type}
-                key={item.id}
-                matches={item.matches}
-                refresh={refresh}
-                setRefresh={setRefresh}
-              />
-            );
-          })}
-        </>
-      )}
-    </Container>
+        {items.length === 0 && !loading ? (
+          <IconTextCard
+            component={<FiXCircle size={"7vw"} color="red" />}
+            message="No Item Reports Found"
+            function={null}
+          />
+        ) : (
+          <>
+            {items.map((item) => {
+              return (
+                <ItemsCard
+                  id={item.id}
+                  type={item.type}
+                  key={item.id}
+                  matches={item.matches}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
+              );
+            })}
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 
