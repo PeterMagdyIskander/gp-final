@@ -225,8 +225,17 @@ Circles {
     cursor: pointer;
 }
 
+.row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    border-radius: 30px;
+    margin: 15px;
+    padding: 15px;
+}
+
 .row:hover {
-    background-color: #aaa;
+    background-color: #eee;
 }
 
 .found-child-img {
@@ -274,6 +283,10 @@ styling for selected image
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.col {
+    flex-direction: column;
 }
 
 @media (max-width: 600px) {

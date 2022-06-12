@@ -78,6 +78,9 @@ const BurgerMenu = (props) => {
               <NavLink to="/Report" onClick={() => closeDrawer()}>
                 Report
               </NavLink>
+              <NavLink to="/Profile" onClick={() => closeDrawer()}>
+                Profile
+              </NavLink>
               <NavLink to="/" onClick={signOut}>
                 Sign out
               </NavLink>

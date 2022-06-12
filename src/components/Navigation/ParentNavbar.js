@@ -14,6 +14,7 @@ const OwnerNavbar = (props) => {
     <nav className="flex sub-navbar">
       <NavLink to="/Status">Status</NavLink>
       <NavLink to="/Report">Report</NavLink>
+      <NavLink to="/Profile">Profile</NavLink>
       <NavLink to="/" onClick={signOut}>
         Sign out
       </NavLink>
