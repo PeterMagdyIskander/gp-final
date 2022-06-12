@@ -251,6 +251,8 @@ export async function uploadarrtos3passerby(
   filename,
   Bucket
 ) {
+  const picname=convertstringtoascii(filename);
+  console.log("called file",file);
   const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -258,28 +260,34 @@ export async function uploadarrtos3passerby(
       identityPoolId: identitypoolid,
     }),
   });
+  for (let i = 0; i < file.length; i++) 
+  {
+    const uploadParams = {
+      Bucket: Bucket,
+      Key: picname+i,
+      Body: file[i],
+      Metadata: {
+        name: name,
+        lng: lng.toString(),
+        lat: lat.toString(),
+        phoneNumber: phoneNumber.toString(),
+        writenaddress: address,
+      },
+    };
+    console.log(uploadParams);
+    try {
+      const data = await s3.send(new PutObjectCommand(uploadParams));
+      console.log("Success", data);
+       
+    } catch (err) {
+     
+      console.log("Error", err);
+    }
 
-  const uploadParams = {
-    Bucket: Bucket,
-    Key: filename,
-    Body: file,
-    Metadata: {
-      name: name,
-      lng: lng.toString(),
-      lat: lat.toString(),
-      phoneNumber: phoneNumber.toString(),
-      writenaddress: address,
-    },
-  };
-  console.log(uploadParams);
-  try {
-    const data = await s3.send(new PutObjectCommand(uploadParams));
-    console.log("Success", data);
-    return data; // For unit tests.
-  } catch (err) {
-    return null;
-    console.log("Error", err);
   }
+  return true;
+
+  
 }
 export async function gets3filepasserby(id, Bucket) {
   const s3 = new S3({

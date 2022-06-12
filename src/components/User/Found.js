@@ -125,7 +125,7 @@ const Found = (props) => {
                   uploadToS3: {
                     reqFunction: uploadarrtos3passerby,
                     params: [
-                      files[0],
+                      files,
                       data.coordinates.lat,
                       data.coordinates.lng,
                       data.address,
