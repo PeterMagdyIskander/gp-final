@@ -17,6 +17,8 @@ import {
 } from "../../AWS/dynamodblogic";
 import { setItems } from "../../ReduxStore/actions/items";
 import CircularComponent from "../Loading/CircularComponent";
+import { toast, ToastContainer } from "react-toastify";
+
 function ItemsCard(props) {
   const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
@@ -29,88 +31,70 @@ function ItemsCard(props) {
 
   const [newId, setNewId] = useState(props.id);
   const [sentReq, setSentReq] = useState(false);
-  const [success, setSuccess] = useState("false");
   const deleteItem = async () => {
     setSentReq(true);
-    const x = await deleteitem(
+    const response = await toast.promise(
+      deleteitem(
+        props.id,
+        props.authedUser.email,
+        props.authedUser.jwtToken,
+        props.type
+      ),
+      {
+        pending: "Deleting Item",
+        success: "Item Deleted Successfully",
+        error: "Deletion Failed",
+      }
+    );
+    if (response.$metadata.httpStatusCode === 200) {
+      let newItemsArr = props.items.filter((item) => item.id !== props.id);
+      dispatch(setItems(newItemsArr));
+      props.setRefresh(!props.refresh);
+    }
+    setSentReq(false);
+  };
+  const editItem = new Promise( (resolve, reject) =>{
+    deleteitem(
       props.id,
       props.authedUser.email,
       props.authedUser.jwtToken,
       props.type
-    );
-    if (x.$metadata.httpStatusCode === 200) {
-      let completeItems = await quaryfromdynamodbgetitem(
-        "itemslostuserdata",
-        props.authedUser.email,
-        props.authedUser.jwtToken
-      );
-      console.log("abadeer item", completeItems);
-
-      for (let i = 0; i < completeItems.length; i++) {
-        //remove the array and add the function to get matches -> if theres a match -> array index of 1
-        //no match array of 0
-        const match = await getfromdynamodb(
-          "itemsfound",
-          completeItems[i].type,
-          completeItems[i].id,
+    )
+      .then(
+        additemdb(
+          props.type,
+          newId,
+          props.authedUser.phoneNumber,
+          props.authedUser.email,
           props.authedUser.jwtToken
-        );
-
-        completeItems[i].matches = match;
-      }
-
-      setSuccess("true");
-      dispatch(setItems(completeItems));
-      props.setRefresh(!props.refresh);
-      setSentReq(false);
-    }
-  };
+        )
+          .then(resolve(true))
+          .catch(reject(false))
+      )
+      .catch(reject(false));
+  });
   const saveChange = async () => {
     setSentReq(true);
-    //handle save here
-    //oldId= props.id;
-    //newId = newId
-    //jwt = props.authedUser.jwtToken
-    const x = await deleteitem(
-      props.id,
-      props.authedUser.email,
-      props.authedUser.jwtToken,
-      props.type
-    );
-    const y = await additemdb(
-      props.type,
-      newId,
-      props.authedUser.phoneNumber,
-      props.authedUser.email,
-      props.authedUser.jwtToken
-    );
-    if (x.$metadata.httpStatusCode === 200 && y) {
-      let completeItems = await quaryfromdynamodbgetitem(
-        "itemslostuserdata",
-        props.authedUser.email,
-        props.authedUser.jwtToken
-      );
-      console.log("abadeer item", completeItems);
-
-      for (let i = 0; i < completeItems.length; i++) {
-        //remove the array and add the function to get matches -> if theres a match -> array index of 1
-        //no match array of 0
-        const match = await getfromdynamodb(
-          "itemsfound",
-          completeItems[i].type,
-          completeItems[i].id,
-          props.authedUser.jwtToken
-        );
-
-        completeItems[i].matches = match;
+    console.log(editItem());
+    const response = await toast.promise(editItem, {
+      pending: "Editing Item",
+      success: "Item Edited Successfully",
+      error: "Editing Failed",
+    });
+    console.log(response);
+    if (response) {
+      let newItemsArr = props.items;
+      console.log(newItemsArr);
+      for (let i = 0; i < newItemsArr.length; i++) {
+        if (newItemsArr[i].id === props.id) {
+          newItemsArr[i].id = newId;
+        }
       }
 
-      setSuccess("true");
-      dispatch(setItems(completeItems));
+      dispatch(setItems(newItemsArr));
       props.setRefresh(!props.refresh);
-      setSentReq(false);
     }
-    setSuccess("false");
+    setSentReq(false);
   };
   const handleChangeId = (e) => {
     setNewId(e.target.value);
@@ -168,32 +152,22 @@ function ItemsCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleInfo}>
-          {sentReq ? (
-            <CircularComponent
-              loading={true}
-              success={success}
-              number={"!"}
-              message={{
-                success: "Success",
-                fail: "Failed",
-                pending: "Editing",
-              }}
-            />
-          ) : (
-            <>
-              <h1>New ID</h1>
-              <TextField
-                type="text"
-                label="New ID"
-                value={newId}
-                onChange={(e) => {
-                  handleChangeId(e);
-                }}
-              />
-              <Button onClick={deleteItem}>Delete Item</Button>
-              <Button onClick={saveChange}>Save Changes</Button>
-            </>
-          )}
+          <h1>New ID</h1>
+          <TextField
+            type="text"
+            label="New ID"
+            value={newId}
+            onChange={(e) => {
+              handleChangeId(e);
+            }}
+          />
+          <Button onClick={deleteItem} disabled={sentReq}>
+            Delete Item
+          </Button>
+          <Button onClick={saveChange} disabled={sentReq}>
+            Save Changes
+          </Button>
+          )
         </Box>
       </Modal>
       <Modal
@@ -248,12 +222,14 @@ function ItemsCard(props) {
           )}
         </Box>
       </Modal>
+      <ToastContainer />
     </>
   );
 }
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ authedUser, items }) {
   return {
     authedUser,
+    items,
   };
 }
 export default connect(mapStateToProps)(ItemsCard);
