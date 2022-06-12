@@ -53,29 +53,28 @@ function ItemsCard(props) {
     }
     setSentReq(false);
   };
-  const editItem = new Promise( (resolve, reject) =>{
-    deleteitem(
+  const editItem = async () => {
+    const x = await deleteitem(
       props.id,
       props.authedUser.email,
       props.authedUser.jwtToken,
       props.type
-    )
-      .then(
-        additemdb(
-          props.type,
-          newId,
-          props.authedUser.phoneNumber,
-          props.authedUser.email,
-          props.authedUser.jwtToken
-        )
-          .then(resolve(true))
-          .catch(reject(false))
-      )
-      .catch(reject(false));
-  });
+    );
+    const y = await additemdb(
+      props.type,
+      newId,
+      props.authedUser.phoneNumber,
+      props.authedUser.email,
+      props.authedUser.jwtToken
+    );
+    if(x.$metadata.httpStatusCode === 200 && y){
+      return true;
+    }else{
+      return false;
+    }
+  }
   const saveChange = async () => {
     setSentReq(true);
-    console.log(editItem());
     const response = await toast.promise(editItem, {
       pending: "Editing Item",
       success: "Item Edited Successfully",
@@ -222,7 +221,7 @@ function ItemsCard(props) {
           )}
         </Box>
       </Modal>
-      <ToastContainer />
+      <ToastContainer limit={1} />
     </>
   );
 }
