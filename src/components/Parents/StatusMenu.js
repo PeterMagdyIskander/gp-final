@@ -22,7 +22,8 @@ const StatusMenu = (props) => {
   const [children, setChildrenStatus] = useState([]);
   const [items, setItemsStatus] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [childrenLoading, setChildrenLoading] = useState(true);
+  const [itemsLoading, setItemsLoading] = useState(true);
   useEffect(async () => {
     console.log(props.authedUser);
     if (props.items) {
@@ -35,7 +36,6 @@ const StatusMenu = (props) => {
     } else {
       getChildren();
     }
-    setLoading(false);
   }, [refresh]);
 
   const getItems = async () => {
@@ -61,6 +61,7 @@ const StatusMenu = (props) => {
 
     dispatch(setItems(completeItems));
     setItemsStatus(completeItems);
+    setItemsLoading(false);
   };
 
   const getChildren = async () => {
@@ -89,15 +90,17 @@ const StatusMenu = (props) => {
 
       dispatch(setChildren(completedStatus));
       setChildrenStatus(completedStatus);
+      setChildrenLoading(false);
     });
   };
+
   const refreshStatus = async () => {
-    setLoading(true);
+    setChildrenLoading(true);
+    setItemsLoading(true);
     setChildrenStatus([]);
     setItemsStatus([]);
     let x = await getChildren();
     let y = await getItems();
-    setLoading(false);
   };
 
   return (
@@ -121,7 +124,7 @@ const StatusMenu = (props) => {
           }}
           variant="contained"
           onClick={refreshStatus}
-          disabled={loading}
+          disabled={itemsLoading || childrenLoading}
         >
           Refresh Status
         </Button>
@@ -135,7 +138,7 @@ const StatusMenu = (props) => {
         }}
         component="main"
       >
-        {loading && (
+        {(childrenLoading || itemsLoading) && (
           <>
             <Skeleton
               variant="rectangular"
@@ -161,7 +164,7 @@ const StatusMenu = (props) => {
           </>
         )}
 
-        {children.length === 0 && !loading ? (
+        {children.length === 0 && !childrenLoading && !itemsLoading ? (
           <IconTextCard
             component={<FiXCircle size={"7vw"} color="red" />}
             message="No Child Reports Found"
@@ -189,7 +192,7 @@ const StatusMenu = (props) => {
           </>
         )}
 
-        {items.length === 0 && !loading ? (
+        {items.length === 0 && !childrenLoading && !itemsLoading ? (
           <IconTextCard
             component={<FiXCircle size={"7vw"} color="red" />}
             message="No Item Reports Found"
