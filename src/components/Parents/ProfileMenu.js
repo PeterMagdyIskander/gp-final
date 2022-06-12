@@ -71,7 +71,7 @@ const ProfileMenu = ({ authedUser }) => {
       </div>
       <Modal
         open={open}
-        onClose={handleOpenModal}
+        onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
