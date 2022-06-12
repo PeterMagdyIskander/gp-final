@@ -21,6 +21,7 @@ import GenericStatusCard from "./GenericStatusCard";
 import IconTextCard from "../Cards/IconTextCard";
 import { setChildren } from "../../ReduxStore/actions/children";
 import CircularComponent from "../Loading/CircularComponent";
+import { toast, ToastContainer } from "react-toastify";
 const StatusCard = (props) => {
   const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
@@ -35,7 +36,6 @@ const StatusCard = (props) => {
   const [imgs, setImages] = useState(props.child.imgs);
 
   const [sentReq, setSentReq] = useState(false);
-  const [success, setSuccess] = useState("false");
   const styleInfo = {
     position: "absolute",
     top: "50%",
@@ -77,10 +77,17 @@ const StatusCard = (props) => {
   };
   const handleRemoveChild = async () => {
     setSentReq(true);
-    let success = await Deleteobjects(
-      props.authedUser.jwtToken,
-      props.child.imgs,
-      "lostchildrenbucket"
+    let success = await toast.promise(
+      Deleteobjects(
+        props.authedUser.jwtToken,
+        props.child.imgs,
+        "lostchildrenbucket"
+      ),
+      {
+        pending: "Deleting Report",
+        success: "Report Deleted Successfully",
+        error: "Deletion Failed",
+      }
     );
     if (success) {
       let newChildArr = props.children.filter(
@@ -92,12 +99,10 @@ const StatusCard = (props) => {
             )
           )
       );
-      setSuccess("true");
       dispatch(setChildren(newChildArr));
-      props.setRefresh(!props.refresh);
-      setSentReq(false);
     }
-    handleCloseInfoModal();
+    setSentReq(false);
+    props.setRefresh(!props.refresh);
   };
   const handleEditing = () => {
     console.log(props.child.imgs);
@@ -169,6 +174,7 @@ const StatusCard = (props) => {
         handleOpenMatchesModal={handleOpenMatchesModal}
         handleOpenInfoModal={handleOpenInfoModal}
       />
+      <ToastContainer limit={1} />
       <Modal
         open={openInfo}
         onClose={handleCloseInfoModal}
@@ -176,113 +182,91 @@ const StatusCard = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleInfo}>
-          {sentReq ? (
-            <CircularComponent
-              loading={true}
-              success={success}
-              number={"!"}
-              message={{
-                success: "Success",
-                fail: "Failed",
-                pending: "Deleting",
-              }}
-            />
-          ) : (
-            <>
-              <Typography id="modal-modal-title" variant="h4" component="h2">
-                Child Info
-              </Typography>
-              <ImageList
-                sx={{ width: 620, height: 405 }}
-                cols={3}
-                rowHeight={200}
-              >
-                {imgs.map((img, index) => (
-                  <ImageListItem key={index}>
-                    <SelectedImg key={index} img={img} editable={editing} />
-                  </ImageListItem>
-                ))}
-              </ImageList>
+          <Typography id="modal-modal-title" variant="h4" component="h2">
+            Child Info
+          </Typography>
+          <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+            {imgs.map((img, index) => (
+              <ImageListItem key={index}>
+                <SelectedImg key={index} img={img} editable={editing} />
+              </ImageListItem>
+            ))}
+          </ImageList>
+          <div className="flex flex-space-between">
+            <Button component="label" disabled={imgs.length === 10 || !editing}>
+              Add Images
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => onFileUpload(e)}
+                multiple
+                required
+                hidden
+              />
+            </Button>
+            <Button onClick={handleRemove} disabled={!editing}>
+              Remove Images
+            </Button>
+          </div>
+          <List
+            sx={{
+              width: "100%",
+              maxWidth: 360,
+              bgcolor: "background.paper",
+            }}
+          >
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <FiUser size={28} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Name:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.nameOfChild}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            {!editing && <Divider variant="inset" component="li" />}
 
-              <div className="flex flex-space-between">
-                <Button
-                  component="label"
-                  disabled={imgs.length === 10 || !editing}
-                >
-                  Add Images
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => onFileUpload(e)}
-                    multiple
-                    required
-                    hidden
-                  />
-                </Button>
-                <Button onClick={handleRemove} disabled={!editing}>
-                  Remove Images
-                </Button>
-              </div>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <FiMapPin size={28} />
+              </ListItemAvatar>
 
-              <List
-                sx={{
-                  width: "100%",
-                  maxWidth: 360,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <FiUser size={28} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Name:"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {props.child.nameOfChild}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                {!editing && <Divider variant="inset" component="li" />}
-
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <FiMapPin size={28} />
-                  </ListItemAvatar>
-
-                  <ListItemText
-                    primary="Location:"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {props.child.location}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-              </List>
-              <div className="flex flex-space-between">
-                <Button onClick={handleRemoveChild}>Remove Report</Button>
-                <Button onClick={handleEditing}>
-                  {editing ? "Save Changes" : "Enable Editting"}
-                </Button>
-              </div>
-            </>
-          )}
+              <ListItemText
+                primary="Location:"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {props.child.location}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </List>
+          <div className="flex flex-space-between">
+            <Button onClick={handleRemoveChild} disabled={sentReq}>
+              Remove Report
+            </Button>
+            <Button onClick={handleEditing} disabled={sentReq}>
+              {editing ? "Save Changes" : "Enable Editting"}
+            </Button>
+          </div>
         </Box>
       </Modal>
 

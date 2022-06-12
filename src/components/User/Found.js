@@ -15,7 +15,7 @@ import {
 import FoundForm from "../Forms/FoundForm";
 import MatchedCard from "../Cards/MatchedCard";
 import UpdateRekoFetch from "../Loading/UpdateRekoFetch";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FoundItemForm from "../Forms/FoundItemForm";
 import MatchedDetailsMenu from "../Cards/MatchedDetailsMenu";
@@ -39,9 +39,42 @@ const Found = (props) => {
   const handleSelect = (selecting) => {
     setSelecting(selecting);
   };
+  const reset = () => {
+    setMatches([]);
+    setFile([]);
+    setData({});
+    setSendReq(false);
+    setDone(false);
+    setSelecting("");
+  };
   console.log("items form reko", done);
   return (
     <>
+      {sendReq && done && (
+        <div className="found-options-container">
+          <Button
+            sx={{
+              textTransform: "none",
+              fontWeight: "100",
+              fontSize: "1.2rem",
+              fontFamily: "Quicksand",
+              borderRadius: "15px",
+              backgroundColor: "red",
+              "&:hover": {
+                color: "red",
+                fontWeight: "600",
+                backgroundColor: "white",
+                padding: "5px 15px",
+                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+              },
+            }}
+            variant="contained"
+            onClick={reset}
+          >
+            Make Another Report
+          </Button>
+        </div>
+      )}
       {selecting === "" && (
         <div className="found-options-container">
           <IconTextCard
@@ -70,11 +103,13 @@ const Found = (props) => {
 
       <div>
         {matches.length === 0 && done && (
-          <IconTextCard
-            component={<FiXCircle size={"7vw"} color="red" />}
-            message="No Matches Found"
-            function={null}
-          />
+          <div className="found-options-container">
+            <IconTextCard
+              component={<FiXCircle size={"7vw"} color="red" />}
+              message="No Matches Found"
+              function={null}
+            />
+          </div>
         )}
 
         {/* IF THERE ARE MATCHES */}

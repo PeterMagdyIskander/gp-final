@@ -16,7 +16,6 @@ import {
   getfromdynamodb,
 } from "../../AWS/dynamodblogic";
 import { setItems } from "../../ReduxStore/actions/items";
-import CircularComponent from "../Loading/CircularComponent";
 import { toast, ToastContainer } from "react-toastify";
 
 function ItemsCard(props) {
@@ -49,9 +48,9 @@ function ItemsCard(props) {
     if (response.$metadata.httpStatusCode === 200) {
       let newItemsArr = props.items.filter((item) => item.id !== props.id);
       dispatch(setItems(newItemsArr));
-      props.setRefresh(!props.refresh);
     }
     setSentReq(false);
+    props.setRefresh(!props.refresh);
   };
   const editItem = async () => {
     const x = await deleteitem(
@@ -67,12 +66,12 @@ function ItemsCard(props) {
       props.authedUser.email,
       props.authedUser.jwtToken
     );
-    if(x.$metadata.httpStatusCode === 200 && y){
+    if (x.$metadata.httpStatusCode === 200 && y) {
       return true;
-    }else{
+    } else {
       return false;
     }
-  }
+  };
   const saveChange = async () => {
     setSentReq(true);
     const response = await toast.promise(editItem, {
@@ -91,9 +90,9 @@ function ItemsCard(props) {
       }
 
       dispatch(setItems(newItemsArr));
-      props.setRefresh(!props.refresh);
     }
     setSentReq(false);
+    props.setRefresh(!props.refresh);
   };
   const handleChangeId = (e) => {
     setNewId(e.target.value);
