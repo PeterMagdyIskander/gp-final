@@ -6,12 +6,19 @@ import { FiXCircle } from "react-icons/fi";
 import { useState } from "react";
 import { Box, Button, Input, TextField } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { additemdb, deleteitem } from "../../AWS/dynamodblogic";
 import IconTextCard from "../Cards/IconTextCard";
 import GenericStatusCard from "./GenericStatusCard";
+import {
+  quaryfromdynamodb,
+  quaryfromdynamodbgetitem,
+  getfromdynamodb,
+} from "../../AWS/dynamodblogic";
+import { setItems } from "../../ReduxStore/actions/items";
+import CircularComponent from "../Loading/CircularComponent";
 function ItemsCard(props) {
-  let iconSize = 24;
+  const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
   const handleOpenInfoModal = () => setOpenInfo(true);
   const handleCloseInfoModal = () => setOpenInfo(false);
@@ -21,7 +28,45 @@ function ItemsCard(props) {
   const handleCloseMatchesModal = () => setOpenMatches(false);
 
   const [newId, setNewId] = useState(props.id);
+  const [sentReq, setSentReq] = useState(false);
+  const [success, setSuccess] = useState("false");
+  const deleteItem = async () => {
+    setSentReq(true);
+    const x = await deleteitem(
+      props.id,
+      props.authedUser.email,
+      props.authedUser.jwtToken,
+      props.type
+    );
+    if (x.$metadata.httpStatusCode === 200) {
+      let completeItems = await quaryfromdynamodbgetitem(
+        "itemslostuserdata",
+        props.authedUser.email,
+        props.authedUser.jwtToken
+      );
+      console.log("abadeer item", completeItems);
+
+      for (let i = 0; i < completeItems.length; i++) {
+        //remove the array and add the function to get matches -> if theres a match -> array index of 1
+        //no match array of 0
+        const match = await getfromdynamodb(
+          "itemsfound",
+          completeItems[i].type,
+          completeItems[i].id,
+          props.authedUser.jwtToken
+        );
+
+        completeItems[i].matches = match;
+      }
+
+      setSuccess("true");
+      dispatch(setItems(completeItems));
+      props.setRefresh(!props.refresh);
+      setSentReq(false);
+    }
+  };
   const saveChange = async () => {
+    setSentReq(true);
     //handle save here
     //oldId= props.id;
     //newId = newId
@@ -39,7 +84,33 @@ function ItemsCard(props) {
       props.authedUser.email,
       props.authedUser.jwtToken
     );
-    handleCloseInfoModal();
+    if (x.$metadata.httpStatusCode === 200 && y) {
+      let completeItems = await quaryfromdynamodbgetitem(
+        "itemslostuserdata",
+        props.authedUser.email,
+        props.authedUser.jwtToken
+      );
+      console.log("abadeer item", completeItems);
+
+      for (let i = 0; i < completeItems.length; i++) {
+        //remove the array and add the function to get matches -> if theres a match -> array index of 1
+        //no match array of 0
+        const match = await getfromdynamodb(
+          "itemsfound",
+          completeItems[i].type,
+          completeItems[i].id,
+          props.authedUser.jwtToken
+        );
+
+        completeItems[i].matches = match;
+      }
+
+      setSuccess("true");
+      dispatch(setItems(completeItems));
+      props.setRefresh(!props.refresh);
+      setSentReq(false);
+    }
+    setSuccess("false");
   };
   const handleChangeId = (e) => {
     setNewId(e.target.value);
@@ -97,16 +168,32 @@ function ItemsCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleInfo}>
-          <h1>New ID</h1>
-          <TextField
-            type="text"
-            label="New ID"
-            value={newId}
-            onChange={(e) => {
-              handleChangeId(e);
-            }}
-          />
-          <Button onClick={saveChange}>Save Changes</Button>
+          {sentReq ? (
+            <CircularComponent
+              loading={true}
+              success={success}
+              number={"!"}
+              message={{
+                success: "Success",
+                fail: "Failed",
+                pending: "Editing",
+              }}
+            />
+          ) : (
+            <>
+              <h1>New ID</h1>
+              <TextField
+                type="text"
+                label="New ID"
+                value={newId}
+                onChange={(e) => {
+                  handleChangeId(e);
+                }}
+              />
+              <Button onClick={deleteItem}>Delete Item</Button>
+              <Button onClick={saveChange}>Save Changes</Button>
+            </>
+          )}
         </Box>
       </Modal>
       <Modal

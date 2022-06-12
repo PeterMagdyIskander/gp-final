@@ -85,7 +85,7 @@ const StatusMenu = (props) => {
       });
     }
     setLoading(false);
-  }, []);
+  }, [refresh]);
 
   return (
     <Container
@@ -143,14 +143,14 @@ const StatusMenu = (props) => {
                   status: child.match,
                   matches: child.matches,
                 }}
-                refresh={setRefresh}
-                loading={setLoading}
+                refresh={refresh}
+                setRefresh={setRefresh}
               />
             );
           })}
         </>
       )}
-      
+
       {items.length === 0 && !loading ? (
         <IconTextCard
           component={<FiXCircle size={"7vw"} color="red" />}
@@ -166,12 +166,13 @@ const StatusMenu = (props) => {
                 type={item.type}
                 key={item.id}
                 matches={item.matches}
+                refresh={refresh}
+                setRefresh={setRefresh}
               />
             );
           })}
         </>
       )}
-
     </Container>
   );
 };

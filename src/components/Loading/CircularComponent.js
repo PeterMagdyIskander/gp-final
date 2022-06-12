@@ -18,6 +18,7 @@ function CircularComponent(props) {
   useEffect(() => {
     if (props.success === "true") setLoading(false);
   }, [props.success,props.loading]);
+  
   useEffect(() => {
     setLoading(props.loading);
   }, [props.loading]);
