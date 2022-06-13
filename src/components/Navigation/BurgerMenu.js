@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Box,
-} from "@mui/material";
-import { NavLink, Link } from "react-router-dom";
-import Divider from "@mui/material/Divider";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Drawer, Box } from "@mui/material";
+import { NavLink } from "react-router-dom";
 import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
+import { setChildren } from "../../ReduxStore/actions/children";
+import { setItems } from "../../ReduxStore/actions/items";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiX, FiMenu } from "react-icons/fi";
@@ -22,7 +14,8 @@ const BurgerMenu = (props) => {
     console.log("Successufully Signed out");
 
     dispatch(setAuthedUser(null));
-    navigate("/signin");
+    dispatch(setChildren(null));
+    dispatch(setItems(null));
     closeDrawer();
   };
   const closeDrawer = () => {

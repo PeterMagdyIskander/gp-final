@@ -27,6 +27,7 @@ import { FiXCircle } from "react-icons/fi";
 import ItemsCard from "../Cards/ItemsCard";
 import { FiUser } from "react-icons/fi";
 import { MdOutlineDevicesOther } from "react-icons/md";
+import MatchedItemsCard from "../Cards/MatchedItemsCard";
 const theme = createTheme();
 const Found = (props) => {
   const [matches, setMatches] = useState([]);
@@ -47,7 +48,7 @@ const Found = (props) => {
     setDone(false);
     setSelecting("");
   };
-  console.log("items form reko", done);
+  console.log("items form item form", data);
   return (
     <>
       {sendReq && done && (
@@ -129,8 +130,9 @@ const Found = (props) => {
             >
               {matches.map((item) => {
                 return (
-                  <IconTextCard
-                    message={item.id}
+                  <MatchedItemsCard
+                    item={item}
+                    found={true}
                     component={
                       item.type === "car" ? (
                         <FaCar size="7vw" />
@@ -193,8 +195,8 @@ const Found = (props) => {
                       data.id,
                       data.reporterPhone.toString(),
                       data.address,
-                      "32",
-                      "21",
+                      data.lat,
+                      data.lng,
                     ],
                   },
                   getreports: {

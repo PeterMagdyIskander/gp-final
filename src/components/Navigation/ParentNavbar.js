@@ -1,13 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router";
+import { setChildren } from "../../ReduxStore/actions/children";
+import { setItems } from "../../ReduxStore/actions/items";
 import "../../styles/app.css";
 const OwnerNavbar = (props) => {
   const { dispatch } = props;
   const signOut = () => {
     console.log("Successufully Signed out");
     dispatch(setAuthedUser(null));
+    
+    dispatch(setChildren(null));
+    dispatch(setItems(null));
   };
 
   return (

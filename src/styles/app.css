@@ -433,6 +433,9 @@ NEW START
     align-items: center;
 }
 
+.sml-gap{
+    gap:10px;
+}
 /* 
 
 .innerYellow {

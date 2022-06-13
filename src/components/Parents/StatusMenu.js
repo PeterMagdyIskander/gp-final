@@ -210,6 +210,7 @@ const StatusMenu = (props) => {
                   type={item.type}
                   key={item.id}
                   matches={item.matches}
+                  item={item}
                   refresh={refresh}
                   setRefresh={setRefresh}
                 />

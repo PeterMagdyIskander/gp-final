@@ -17,12 +17,13 @@ function CircularComponent(props) {
   const [loading, setLoading] = useState(props.loading);
   useEffect(() => {
     if (props.success === "true") setLoading(false);
+    
   }, [props.success,props.loading]);
   
   useEffect(() => {
     setLoading(props.loading);
   }, [props.loading]);
-
+  console.log(loading,props.number)
   return (
     <Box
       sx={{

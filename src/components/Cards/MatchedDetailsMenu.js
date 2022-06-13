@@ -2,7 +2,8 @@ import React from "react";
 import { Box } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { FiPhone, FiMapPin, FiMap } from "react-icons/fi";
+import { FiPhoneCall, FiMapPin, FiMap } from "react-icons/fi";
+import { BsPinFill} from "react-icons/bs";
 import MatchedCard from "./MatchedCard";
 import { useState } from "react";
 export default function MatchedDetailsMenu(props) {
@@ -64,7 +65,7 @@ export default function MatchedDetailsMenu(props) {
           ))}
         </ImageList>
         <div className="flex big-gap">
-          <FiPhone />
+          <FiPhoneCall />
           <p>
             {" "}
             Please Call{" "}
@@ -79,7 +80,7 @@ export default function MatchedDetailsMenu(props) {
             {" "}
             Written Address{" "}
             {selectedMatch.metadata.writenaddress === ""
-              ? "Not Entered"
+              ? "Not Written Address Entered"
               : selectedMatch.metadata.writenaddress}
           </p>
         </div>

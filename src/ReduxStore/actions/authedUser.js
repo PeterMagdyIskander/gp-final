@@ -1,6 +1,7 @@
 
+import { setChildren } from "./children";
+import { setItems } from "./items";
 export const SET_AUTHED_USER = "SET_AUTHED_USER";
-
 export function setAuthedUser(user) {
   saveTokenInLocalStorage(user);
   let authedUser;
@@ -32,6 +33,8 @@ export function runLogoutTimer(dispatch, timer) {
   setTimeout(() => {
     localStorage.removeItem("userDetails");
     dispatch(setAuthedUser(null));
+    dispatch(setChildren(null));
+    dispatch(setItems(null));
   }, timer);
 }
 

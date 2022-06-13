@@ -17,6 +17,7 @@ import {
 } from "../../AWS/dynamodblogic";
 import { setItems } from "../../ReduxStore/actions/items";
 import { toast, ToastContainer } from "react-toastify";
+import MatchedItemsCard from "./MatchedItemsCard";
 
 function ItemsCard(props) {
   const dispatch = useDispatch();
@@ -123,17 +124,17 @@ function ItemsCard(props) {
     justifyContent: "space-between",
   };
   const styleMatch = {
+    borderRadius: "30px",
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "30%",
-    height: "60%",
+    width: "fit-content",
+    height: "fit-content",
     overflowY: "auto",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
   };
   console.log("matches", props);
   return (
@@ -223,37 +224,23 @@ function ItemsCard(props) {
             />
           ) : (
             <>
-              {props.matches.map((match, index) => {
+              {props.matches.map((item) => {
                 return (
-                  <CardContent
-                    key={index}
-                    variant="outlined"
-                    sx={{
-                      mt: "5%",
-                      mb: "5%",
-                      boxShadow: 10,
-                      borderRadius: "30px",
-                      bgcolor: "#fafafa",
-                      width: "232px",
-                      height: "283.6px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-around",
-                      ml: "auto",
-                      mr: "auto",
-                    }}
-                  >
-                    {match.type === "car" ? (
-                      <FaCar size={72} />
-                    ) : match.type === "wallet" ? (
-                      <FaWallet size={72} />
-                    ) : (
-                      <MdOutlineDevicesOther size={72} />
-                    )}
-                    <h2 style={{ textAlign: "center" }}>{match.phone}</h2>
-                    <h2 style={{ textAlign: "center" }}>{match.address}</h2>
-                  </CardContent>
+                  <MatchedItemsCard
+                     item={item}
+                    found={false}
+                      component={
+                      item.type === "car" ? (
+                        <FaCar size="7vw" />
+                      ) : props.type === "wallet" ? (
+                        <FaWallet size="7vw" />
+                      ) : (
+                        <MdOutlineDevicesOther size="7vw" />
+                      )
+                    }
+                    key={item.id}
+                    function={null}
+                  />
                 );
               })}
             </>

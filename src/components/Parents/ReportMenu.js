@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { gets3file, uploadarrtos3, getreportsparent } from "../../AWS/s3logic";
-import { searchforsim,searchforsimasciihandeled } from "../../AWS/rekognitionlogic";
+import {
+  searchforsim,
+  searchforsimasciihandeled,
+} from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 import { FaCar, FaWallet } from "react-icons/fa";
 import MatchedCard from "../Cards/MatchedCard";
@@ -24,6 +27,7 @@ import { FiXCircle } from "react-icons/fi";
 import { setItems } from "../../ReduxStore/actions/items";
 import { setChildren } from "../../ReduxStore/actions/children";
 import { Getmatches } from "../../AWS/getmatches";
+import MatchedItemsCard from "../Cards/MatchedItemsCard";
 const theme = createTheme();
 const ReportMenu = (props) => {
   const [matches, setMatches] = useState([]);
@@ -45,7 +49,6 @@ const ReportMenu = (props) => {
     setSelecting("");
   };
 
- 
   return (
     <>
       {sendReq && done && (
@@ -127,8 +130,9 @@ const ReportMenu = (props) => {
             >
               {matches.map((item) => {
                 return (
-                  <IconTextCard
-                    message={item.id}
+                  <MatchedItemsCard
+                    item={item}
+                    found={false}
                     component={
                       item.type === "car" ? (
                         <FaCar size="7vw" />
