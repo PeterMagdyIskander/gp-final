@@ -78,6 +78,7 @@ export async function uploadarrtos3(
   Bucket
 ) {
   console.log("abaaaaaaaaaaaaaaaaaa", file);
+  const picname=convertstringtoascii(uid+lostchildid);
 
   const s3 = new S3Client({
     region: region,
@@ -96,12 +97,12 @@ export async function uploadarrtos3(
 
     const uploadParams = {
       Bucket: Bucket,
-      Key: uid + lostchildid + i,
+      Key: picname + i,
       Body: file[i],
       Metadata: {
         owner: owneremailaddress,
         lostchildid: lostchildid,
-        imgid: uid + lostchildid + i,
+        imgid: picname+ i,
         address: address,
         phonenumber: phone,
       },

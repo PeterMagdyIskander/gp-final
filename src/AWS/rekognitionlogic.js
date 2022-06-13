@@ -76,3 +76,40 @@ export async function searchforsimpasserby(
   }
   return photoidarray;
 }
+
+export async function searchforsimasciihandeled(
+  searchcollection,
+  targetfacebucket,
+  targetfaceimagename,
+  signintoken
+) {
+  targetfaceimagename=convertstringtoascii(targetfaceimagename)+'0'
+  console.log("iaiodiojdioj", targetfaceimagename);
+  const client = new RekognitionClient({
+    region: reg,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: reg }),
+      identityPoolId: identitypoolid,
+      logins: {
+        [COGNITO_IDP]: signintoken,
+      },
+    }),
+  });
+  const searchinput = {
+    CollectionId: searchcollection,
+    Image: {
+      S3Object: {
+        Bucket: targetfacebucket,
+        Name: targetfaceimagename,
+      },
+    },
+  };
+  var photoidarray = [];
+  const command = new SearchFacesByImageCommand(searchinput);
+  const response = await client.send(command);
+  for (const element of response["FaceMatches"]) {
+    photoidarray.push(element["Face"]["ExternalImageId"]);
+  }
+
+  return photoidarray;
+}

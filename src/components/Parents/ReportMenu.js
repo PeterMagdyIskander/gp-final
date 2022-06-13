@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { gets3file, uploadarrtos3, getreportsparent } from "../../AWS/s3logic";
-import { searchforsim } from "../../AWS/rekognitionlogic";
+import { searchforsim,searchforsimasciihandeled } from "../../AWS/rekognitionlogic";
 import ReportForm from "../Forms/ReportForm";
 import { FaCar, FaWallet } from "react-icons/fa";
 import MatchedCard from "../Cards/MatchedCard";
@@ -168,11 +168,11 @@ const ReportMenu = (props) => {
                     ],
                   },
                   searchForSim: {
-                    reqFunction: searchforsim,
+                    reqFunction: searchforsimasciihandeled,
                     params: [
                       "waitingslistfaces",
                       "lostchildrenbucket",
-                      props.authedUser.cognitoUserId + data.childName + "0",
+                      props.authedUser.cognitoUserId + data.childName,
                       props.authedUser.jwtToken,
                     ],
                   },
