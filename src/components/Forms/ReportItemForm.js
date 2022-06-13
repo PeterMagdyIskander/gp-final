@@ -52,7 +52,7 @@ export default function ReportItemForm({ setData, onSubmit }) {
         }
         if (passed) {
           setData({
-            id: values.id,
+            id: values.id.toString(),
             type: selected,
           });
           onSubmit(true);
