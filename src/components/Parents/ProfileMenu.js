@@ -1,28 +1,39 @@
-import { FiEdit, FiXCircle } from "react-icons/fi";
-import Modal from "@mui/material/Modal";
+import { FiEdit, FiCheck } from "react-icons/fi";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { connect } from "react-redux";
-import { Button, TextField } from "@mui/material";
+import { connect, useDispatch } from "react-redux";
+import { Button, ButtonBase, Input, TextField } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
+import { BsPersonX } from "react-icons/bs";
+import Fab from "@mui/material/Fab";
+import { useNavigate } from "react-router";
+import { setAuthedUser } from "../../ReduxStore/actions/authedUser";
+
+import { setChildren } from "../../ReduxStore/actions/children";
+import { setItems } from "../../ReduxStore/actions/items";
+
 const ProfileMenu = ({ authedUser }) => {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [sentReq, setSentReq] = useState(false);
   const [newPhone, setNewPhone] = useState(authedUser.phoneNumber.slice(2));
   const [error, setError] = useState(false);
-  const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
-  const handleChangePhone = (e) => {
-    setNewPhone(e.target.value);
+  const [edit, setEdit] = useState(false);
+
+  const signOut = () => {
+    console.log("Successufully Signed out");
+    dispatch(setAuthedUser(null));
+    dispatch(setChildren(null));
+    dispatch(setItems(null));
+    navigate("/");
   };
+
   const saveChange = () => {
     if (/^(010|011|012|015)[0-9]{8}$/.test(`${newPhone}`)) {
-      sentReq(true);
-      //call function
-      sentReq(false);
+      setEdit(false);
+
       setError(false);
-      handleCloseModal();
     } else {
       setError(true);
       toast.error("Inavlid Number Format", {
@@ -36,96 +47,116 @@ const ProfileMenu = ({ authedUser }) => {
       });
     }
   };
-  const cancelChange = () => {
-    setNewPhone(authedUser.phoneNumber.slice(2));
-    handleCloseModal();
-  };
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "30%",
-    height: "fit-content",
-    overflowY: "auto",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  };
-  let iconSize = 20;
   return (
-    <div className="found-options-container col">
-      <div className="row">
-        <p className="card-title">Name: {authedUser.name}</p>
-      </div>
-      <div className="row">
-        <p className="card-title">Phone Number: {newPhone}</p>
-        <FiEdit style={{ cursor: "pointer" }}  />
-      </div>
-      <div className="row">
-        <p className="card-title">Email: {authedUser.email}</p>
-      </div>
-      <Modal
-        open={open}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "25vw",
+        height: "65vh",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        borderRadius: "30px",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          height: "30%",
+          bgcolor: "background.paper",
+          bgcolor: "#073944",
+          borderRadius: "30px 30px  0 0",
+          mb: "70px",
+        }}
       >
-        <Box sx={style}>
-          <h1>New Phone Number</h1>
-          <TextField
-            type="number"
-            label="New Phone Number"
-            value={newPhone}
-            error={error}
-            onChange={(e) => {
-              handleChangePhone(e);
-            }}
-          />{" "}
-          <Button
-            disable={sentReq}
-            sx={{
-              m: "15px 0",
-              borderRadius: "15px",
-              "&:hover": {
-                color: "#1976d2",
-                fontWeight: "600",
-                backgroundColor: "white",
-                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
-              },
-            }}
-            variant="contained"
-            onClick={saveChange}
-            disabled={sentReq}
-          >
-            Save Changes
-          </Button>
-          <Button
-            disable={sentReq}
-            sx={{
-              m: "15px 0",
-              borderRadius: "15px",
-              "&:hover": {
-                color: "#1976d2",
-                fontWeight: "600",
-                backgroundColor: "white",
-                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
-              },
-            }}
-            variant="contained"
-            onClick={cancelChange}
-            disabled={sentReq}
-          >
-            Cancel Changes
-          </Button>
-        </Box>
-      </Modal>
-      <ToastContainer limit={1} />
-    </div>
+        <Fab
+          aria-label="save"
+          sx={{
+            bgcolor: "#39A2DB",
+            color: "white",
+            top: "100%",
+            left: "50%",
+            width: "6rem",
+            height: "6rem",
+            border: "5px solid white",
+            fontSize: "3rem",
+            transform: "translate(-50%, -50%)",
+            "&&:hover": {
+              color: "#39A2DB",
+              bgcolor: "white",
+              border: "5px solid #39A2DB",
+            },
+          }}
+        >
+          {authedUser.name[0]}
+        </Fab>
+      </Box>
+      <Box
+        sx={{
+          m: "25px",
+        }}
+      >
+        <p>Name: {authedUser.name}</p>
+        <>
+          {!edit ? (
+            <div className="flex sml-gap">
+              <p>Phone Number: {newPhone}</p>
+              <FiEdit
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setEdit(true);
+                }}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-space-between">
+              <TextField
+                label="New phone number"
+                variant="standard"
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                value={newPhone}
+                error={error}
+                helperText={error && "Incorrect Number Format"}
+                onChange={(e) => setNewPhone(e.target.value)}
+              />
+              <FiCheck
+                style={{ cursor: "pointer" }}
+                size="2vw"
+                onClick={() => {
+                  saveChange();
+                }}
+              />
+            </div>
+          )}
+        </>
+        <p>Email: {authedUser.email}</p>
+        <Button
+          sx={{
+            m: "15px 0",
+            textTransform: "none",
+            fontWeight: "600",
+            fontSize: "1.2rem",
+            fontFamily: "Quicksand",
+            borderRadius: "15px",
+            backgroundColor: "white",
+            color: "red",
+            flaot: "right",
+            "&:hover": {
+              color: "red",
+              backgroundColor: "white",
+              color: "red",
+              boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+            },
+          }}
+          variant="contained"
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+      </Box>
+    </Box>
   );
 };
 function mapStateToProps({ authedUser }) {

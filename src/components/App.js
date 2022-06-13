@@ -14,7 +14,6 @@ import MainMenu from "./MainMenu/MainMenu";
 import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
-import ProfileMenu from "./Parents/ProfileMenu";
 import RequireAuth from "./Navigation/RequireAuth";
 
 function App() {
@@ -41,14 +40,6 @@ function App() {
             }
           />
           <Route path="/Found" element={<Found />} />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <ProfileMenu />
-              </RequireAuth>
-            }
-          />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>

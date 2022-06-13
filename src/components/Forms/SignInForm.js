@@ -45,7 +45,8 @@ function SignInForm(props) {
 
   const [loading, setLoading] = React.useState(false);
   const [signedUpEmailError, setSignedUpEmailError] = React.useState(false);
-  const [signedUpPasswordError, setSignedUpPasswordError] = React.useState(false);
+  const [signedUpPasswordError, setSignedUpPasswordError] =
+    React.useState(false);
   const [confirmederror, setconfirmederror] = React.useState("");
 
   const Login = (email, password) => {
@@ -61,7 +62,6 @@ function SignInForm(props) {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        
         dispatch(setAuthedUser(data.getIdToken()));
         runLogoutTimer(
           dispatch,
@@ -72,22 +72,15 @@ function SignInForm(props) {
         navigate(from, { replace: true });
       },
       onFailure: (err) => {
-        if(err.toString().includes("confirmed"))
-        {
-          
+        if (err.toString().includes("confirmed")) {
           setconfirmederror("PLease vist your mail and confirm your account");
-
-        }
-        else
-        {
+        } else {
           setSignedUpPasswordError(true);
           setSignedUpEmailError(true);
         }
         setLoading(false);
-        
+
         console.error("onFailure: ", err);
-        
-         
       },
       newPasswordRequired: (data) => {
         console.log("newPasswordRequired: ", data);
@@ -97,9 +90,9 @@ function SignInForm(props) {
 
   return (
     <Formik
-      initialValues={{ email: "PeterMagdyIskander@gmail.com", password: "Peter123" }}
+      initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
-        setconfirmederror("")
+        setconfirmederror("");
         Login(values.email, values.password);
         setLoading(true);
       }}
@@ -140,9 +133,7 @@ function SignInForm(props) {
                 error={signedUpPasswordError}
                 helperText="Incorrect username or password"
               />
-              <text style={{color:"red"}}>
-                {confirmederror}
-                </text>
+              <text style={{ color: "red" }}>{confirmederror}</text>
               <LoadingButton
                 type="submit"
                 loading={loading}
