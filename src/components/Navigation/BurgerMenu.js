@@ -6,6 +6,8 @@ import { setChildren } from "../../ReduxStore/actions/children";
 import { setItems } from "../../ReduxStore/actions/items";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ProfileMenu from "../Parents/ProfileMenu";
+import Modal from "@mui/material/Modal";
 import { FiX, FiMenu } from "react-icons/fi";
 const BurgerMenu = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -21,15 +23,10 @@ const BurgerMenu = (props) => {
   const closeDrawer = () => {
     setOpenDrawer(false);
   };
-  const navigate = useNavigate();
-  const signIn = () => {
-    setOpenDrawer(false);
-    navigate("/signin");
-  };
-  const signUp = () => {
-    setOpenDrawer(false);
-    navigate("/signup");
-  };
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+  const [open, setOpen] = useState(false);
+
   console.log(props);
   const sxForIcons = { minWidth: 32 };
 
@@ -38,6 +35,7 @@ const BurgerMenu = (props) => {
       <FiMenu
         className="burger-button"
         size="4vh"
+        style={{ cursor: "pointer" }}
         onClick={() => setOpenDrawer(true)}
       />
 
@@ -58,7 +56,7 @@ const BurgerMenu = (props) => {
           <FiX
             className="burger-button"
             size="4vh"
-            style={{ alignSelf: "flex-end" }}
+            style={{ alignSelf: "flex-end", cursor: "pointer" }}
             onClick={() => closeDrawer()}
           />
 
@@ -71,12 +69,9 @@ const BurgerMenu = (props) => {
               <NavLink to="/Report" onClick={() => closeDrawer()}>
                 Report
               </NavLink>
-              <NavLink to="/Profile" onClick={() => closeDrawer()}>
+              <p style={{ cursor: "pointer" }} onClick={handleOpenModal}>
                 Profile
-              </NavLink>
-              <NavLink to="/" onClick={signOut}>
-                Sign out
-              </NavLink>
+              </p>
             </nav>
           ) : (
             <nav className="burger-menu">
@@ -94,6 +89,14 @@ const BurgerMenu = (props) => {
           )}
         </Box>
       </Drawer>
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ProfileMenu />
+      </Modal>
     </>
   );
 };

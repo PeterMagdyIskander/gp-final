@@ -3,13 +3,12 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 
 import ProfileMenu from "../Parents/ProfileMenu";
 const OwnerNavbar = (props) => {
   const { dispatch } = props;
-  
+
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const [open, setOpen] = useState(false);
