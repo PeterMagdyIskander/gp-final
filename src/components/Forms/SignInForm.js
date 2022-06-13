@@ -45,8 +45,8 @@ function SignInForm(props) {
 
   const [loading, setLoading] = React.useState(false);
   const [signedUpEmailError, setSignedUpEmailError] = React.useState(false);
-  const [signedUpPasswordError, setSignedUpPasswordError] =
-    React.useState(false);
+  const [signedUpPasswordError, setSignedUpPasswordError] = React.useState(false);
+  const [confirmederror, setconfirmederror] = React.useState("");
 
   const Login = (email, password) => {
     const user = new CognitoUser({
@@ -61,6 +61,7 @@ function SignInForm(props) {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
+        console.log("abaaaaaaaa",data);
         dispatch(setAuthedUser(data.getIdToken()));
         runLogoutTimer(
           dispatch,
@@ -71,10 +72,22 @@ function SignInForm(props) {
         navigate(from, { replace: true });
       },
       onFailure: (err) => {
+        if(err.toString().includes("confirmed"))
+        {
+          console.log("abadeer");
+          setconfirmederror("PLease vist your mail and confirm your account");
+
+        }
+        else
+        {
+          setSignedUpPasswordError(true);
+          setSignedUpEmailError(true);
+        }
         setLoading(false);
-        setSignedUpPasswordError(true);
-        setSignedUpEmailError(true);
+        
         console.error("onFailure: ", err);
+        
+         
       },
       newPasswordRequired: (data) => {
         console.log("newPasswordRequired: ", data);
@@ -86,6 +99,7 @@ function SignInForm(props) {
     <Formik
       initialValues={{ email: "PeterMagdyIskander@gmail.com", password: "Peter123" }}
       onSubmit={(values) => {
+        setconfirmederror("")
         Login(values.email, values.password);
         setLoading(true);
       }}
@@ -126,6 +140,9 @@ function SignInForm(props) {
                 error={signedUpPasswordError}
                 helperText="Incorrect username or password"
               />
+              <text>
+                {confirmederror}
+                </text>
               <LoadingButton
                 type="submit"
                 loading={loading}

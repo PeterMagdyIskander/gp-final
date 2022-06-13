@@ -125,7 +125,7 @@ export default function SignUpForm() {
                     name="email"
                     autoComplete="email"
                     component={MyField}
-                    helperText="Invalid Mail Format"
+                    helperText="This Mail Already Exist"
                     error={signedUpEmailError}
                   />
                 </Grid>
