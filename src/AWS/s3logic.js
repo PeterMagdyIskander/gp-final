@@ -118,46 +118,7 @@ export async function uploadarrtos3(
   return success;
 }
 
-export async function singuploadtos3(
-  signintoken,
-  file,
-  owneremailaddress,
-  lostchildid,
-  imgid,
-  Bucket
-) {
-  console.log(file);
-  console.log("hi", Object.keys(file), imgid);
-  const s3 = new S3Client({
-    region: region,
-    credentials: fromCognitoIdentityPool({
-      client: new CognitoIdentityClient({ region: region }),
-      identityPoolId: identitypoolid,
-      logins: {
-        [COGNITO_IDP]: signintoken,
-      },
-    }),
-  });
 
-  console.log(file[0].name);
-  const uploadParams = {
-    Bucket: Bucket,
-    Key: imgid, //get alragel mnazel kam sora nkteb emailaddress0
-    Body: file[0],
-    Metadata: {
-      owner: owneremailaddress,
-      lostchildid: lostchildid,
-      imgid: imgid,
-    },
-  };
-  try {
-    const data = await s3.send(new PutObjectCommand(uploadParams));
-    console.log("Success", data);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-  }
-}
 export async function gets3file(id, signintoken, Bucket) {
   console.log("iddddddddddddddddd", id);
   const s3 = new S3({
@@ -252,6 +213,7 @@ export async function uploadarrtos3passerby(
   filename,
   Bucket
 ) {
+  var success=true;
   const picname=convertstringtoascii(filename);
   console.log("called file",file);
   const s3 = new S3Client({
@@ -281,12 +243,13 @@ export async function uploadarrtos3passerby(
       console.log("Success", data);
        
     } catch (err) {
+      success=false
      
       console.log("Error", err);
     }
 
   }
-  return true;
+  return success;
 
   
 }
@@ -419,6 +382,7 @@ export async function gets3fileheadobject(id, Bucket) {
     console.log("Success");
   } catch (err) {
     console.log("Error", err);
+    return false;
   }
 }
 export function linktoid(link) {

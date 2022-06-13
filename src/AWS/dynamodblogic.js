@@ -66,7 +66,9 @@ export async function quaryfromdynamodb(TableName, Key, signintoken) {
 
     return statusArr;
   } catch (err) {
+    
     console.log("Error", err);
+    return false;
   }
 }
 
@@ -102,6 +104,7 @@ export async function updatedynamodb(TableName, Key, signintoken) {
     return data;
   } catch (err) {
     console.log("Error", err);
+    return false;
   }
 }
 
@@ -143,6 +146,7 @@ export async function quaryfromdynamodbgetitem(TableNamee, mail, signintoken) {
     return statusArr;
   } catch (err) {
     console.log("Error", err);
+    return false;
   }
 }
 

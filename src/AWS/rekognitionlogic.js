@@ -68,13 +68,21 @@ export async function searchforsimpasserby(i,
     },
   };
   var photoidarray = [];
-  const command = new SearchFacesByImageCommand(searchinput);
-  const response = await client.send(command);
-  console.log("reeeeeee",response);
-  for (const element of response["FaceMatches"]) {
+  try {
+    const command = new SearchFacesByImageCommand(searchinput);
+    const response = await client.send(command);
+    console.log("reeeeeee",response);
+    for (const element of response["FaceMatches"]) {
     photoidarray.push(element["Face"]["ExternalImageId"]);
+    }
+    return photoidarray;
+    
+  } catch (error) {
+    console.log(error);
+    return false;
+    
   }
-  return photoidarray;
+  
 }
 
 export async function searchforsimasciihandeled(i,
@@ -104,12 +112,20 @@ export async function searchforsimasciihandeled(i,
       },
     },
   };
-  var photoidarray = [];
-  const command = new SearchFacesByImageCommand(searchinput);
-  const response = await client.send(command);
-  for (const element of response["FaceMatches"]) {
-    photoidarray.push(element["Face"]["ExternalImageId"]);
-  }
+  try {
+    var photoidarray = [];
+    const command = new SearchFacesByImageCommand(searchinput);
+    const response = await client.send(command);
+    for (const element of response["FaceMatches"]) {
+      photoidarray.push(element["Face"]["ExternalImageId"]);
+    }
 
-  return photoidarray;
+    return photoidarray;
+    
+  } catch (error) {
+    console.log(error);
+    return false;
+    
+  }
+  
 }

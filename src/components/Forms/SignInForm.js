@@ -61,7 +61,7 @@ function SignInForm(props) {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
-        console.log("abaaaaaaaa",data);
+        
         dispatch(setAuthedUser(data.getIdToken()));
         runLogoutTimer(
           dispatch,
@@ -74,7 +74,7 @@ function SignInForm(props) {
       onFailure: (err) => {
         if(err.toString().includes("confirmed"))
         {
-          console.log("abadeer");
+          
           setconfirmederror("PLease vist your mail and confirm your account");
 
         }
