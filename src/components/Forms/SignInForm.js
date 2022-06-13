@@ -140,7 +140,7 @@ function SignInForm(props) {
                 error={signedUpPasswordError}
                 helperText="Incorrect username or password"
               />
-              <text>
+              <text style={{color:"red"}}>
                 {confirmederror}
                 </text>
               <LoadingButton
