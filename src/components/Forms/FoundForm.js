@@ -74,7 +74,7 @@ export default function FoundForm({
             coordinates,
           });
 
-          if (file === null) {
+          if (file.length === 0) {
             toast.error("Please Add pictures", {
               position: "bottom-right",
               autoClose: 2000,

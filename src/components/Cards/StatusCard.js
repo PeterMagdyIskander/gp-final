@@ -22,6 +22,7 @@ import IconTextCard from "../Cards/IconTextCard";
 import { setChildren } from "../../ReduxStore/actions/children";
 import { toast, ToastContainer } from "react-toastify";
 const StatusCard = (props) => {
+  console.log("status props", props);
   const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
   const handleOpenInfoModal = () => setOpenInfo(true);
@@ -91,16 +92,13 @@ const StatusCard = (props) => {
         position: toast.POSITION.BOTTOM_RIGHT,
       }
     );
-    if (success) {
+  if (success) {
       let newChildArr = props.children.filter(
         (child) =>
-          !(
-            child.photos.length === props.child.imgs.length &&
-            child.photos.every(
-              (value, index) => value === props.child.imgs[index]
-            )
-          )
+          props.child.nameOfChild + props.child.location !==
+          child.name + child.Location
       );
+      console.log("before", props.children, "after deletion", newChildArr);
       dispatch(setChildren(newChildArr));
     }
     setSentReq(false);
