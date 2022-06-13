@@ -44,13 +44,13 @@ export async function searchforsim(
 
   return photoidarray;
 }
-export async function searchforsimpasserby(
+export async function searchforsimpasserby(i,
   searchcollection,
   targetfacebucket,
   targetfaceimagename
 ) {
   console.log("called rek",targetfaceimagename);
-  targetfaceimagename=convertstringtoascii(targetfaceimagename)+'0'
+  targetfaceimagename=convertstringtoascii(targetfaceimagename)+i
   const client = new RekognitionClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -77,13 +77,13 @@ export async function searchforsimpasserby(
   return photoidarray;
 }
 
-export async function searchforsimasciihandeled(
+export async function searchforsimasciihandeled(i,
   searchcollection,
   targetfacebucket,
   targetfaceimagename,
   signintoken
 ) {
-  targetfaceimagename=convertstringtoascii(targetfaceimagename)+'0'
+  targetfaceimagename=convertstringtoascii(targetfaceimagename)+i
   console.log("iaiodiojdioj", targetfaceimagename);
   const client = new RekognitionClient({
     region: reg,

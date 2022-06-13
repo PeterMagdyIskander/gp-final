@@ -72,7 +72,7 @@ function UpdateRekoFetch(props) {
     console.log(uploadSucces);
     const matchesset = new Set();
     for (let i = 0; i < 1; i++) {
-      const ids = await props.reqFunctions.searchForSim.reqFunction(
+      const ids = await props.reqFunctions.searchForSim.reqFunction(i,
         ...props.reqFunctions.searchForSim.params
       );
       for (let j = 0; j < ids.length; j++) {
