@@ -92,7 +92,7 @@ const StatusCard = (props) => {
         position: toast.POSITION.BOTTOM_RIGHT,
       }
     );
-    if (success) {
+  if (success) {
       let newChildArr = props.children.filter(
         (child) =>
           props.child.nameOfChild + props.child.location !==
