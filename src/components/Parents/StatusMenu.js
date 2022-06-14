@@ -169,7 +169,7 @@ const StatusMenu = (props) => {
           <IconTextCard
             component={<FiXCircle size={"7vw"} color="red" />}
             message="No Child Reports Found"
-            function={null}
+            onClickFunction={null}
           />
         ) : !childrenLoading && !itemsLoading ? (
           <>
@@ -199,7 +199,7 @@ const StatusMenu = (props) => {
           <IconTextCard
             component={<FiXCircle size={"7vw"} color="red" />}
             message="No Item Reports Found"
-            function={null}
+            onClickFunction={null}
           />
         ) : !childrenLoading && !itemsLoading ? (
           <>

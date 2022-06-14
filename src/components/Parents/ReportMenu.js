@@ -81,12 +81,12 @@ const ReportMenu = (props) => {
           <IconTextCard
             component={<FiUser size={"7vw"} />}
             message="Report a Child"
-            function={() => handleSelect("child")}
+            onClickFunction={() => handleSelect("child")}
           />
           <IconTextCard
             component={<MdOutlineDevicesOther size={"7vw"} />}
             message="Report an Item"
-            function={() => handleSelect("items")}
+            onClickFunction={() => handleSelect("items")}
           />
         </div>
       )}
@@ -109,7 +109,7 @@ const ReportMenu = (props) => {
             <IconTextCard
               component={<FiXCircle size={"7vw"} color="red" />}
               message="No Matches Found"
-              function={null}
+              onClickFunction={null}
             />
           </div>
         )}

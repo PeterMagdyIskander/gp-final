@@ -81,12 +81,12 @@ const Found = (props) => {
           <IconTextCard
             component={<FiUser size={"7vw"} />}
             message="Found a Child"
-            function={() => handleSelect("child")}
+            onClickFunction={() => handleSelect("child")}
           />
           <IconTextCard
             component={<MdOutlineDevicesOther size={"7vw"} />}
             message="Found an Item"
-            function={() => handleSelect("items")}
+            onClickFunction={() => handleSelect("items")}
           />
         </div>
       )}
@@ -108,7 +108,7 @@ const Found = (props) => {
             <IconTextCard
               component={<FiXCircle size={"7vw"} color="red" />}
               message="No Matches Found"
-              function={null}
+              onClickFunction={null}
             />
           </div>
         )}

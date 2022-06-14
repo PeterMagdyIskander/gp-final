@@ -1,53 +1,43 @@
 import React from "react";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 
-export default function IconTextCard(props) {
+export default function IconTextCard({
+  component,
+  message,
+  subMessage,
+  onClickFunction,
+}) {
   return (
-      <CardContent
-        variant="outlined"
-        sx={{
-          m: "2% 0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-around",
-          boxShadow: 10,
-          borderRadius: "30px",
-          bgcolor: "#fafafa",
-          width: "20vw",
-          height: "40vh",
-          position: "relative",
-        }}
-      >
-        {props.component}
-        {props.function != null ? (
-          <Button
-            sx={{
-              textTransform: "none",
-              fontWeight: "100",
-              fontSize: "1.2rem",
-              fontFamily: "Quicksand",
-              borderRadius: "15px",
-              backgroundColor: "#171717",
-              "&:hover": {
-                color: "#171717",
-                fontWeight: "600",
-                backgroundColor: "white",
-                padding: "5px 15px",
-                boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
-              },
-            }}
-            variant="contained"
-            onClick={props.function}
-          >
-            {props.message}
-          </Button>
-        ) : (
-          <>
-            <p className="card-title"> {props.message}</p>
-          </>
-        )}
-      </CardContent>
+    <div className="card-content">
+      <div className="icon-border">{component}</div>
+
+      <div className="message-container">
+        <p className="card-message">{message}</p>
+        <p className="card-sub-message">{subMessage}</p>
+      </div>
+      {onClickFunction != null ? (
+        <Button
+          sx={{
+            textTransform: "none",
+            border: "1px solid #39a2db",
+            borderRadius: "50px",
+            p: "5px 15px",
+            color: "#073944",
+            "&:hover": {
+              bgcolor: "#39a2db",
+              color: "#fff",
+              border: "1px solid #073944",
+            },
+          }}
+          onClick={onClickFunction}
+        >
+          Click for More
+        </Button>
+      ) : (
+        <>
+          <p className="card-title"> {message}</p>
+        </>
+      )}
+    </div>
   );
 }

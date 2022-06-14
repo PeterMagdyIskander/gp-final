@@ -340,7 +340,7 @@ const StatusCard = (props) => {
             <IconTextCard
               component={<FiXCircle size={"7vw"} color="red" />}
               message="No Matches Found"
-              function={() => handleCloseMatchesModal()}
+              onClickFunction={() => handleCloseMatchesModal()}
             />
           ) : (
             <MatchedDetailsMenu
