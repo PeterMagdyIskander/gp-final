@@ -15,7 +15,7 @@ const config={
 }
 export async function sendmail(Destination,type,id)
 {
-  console.log("called mail");
+  
     const client = new SESClient(config);
     const command = new SendEmailCommand({
         Destination:{ToAddresses:[Destination]},
@@ -38,6 +38,6 @@ export async function sendmail(Destination,type,id)
         Source:"findlostgradprojectfcis@outlook.com"
     });
     const response = await client.send(command);
-    console.log(response);
+   
 
 }

@@ -28,7 +28,7 @@ export async function uploadarrtos3editreport(
   const picname = convertstringtoascii(
     uid + lostchildid + "added" + Date.now()
   );
-  console.log("abaaaaaaaaaaaaaaaaaa", file);
+  
 
   const s3 = new S3Client({
     region: region,
@@ -42,9 +42,7 @@ export async function uploadarrtos3editreport(
   });
   var success = true;
   for (let i = 0; i < Object.keys(file).length; i++) {
-    console.log(Object.keys(file).length);
-    console.log(file[i]);
-
+    
     const uploadParams = {
       Bucket: Bucket,
       Key: picname + i,
@@ -78,7 +76,7 @@ export async function uploadarrtos3(
   phone,
   Bucket
 ) {
-  console.log("abaaaaaaaaaaaaaaaaaa", file);
+  
   const picname=convertstringtoascii(uid+lostchildid);
 
   const s3 = new S3Client({
@@ -93,8 +91,7 @@ export async function uploadarrtos3(
   });
   var success = true;
   for (let i = 0; i < Object.keys(file).length; i++) {
-    console.log(Object.keys(file).length);
-    console.log(file[i]);
+    
 
     const uploadParams = {
       Bucket: Bucket,
@@ -121,7 +118,7 @@ export async function uploadarrtos3(
 
 
 export async function gets3file(id, signintoken, Bucket) {
-  console.log("iddddddddddddddddd", id);
+ 
   const s3 = new S3({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -216,7 +213,7 @@ export async function uploadarrtos3passerby(
 ) {
   var success=true;
   const picname=convertstringtoascii(filename);
-  console.log("called file",file);
+  
   const s3 = new S3Client({
     region: region,
     credentials: fromCognitoIdentityPool({
@@ -238,7 +235,6 @@ export async function uploadarrtos3passerby(
         writenaddress: address,
       },
     };
-    console.log(uploadParams);
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
       console.log("Success", data);
@@ -283,22 +279,21 @@ export async function gets3filepasserby(id, Bucket) {
   return uriarr;
 }
 export async function getreports(id, Bucket) {
-  console.log("abaaaaaaa", id);
+  
   var y = await gets3filepasserby(id, "lostchildrenbucket");
 
   const metadataarr = [];
   const matchesmap = new Map();
   for (let i = 0; i < id.length; i++) {
     const x = await gets3fileheadobject(id[i], "lostchildrenbucket");
-    console.log("metadata for loop : ", x);
-    console.log("abaaaaaa", id[i]);
+    
     const metdata = JSON.stringify({
       owner: x["Metadata"]["owner"],
       address: x["Metadata"]["address"],
       lostchildid: x["Metadata"]["lostchildid"],
       phonenumber: x["Metadata"]["phonenumber"],
     });
-    console.log("metadata", metdata);
+   
     if (matchesmap.has(metdata)) {
       const uriarr = matchesmap.get(metdata);
       uriarr.push(y[i]);
@@ -318,19 +313,18 @@ export async function getreports(id, Bucket) {
     outarr.push(out);
     sendmail(out['metadata']['owner'],"Child",out['metadata']["lostchildid"]);
   }
-  console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);
+  
   return outarr;
 }
 export async function getreportsparent(id, token, Bucket) {
-  console.log("abaaaaaaa", id);
+  
   var y = await gets3file(id, token, "passerbybucket");
 
   const metadataarr = [];
   const matchesmap = new Map();
   for (let i = 0; i < id.length; i++) {
     const x = await gets3fileheadobject(id[i], "passerbybucket");
-    console.log("metadata for loop : ", x);
-    console.log("abaaaaaa", id[i]);
+   
     const metdata = JSON.stringify({
       lat: x["Metadata"]["lat"],
       name: x["Metadata"]["name"],
@@ -338,7 +332,7 @@ export async function getreportsparent(id, token, Bucket) {
       writenaddress: x["Metadata"]["writenaddress"],
       phonenumber: x["Metadata"]["phonenumber"],
     });
-    console.log("metadata", metdata);
+    
     if (matchesmap.has(metdata)) {
       const uriarr = matchesmap.get(metdata);
       uriarr.push(y[i]);
@@ -358,7 +352,7 @@ export async function getreportsparent(id, token, Bucket) {
     
     outarr.push(out);
   }
-  console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);
+ 
   return outarr;
 }
 
@@ -379,7 +373,7 @@ export async function gets3fileheadobject(id, Bucket) {
   try {
     const command = new HeadObjectCommand(Params);
     const response = await s3.send(command);
-    console.log("asdaasdasdasdasdasd", response);
+   
     return response;
 
     console.log("Success");
