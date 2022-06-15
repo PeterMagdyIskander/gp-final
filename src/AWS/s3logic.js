@@ -6,6 +6,7 @@ import {
   DeleteObjectCommand,
   HeadObjectCommand,
 } from "@aws-sdk/client-s3";
+import {sendmail} from "../AWS/maillogic"
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
@@ -315,6 +316,7 @@ export async function getreports(id, Bucket) {
       metadata: JSON.parse(i[0]),
     };
     outarr.push(out);
+    sendmail(out['metadata']['owner'],"Child",out['metadata']["lostchildid"]);
   }
   console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);
   return outarr;
@@ -353,6 +355,7 @@ export async function getreportsparent(id, token, Bucket) {
       photosuri: i[1],
       metadata: JSON.parse(i[0]),
     };
+    
     outarr.push(out);
   }
   console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", outarr);

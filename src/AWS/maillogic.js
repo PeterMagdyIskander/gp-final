@@ -1,4 +1,4 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"; // ES Modules import
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"; 
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 
@@ -15,6 +15,7 @@ const config={
 }
 export async function sendmail(Destination,type,id)
 {
+  console.log("called mail");
     const client = new SESClient(config);
     const command = new SendEmailCommand({
         Destination:{ToAddresses:[Destination]},
@@ -37,5 +38,6 @@ export async function sendmail(Destination,type,id)
         Source:"findlostgradprojectfcis@outlook.com"
     });
     const response = await client.send(command);
+    console.log(response);
 
 }
