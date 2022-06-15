@@ -250,11 +250,7 @@ styling for selected image
     flex-direction: column;
 }
 
-@media (max-width: 600px) {
-    .found-options-container {
-        flex-direction: column;
-    }
-}
+
 
 .found-options {
     width: 40%;
@@ -513,4 +509,15 @@ a:hover {
 
 .logo-img {
     border-radius: 30px;
+}
+
+@media (max-width: 600px) {
+
+    .found-options-container,
+    .home {
+        flex-direction: column;
+    }
+    .logo-card{
+        visibility: hidden;
+    }
 }

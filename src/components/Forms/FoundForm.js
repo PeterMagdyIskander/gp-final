@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -25,6 +25,16 @@ export default function FoundForm({
     lat: 30.0444,
     lng: 31.2357,
   });
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((res) => {
+        console.log(res.coords.latitude, res.coords.latitude);
+        setCoordinates({ lat: res.coords.latitude, lng: res.coords.latitude });
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }, []);
   const [file, setFile] = useState([]);
 
   const formatName = (name, address, lat, long) => {
@@ -117,7 +127,6 @@ export default function FoundForm({
           }
         }}
       >
-        <Form>
           <Container
             sx={{ display: "flex", justifyContent: "space-between" }}
             maxWidth="xl"
@@ -215,7 +224,6 @@ export default function FoundForm({
               <ToastContainer />
             </Box>
           </Container>
-        </Form>
       </Formik>
     </>
   );

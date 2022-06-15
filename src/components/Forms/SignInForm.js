@@ -97,7 +97,6 @@ function SignInForm(props) {
         setLoading(true);
       }}
     >
-      <Form>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <Box
@@ -152,7 +151,6 @@ function SignInForm(props) {
             <Copyright sx={{ mt: 8, mb: 4 }} />
           </Container>
         </ThemeProvider>
-      </Form>
     </Formik>
   );
 }

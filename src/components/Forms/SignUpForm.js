@@ -76,7 +76,6 @@ export default function SignUpForm() {
         }
       }}
     >
-      <Form>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <Box
@@ -176,7 +175,6 @@ export default function SignUpForm() {
             <Copyright sx={{ mt: 5 }} />
           </Container>
         </ThemeProvider>
-      </Form>
     </Formik>
   );
 }

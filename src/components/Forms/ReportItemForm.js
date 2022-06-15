@@ -61,7 +61,6 @@ export default function ReportItemForm({ setData, onSubmit }) {
         }
       }}
     >
-      <Form>
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <Box
@@ -129,7 +128,6 @@ export default function ReportItemForm({ setData, onSubmit }) {
             </Box>
           </Container>
         </ThemeProvider>
-      </Form>
     </Formik>
   );
 }

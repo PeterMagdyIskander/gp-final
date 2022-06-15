@@ -82,7 +82,6 @@ export default function FoundItemForm({ setData, onSubmit }) {
         }
       }}
     >
-      <Form>
         <Container
           sx={{ display: "flex", justifyContent: "space-between" }}
           maxWidth="xl"
@@ -178,7 +177,6 @@ export default function FoundItemForm({ setData, onSubmit }) {
             </Button>
           </Box>
         </Container>
-      </Form>
     </Formik>
   );
 }

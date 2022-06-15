@@ -4,10 +4,10 @@ import { useNavigate } from "react-router";
 import { FiFlag } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import LogoCard from "../Cards/LogoCard";
-
 const MainMenu = () => {
   const navigate = useNavigate();
 
+  
   return (
     <div className="home">
       <IconTextCard
