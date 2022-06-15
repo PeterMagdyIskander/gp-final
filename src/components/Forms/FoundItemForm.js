@@ -16,7 +16,8 @@ export default function FoundItemForm({ setData, onSubmit }) {
   const [selected, setSelected] = React.useState("car");
   const [numberError, setNumberError] = React.useState(false);
   const [idError, setIdError] = React.useState(false);
-  const [loc, setLoc] = useState("Tahrir Square, Egypt");
+  const [loc, setLoc] = useState("");
+  //initialy set to midan el tahrir
   const [coordinates, setCoordinates] = useState({
     lat: 30.0444,
     lng: 31.2357,
@@ -24,7 +25,23 @@ export default function FoundItemForm({ setData, onSubmit }) {
   const handleChange = (event) => {
     setSelected(event.target.value);
   };
-
+  React.useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (coor) => {
+        setCoordinates({
+          lat: coor.coords.latitude,
+          lng: coor.coords.longitude,
+        });
+        let res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+        );
+        res = await res.json();
+        setLoc(res.results[1].formatted_address);
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }, []);
   return (
     <Formik
       enableReinitialize={true}
@@ -82,101 +99,101 @@ export default function FoundItemForm({ setData, onSubmit }) {
         }
       }}
     >
-        <Container
-          sx={{ display: "flex", justifyContent: "space-between" }}
-          maxWidth="xl"
+      <Container
+        sx={{ display: "flex", justifyContent: "space-between" }}
+        maxWidth="xl"
+      >
+        <Box sx={{ width: "65vw", mr: "20px" }}>
+          <GoogleMaps
+            setCoordinates={setCoordinates}
+            setLoc={setLoc}
+            latLng={coordinates}
+            loc={loc}
+          />
+        </Box>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "30vw",
+          }}
         >
-          <Box sx={{ width: "65vw", mr: "20px" }}>
-            <GoogleMaps
-              setCoordinates={setCoordinates}
-              setLoc={setLoc}
-              latLng={coordinates}
-              loc={loc}
-            />
-          </Box>
-          <Box
+          <Typography
             sx={{
-              marginTop: 2,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "30vw",
+              mb: 3,
             }}
           >
-            <Typography
-              sx={{
-                mb: 3,
-              }}
+            Type of Item Found
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Item</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selected}
+              label="Item"
+              onChange={handleChange}
             >
-              Type of Item Found
-            </Typography>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Item</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selected}
-                label="Item"
-                onChange={handleChange}
-              >
-                <MenuItem value={"car"} selected>
-                  Car
-                </MenuItem>
-                <MenuItem value={"elec"}>Electronics</MenuItem>
-                <MenuItem value={"wallet"}>Wallet</MenuItem>
-              </Select>
-            </FormControl>
+              <MenuItem value={"car"} selected>
+                Car
+              </MenuItem>
+              <MenuItem value={"elec"}>Electronics</MenuItem>
+              <MenuItem value={"wallet"}>Wallet</MenuItem>
+            </Select>
+          </FormControl>
 
-            <Field
-              name="id"
-              label={
-                selected === "car"
-                  ? "Car Numbers"
-                  : selected === "elec"
-                  ? "Serial Number"
-                  : "ID"
-              }
-              type={
-                selected === "car"
-                  ? "text"
-                  : selected === "elec"
-                  ? "text"
-                  : "number"
-              }
-              id="id"
-              required={false}
-              helperText="Invalid id Format"
-              error={idError}
-              component={MyField}
-            />
-            <Field
-              name="reporterPhone"
-              label="Phone Number"
-              type="number"
-              id="reporterPhone"
-              required={false}
-              helperText="Invalid Number Format"
-              error={numberError}
-              component={MyField}
-            />
-            <Field
-              id="address"
-              label="Address"
-              name="address"
-              autoComplete="address"
-              required={false}
-              component={MyField}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Submit Found Report
-            </Button>
-          </Box>
-        </Container>
+          <Field
+            name="id"
+            label={
+              selected === "car"
+                ? "Car Numbers"
+                : selected === "elec"
+                ? "Serial Number"
+                : "ID"
+            }
+            type={
+              selected === "car"
+                ? "text"
+                : selected === "elec"
+                ? "text"
+                : "number"
+            }
+            id="id"
+            required={false}
+            helperText="Invalid id Format"
+            error={idError}
+            component={MyField}
+          />
+          <Field
+            name="reporterPhone"
+            label="Phone Number"
+            type="number"
+            id="reporterPhone"
+            required={false}
+            helperText="Invalid Number Format"
+            error={numberError}
+            component={MyField}
+          />
+          <Field
+            id="address"
+            label="Address"
+            name="address"
+            autoComplete="address"
+            required={false}
+            component={MyField}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Submit Found Report
+          </Button>
+        </Box>
+      </Container>
     </Formik>
   );
 }

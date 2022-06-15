@@ -19,17 +19,25 @@ export default function FoundForm({
   setFileName,
   setSendReq,
 }) {
-  const [loc, setLoc] = useState("Tahrir Square, Egypt");
+  const [loc, setLoc] = useState("");
   const [numberError, setNumberError] = useState(false);
+  //initialy set to midan el tahrir
   const [coordinates, setCoordinates] = useState({
     lat: 30.0444,
     lng: 31.2357,
   });
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((res) => {
-        console.log(res.coords.latitude, res.coords.latitude);
-        setCoordinates({ lat: res.coords.latitude, lng: res.coords.latitude });
+      navigator.geolocation.getCurrentPosition(async (coor) => {
+        setCoordinates({
+          lat: coor.coords.latitude,
+          lng: coor.coords.longitude,
+        });
+        let res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+        );
+        res = await res.json();
+        setLoc(res.results[1].formatted_address);
       });
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -127,103 +135,103 @@ export default function FoundForm({
           }
         }}
       >
-          <Container
-            sx={{ display: "flex", justifyContent: "space-between" }}
-            maxWidth="xl"
+        <Container
+          sx={{ display: "flex", justifyContent: "space-between" }}
+          maxWidth="xl"
+        >
+          <Box sx={{ width: "65vw", mr: "20px" }}>
+            <GoogleMaps
+              setCoordinates={setCoordinates}
+              setLoc={setLoc}
+              latLng={coordinates}
+              loc={loc}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "30vw",
+            }}
           >
-            <Box sx={{ width: "65vw", mr: "20px" }}>
-              <GoogleMaps
-                setCoordinates={setCoordinates}
-                setLoc={setLoc}
-                latLng={coordinates}
-                loc={loc}
+            <Button component="label">
+              Upload Picture
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => onFileUpload(e)}
+                multiple
+                hidden
               />
-            </Box>
-            <Box
-              sx={{
-                marginTop: 2,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "30vw",
-              }}
+            </Button>
+            {file.length > 0 && (
+              <Button onClick={handleOpenModal}>View Child Images</Button>
+            )}
+            <Field
+              id="address"
+              label="Address"
+              name="address"
+              autoComplete="address"
+              required={false}
+              component={MyField}
+            />
+            <Field
+              name="childName"
+              label="Child Name"
+              type="text"
+              id="childName"
+              required={false}
+              component={MyField}
+            />
+            <Field
+              name="reporterPhone"
+              label="Phone Number"
+              type="number"
+              id="reporterPhone"
+              helperText="Invalid Number Format"
+              error={numberError}
+              required={false}
+              component={MyField}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
-              <Button component="label">
-                Upload Picture
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => onFileUpload(e)}
-                  multiple
-                  hidden
-                />
-              </Button>
-              {file.length > 0 && (
-                <Button onClick={handleOpenModal}>View Child Images</Button>
-              )}
-              <Field
-                id="address"
-                label="Address"
-                name="address"
-                autoComplete="address"
-                required={false}
-                component={MyField}
-              />
-              <Field
-                name="childName"
-                label="Child Name"
-                type="text"
-                id="childName"
-                required={false}
-                component={MyField}
-              />
-              <Field
-                name="reporterPhone"
-                label="Phone Number"
-                type="number"
-                id="reporterPhone"
-                helperText="Invalid Number Format"
-                error={numberError}
-                required={false}
-                component={MyField}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Submit Found Report
-              </Button>
-              <Modal
-                open={open}
-                onClose={handleCloseModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <ImageList
-                    sx={{ width: 620, height: 405 }}
-                    cols={3}
-                    rowHeight={200}
-                  >
-                    {file.map((img) => (
-                      <ImageListItem key={img}>
-                        <img
-                          src={img}
-                          srcSet={img}
-                          alt={img.name}
-                          loading="lazy"
-                          id="status-card-img"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Box>
-              </Modal>
-              <ToastContainer />
-            </Box>
-          </Container>
+              Submit Found Report
+            </Button>
+            <Modal
+              open={open}
+              onClose={handleCloseModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <ImageList
+                  sx={{ width: 620, height: 405 }}
+                  cols={3}
+                  rowHeight={200}
+                >
+                  {file.map((img) => (
+                    <ImageListItem key={img}>
+                      <img
+                        src={img}
+                        srcSet={img}
+                        alt={img.name}
+                        loading="lazy"
+                        id="status-card-img"
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
+              </Box>
+            </Modal>
+            <ToastContainer />
+          </Box>
+        </Container>
       </Formik>
     </>
   );
