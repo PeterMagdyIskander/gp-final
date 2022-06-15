@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
 import { connect } from "react-redux";
@@ -35,8 +34,6 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
 function SignInForm(props) {
   const { dispatch } = props;
   let location = useLocation();
@@ -62,6 +59,8 @@ function SignInForm(props) {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
+        setSignedUpPasswordError(false);
+        setSignedUpEmailError(false);
         dispatch(setAuthedUser(data.getIdToken()));
         runLogoutTimer(
           dispatch,
@@ -73,6 +72,8 @@ function SignInForm(props) {
       },
       onFailure: (err) => {
         if (err.toString().includes("confirmed")) {
+          setSignedUpPasswordError(false);
+          setSignedUpEmailError(false);
           setconfirmederror("PLease vist your mail and confirm your account");
         } else {
           setSignedUpPasswordError(true);
@@ -89,69 +90,77 @@ function SignInForm(props) {
   };
 
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      onSubmit={(values) => {
-        setconfirmederror("");
-        Login(values.email, values.password);
-        setLoading(true);
-      }}
-    >
-        <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
-            <Box
-              sx={{
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+    <Container component="main" maxWidth="xs">
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(values) => {
+          setconfirmederror("");
+          Login(values.email, values.password);
+          setLoading(true);
+        }}
+      >
+        <Form>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}></Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+
+            <Field
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              component={MyField}
+              helperText="Incorrect username or password"
+              error={signedUpEmailError}
+            />
+            <Field
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              component={MyField}
+              error={signedUpPasswordError}
+              helperText="Incorrect username or password"
+            />
+            <p
+              style={{
+                color: "#d32f2f",
+                fontWeight: "600",
+                fontSize: "0.75rem",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "primary.main" }}></Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
-
-              <Field
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                component={MyField}
-                helperText="Incorrect username or password"
-                error={signedUpEmailError}
-              />
-              <Field
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                component={MyField}
-                error={signedUpPasswordError}
-                helperText="Incorrect username or password"
-              />
-              <text style={{ color: "red" }}>{confirmederror}</text>
-              <LoadingButton
-                type="submit"
-                loading={loading}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </LoadingButton>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Redirect to="/signup">Don't have an account?</Redirect>
-                </Grid>
+              {confirmederror}
+            </p>
+            <LoadingButton
+              type="submit"
+              loading={loading}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </LoadingButton>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Redirect to="/signup">Don't have an account?</Redirect>
               </Grid>
-            </Box>
-            <Copyright sx={{ mt: 8, mb: 4 }} />
-          </Container>
-        </ThemeProvider>
-    </Formik>
+            </Grid>
+          </Box>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Form>
+      </Formik>
+    </Container>
   );
 }
 export default connect()(SignInForm);

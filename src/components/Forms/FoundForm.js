@@ -21,6 +21,7 @@ export default function FoundForm({
 }) {
   const [loc, setLoc] = useState("");
   const [numberError, setNumberError] = useState(false);
+  const [helperTextNumber, setHelperTextNumber] = useState(false);
   //initialy set to midan el tahrir
   const [coordinates, setCoordinates] = useState({
     lat: 30.0444,
@@ -77,7 +78,18 @@ export default function FoundForm({
     p: 4,
   };
   return (
-    <>
+    <Container
+      sx={{ display: "flex", justifyContent: "space-between" }}
+      maxWidth="xl"
+    >
+      <Box sx={{ width: "65vw", mr: "20px" }}>
+        <GoogleMaps
+          setCoordinates={setCoordinates}
+          setLoc={setLoc}
+          latLng={coordinates}
+          loc={loc}
+        />
+      </Box>
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -113,40 +125,35 @@ export default function FoundForm({
               progress: undefined,
             });
           }
-          if (/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)) {
-            if (numberError) setNumberError(false);
-            setFileName(
-              formatName(
-                values.childName,
-                values.address,
-                coordinates.lat,
-                coordinates.lng
-              )
-            );
-            setData({
-              address: values.address,
-              childName: values.childName,
-              reporterPhone: values.reporterPhone,
-              coordinates: coordinates,
-            });
-            setSendReq(true);
-          } else {
-            setNumberError(true);
+          if (values.reporterPhone !== "") {
+            if (
+              !/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)
+            ) {
+              setNumberError(true);
+              setHelperTextNumber("Please Enter A Valid Number or None at all");
+              return;
+            }
           }
+          setNumberError(false);
+
+          setFileName(
+            formatName(
+              values.childName,
+              values.address,
+              coordinates.lat,
+              coordinates.lng
+            )
+          );
+          setData({
+            address: values.address,
+            childName: values.childName,
+            reporterPhone: values.reporterPhone,
+            coordinates: coordinates,
+          });
+          setSendReq(true);
         }}
       >
-        <Container
-          sx={{ display: "flex", justifyContent: "space-between" }}
-          maxWidth="xl"
-        >
-          <Box sx={{ width: "65vw", mr: "20px" }}>
-            <GoogleMaps
-              setCoordinates={setCoordinates}
-              setLoc={setLoc}
-              latLng={coordinates}
-              loc={loc}
-            />
-          </Box>
+        <Form>
           <Box
             sx={{
               marginTop: 2,
@@ -190,7 +197,7 @@ export default function FoundForm({
               label="Phone Number"
               type="number"
               id="reporterPhone"
-              helperText="Invalid Number Format"
+              helperText={helperTextNumber}
               error={numberError}
               required={false}
               component={MyField}
@@ -231,8 +238,8 @@ export default function FoundForm({
             </Modal>
             <ToastContainer />
           </Box>
-        </Container>
+        </Form>
       </Formik>
-    </>
+    </Container>
   );
 }

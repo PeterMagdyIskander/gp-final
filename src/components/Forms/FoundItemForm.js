@@ -16,7 +16,10 @@ export default function FoundItemForm({ setData, onSubmit }) {
   const [selected, setSelected] = React.useState("car");
   const [numberError, setNumberError] = React.useState(false);
   const [idError, setIdError] = React.useState(false);
+  const [addressError, setAddressError] = React.useState(false);
   const [loc, setLoc] = useState("");
+  const [helperTextId, setHelperTextId] = useState("");
+  const [helperTextPhone, setHelperTextPhone] = useState("");
   //initialy set to midan el tahrir
   const [coordinates, setCoordinates] = useState({
     lat: 30.0444,
@@ -43,157 +46,169 @@ export default function FoundItemForm({ setData, onSubmit }) {
     }
   }, []);
   return (
-    <Formik
-      enableReinitialize={true}
-      initialValues={{
-        address: loc,
-        id: "",
-        reporterPhone: "",
-      }}
-      onSubmit={(values) => {
-        console.log({
-          ...values,
-          coordinates,
-        });
+    <Container
+      sx={{ display: "flex", justifyContent: "space-between" }}
+      maxWidth="xl"
+    >
+      <Box sx={{ width: "65vw", mr: "20px" }}>
+        <GoogleMaps
+          setCoordinates={setCoordinates}
+          setLoc={setLoc}
+          latLng={coordinates}
+          loc={loc}
+        />
+      </Box>
+      <Formik
+        enableReinitialize={true}
+        initialValues={{
+          address: loc,
+          id: "",
+          reporterPhone: "",
+        }}
+        onSubmit={(values) => {
+          console.log({
+            ...values,
+            coordinates,
+          });
+          if (values.id === "") {
+            setIdError(true);
+            setHelperTextId("Please Enter A Value");
+            return;
+          }
 
-        if (/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)) {
-          if (numberError) setNumberError(false);
-          let passed = false;
           switch (selected) {
             case "wallet":
               if (
-                /^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(
+                !/^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(
                   values.id
                 )
               ) {
-                passed = true;
+                setHelperTextId("Invalid Id Format");
+                return;
               }
               break;
             case "elec":
-              if (/^([0-9a-fA-F]){8}$/.test(values.id)) {
-                passed = true;
-              }
               break;
             case "car":
-              passed = true;
               break;
-            default:
-              console.error("invalid params");
           }
-          if (passed) {
-            setData({
-              address: values.address,
-              id: values.id.toString(),
-              type: selected,
-              reporterPhone: `0${values.reporterPhone}`,
-              lat: coordinates.lat,
-              lng: coordinates.lng,
-            });
-            onSubmit(true);
-          } else {
-            setIdError(true);
+          setIdError(false);
+          if (values.reporterPhone === "") {
+            setNumberError(true);
+            setHelperTextPhone("Please Enter Your Phone Number");
+            return;
           }
-        } else {
-          console.log("faas");
-          setNumberError(true);
-        }
-      }}
-    >
-      <Container
-        sx={{ display: "flex", justifyContent: "space-between" }}
-        maxWidth="xl"
+          if (!/^(010|011|012|015)[0-9]{8}$/.test(`0${values.reporterPhone}`)) {
+            setNumberError(true);
+            setHelperTextPhone("Please Enter A Valid Phone Number");
+            return;
+          }
+          setNumberError(false);
+          if (values.address === "") {
+            setAddressError(true);
+            return;
+          }
+
+          setAddressError(false);
+
+          setData({
+            address: values.address,
+            id: values.id.toString(),
+            type: selected,
+            reporterPhone: `0${values.reporterPhone}`,
+            lat: coordinates.lat.toString(),
+            lng: coordinates.lng.toString(),
+          });
+          onSubmit(true);
+        }}
       >
-        <Box sx={{ width: "65vw", mr: "20px" }}>
-          <GoogleMaps
-            setCoordinates={setCoordinates}
-            setLoc={setLoc}
-            latLng={coordinates}
-            loc={loc}
-          />
-        </Box>
-        <Box
-          sx={{
-            marginTop: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "30vw",
-          }}
-        >
-          <Typography
+        <Form>
+          <Box
             sx={{
-              mb: 3,
+              marginTop: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "30vw",
             }}
           >
-            Type of Item Found
-          </Typography>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Item</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selected}
-              label="Item"
-              onChange={handleChange}
+            <Typography
+              sx={{
+                mb: 3,
+              }}
             >
-              <MenuItem value={"car"} selected>
-                Car
-              </MenuItem>
-              <MenuItem value={"elec"}>Electronics</MenuItem>
-              <MenuItem value={"wallet"}>Wallet</MenuItem>
-            </Select>
-          </FormControl>
+              Type of Item Found
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Item</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selected}
+                label="Item"
+                onChange={handleChange}
+              >
+                <MenuItem value={"car"} selected>
+                  Car
+                </MenuItem>
+                <MenuItem value={"elec"}>Electronics</MenuItem>
+                <MenuItem value={"wallet"}>Wallet</MenuItem>
+              </Select>
+            </FormControl>
 
-          <Field
-            name="id"
-            label={
-              selected === "car"
-                ? "Car Numbers"
-                : selected === "elec"
-                ? "Serial Number"
-                : "ID"
-            }
-            type={
-              selected === "car"
-                ? "text"
-                : selected === "elec"
-                ? "text"
-                : "number"
-            }
-            id="id"
-            required={false}
-            helperText="Invalid id Format"
-            error={idError}
-            component={MyField}
-          />
-          <Field
-            name="reporterPhone"
-            label="Phone Number"
-            type="number"
-            id="reporterPhone"
-            required={false}
-            helperText="Invalid Number Format"
-            error={numberError}
-            component={MyField}
-          />
-          <Field
-            id="address"
-            label="Address"
-            name="address"
-            autoComplete="address"
-            required={false}
-            component={MyField}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Submit Found Report
-          </Button>
-        </Box>
-      </Container>
-    </Formik>
+            <Field
+              name="id"
+              label={
+                selected === "car"
+                  ? "Car Numbers"
+                  : selected === "elec"
+                  ? "Serial Number"
+                  : "ID"
+              }
+              type={
+                selected === "car"
+                  ? "text"
+                  : selected === "elec"
+                  ? "text"
+                  : "number"
+              }
+              id="id"
+              required={false}
+              helperText={helperTextId}
+              error={idError}
+              component={MyField}
+            />
+            <Field
+              name="reporterPhone"
+              label="Phone Number"
+              type="number"
+              id="reporterPhone"
+              required={false}
+              helperText={helperTextPhone}
+              error={numberError}
+              component={MyField}
+            />
+            <Field
+              id="address"
+              label="Address"
+              name="address"
+              autoComplete="address"
+              required={false}
+              component={MyField}
+              helperText="Please Enter An Address"
+              error={addressError}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit Found Report
+            </Button>
+          </Box>
+        </Form>
+      </Formik>
+    </Container>
   );
 }

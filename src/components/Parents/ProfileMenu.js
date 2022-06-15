@@ -115,7 +115,7 @@ const ProfileMenu = ({ authedUser }) => {
               <TextField
                 label="New phone number"
                 variant="standard"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                type="number"
                 value={newPhone}
                 error={error}
                 helperText={error && "Incorrect Number Format"}

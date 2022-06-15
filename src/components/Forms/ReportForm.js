@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
 import { Button } from "@mui/material";
@@ -10,11 +9,13 @@ import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
 
 import { toast, ToastContainer } from "react-toastify";
-const theme = createTheme();
 
 export default function ReportForm({ onSubmit, setData, setFiles }) {
   const [file, setFile] = useState([]);
   const [open, setOpen] = useState(false);
+  const [NameError, setNameError] = useState(false);
+  const [AgeError, setAgeError] = useState(false);
+  const [LocationError, setLocationError] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
   const onFileUpload = (e) => {
@@ -40,118 +41,136 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
     p: 4,
   };
   return (
-    <Formik
-      initialValues={{
-        childName: "",
-        childAge: "",
-        location: "",
-      }}
-      onSubmit={(values) => {
-        console.log({
-          ...values,
-        });
-        if (file.length === 0) {
-          toast.error("Please Add pictures", {
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+    <Container component="main" maxWidth="xs">
+      <Formik
+        initialValues={{
+          childName: "",
+          childAge: "",
+          location: "",
+        }}
+        onSubmit={(values) => {
+          console.log({
+            ...values,
           });
-        } else {
+          if (file.length === 0) {
+            toast.error("Please Add pictures", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            return;
+          }
+          if (values.childName === "") {
+            setNameError(true);
+            return;
+          }
+          setNameError(false);
+
+          if (values.childAge === "" || values.childAge === 0) {
+            setAgeError(true);
+            return;
+          }
+          setAgeError(false);
+          if (values.location === "") {
+            setLocationError(true);
+            return;
+          }
+          setLocationError(false);
           setData(values);
           onSubmit(true);
-        }
-      }}
-    >
-        <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
-            <Box
-              sx={{
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Button component="label">
-                Upload Child Images
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => onFileUpload(e)}
-                  multiple
-                  hidden
-                />
-              </Button>
-              {file.length > 0 && (
-                <Button onClick={handleOpenModal}>View Child Images</Button>
-              )}
+        }}
+      >
+        <Form>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Button component="label">
+              Upload Child Images
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => onFileUpload(e)}
+                multiple
+                hidden
+              />
+            </Button>
+            {file.length > 0 && (
+              <Button onClick={handleOpenModal}>View Child Images</Button>
+            )}
 
-              <Field
-                name="childName"
-                label="Child Name"
-                type="text"
-                id="childName"
-                required={true}
-                component={MyField}
-              />
-              <Field
-                name="childAge"
-                label="Child Age"
-                type="number"
-                id="childAge"
-                required={true}
-                component={MyField}
-              />
-              <Field
-                name="location"
-                label="Location"
-                type="text"
-                id="location"
-                required={true}
-                component={MyField}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Submit Found Report
-              </Button>
-              <Modal
-                open={open}
-                onClose={handleCloseModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <ImageList
-                    sx={{ width: 620, height: 405 }}
-                    cols={3}
-                    rowHeight={200}
-                  >
-                    {file.map((img) => (
-                      <ImageListItem key={img}>
-                        <img
-                          src={img}
-                          srcSet={img}
-                          alt={img.name}
-                          loading="lazy"
-                          id="status-card-img"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Box>
-              </Modal>
-              <ToastContainer />
-            </Box>
-          </Container>
-        </ThemeProvider>
-    </Formik>
+            <Field
+              name="childName"
+              label="Child Name"
+              type="text"
+              id="childName"
+              required={false}
+              component={MyField}
+              error={NameError}
+              helperText="Please enter the Name Value "
+            />
+            <Field
+              name="childAge"
+              label="Child Age"
+              type="number"
+              id="childAge"
+              required={false}
+              component={MyField}
+              error={AgeError}
+              helperText="Please enter the Age Value "
+            />
+            <Field
+              name="location"
+              label="Location"
+              type="text"
+              id="location"
+              required={false}
+              component={MyField}
+              error={LocationError}
+              helperText="Please enter the Location Value "
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit Found Report
+            </Button>
+          </Box>
+        </Form>
+      </Formik>
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+            {file.map((img) => (
+              <ImageListItem key={img}>
+                <img
+                  src={img}
+                  srcSet={img}
+                  alt={img.name}
+                  loading="lazy"
+                  id="status-card-img"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </Box>
+      </Modal>
+      <ToastContainer />
+    </Container>
   );
 }
