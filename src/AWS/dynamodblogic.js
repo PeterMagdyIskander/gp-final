@@ -4,6 +4,7 @@ import {
   QueryCommand,
   PutItemCommand,
   DeleteItemCommand,
+  UpdateItemCommand
 } from "@aws-sdk/client-dynamodb";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
@@ -336,3 +337,72 @@ export async function deleteitem(itemid, email, signintoken, itemtype) {
     console.log("Error", err);
   }
 }
+export async function updatedynamodbbphone(nephone,token,email)
+{
+    
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            logins: {
+                'cognito-idp.us-east-1.amazonaws.com/us-east-1_nASW5MZW5': token,
+            }
+        })
+    });
+    const params = {
+        TableName: "usercontactinfo", 
+        Key: {
+            emailadress :{S: email},
+            
+
+          },
+        UpdateExpression: "set phone = :t", // For example, "'set Title = :t, Subtitle = :s'"
+        ExpressionAttributeValues: {
+        ':t': {S:nephone}, 
+    },
+    
+
+          
+      };
+      try {
+        const data = await client.send(new UpdateItemCommand(params));
+        console.log("Success");
+        return data
+    } catch (err) {
+        console.log("Error", err);
+    }
+     
+
+}
+export async function getfromdynamodbphonenumber(email)
+{
+    
+    const client = new DynamoDBClient({
+        region: reg,
+        credentials: fromCognitoIdentityPool({
+            client: new CognitoIdentityClient({ region: reg }),
+            identityPoolId: identitypoolid,
+            
+        })
+    });
+    const params = {
+        TableName: "usercontactinfo", 
+        Key: {
+            emailadress :{S: email},
+            
+
+          },
+      };
+      try {
+        const data = await client.send(new GetItemCommand(params));
+        console.log("Success", data.Item);
+        return data.Item["phone"]["S"]
+    } catch (err) {
+        console.log("Error", err);
+    }
+     
+
+}
+
+  
