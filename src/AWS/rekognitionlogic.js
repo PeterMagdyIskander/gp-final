@@ -79,6 +79,11 @@ export async function searchforsimpasserby(i,
     
   } catch (error) {
     console.log(error);
+    if (error.toString().includes("no faces"))
+    {
+        return "NOFACE"
+
+    }
     return false;
     
   }
@@ -124,6 +129,11 @@ export async function searchforsimasciihandeled(i,
     
   } catch (error) {
     console.log(error);
+    if (error.toString().includes("no faces"))
+    {
+        return "NOFACE"
+
+    }
     return false;
     
   }
