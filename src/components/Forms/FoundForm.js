@@ -7,7 +7,7 @@ import { Form, Formik, Field } from "formik";
 import { MyField } from "./MyField";
 import { Button, Grid } from "@mui/material";
 import GoogleMaps from "../Google/GoogleMaps";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -34,11 +34,15 @@ export default function FoundForm({
           lat: coor.coords.latitude,
           lng: coor.coords.longitude,
         });
-        let res = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
-        );
-        res = await res.json();
-        setLoc(res.results[1].formatted_address);
+        try {
+          let res = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+          );
+          res = await res.json();
+          setLoc(res.results[1].formatted_address);
+        } catch (err) {
+          setLoc("Tahrir Square. Cairo, Egypt");
+        }
       });
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -236,7 +240,6 @@ export default function FoundForm({
                 </ImageList>
               </Box>
             </Modal>
-            <ToastContainer />
           </Box>
         </Form>
       </Formik>

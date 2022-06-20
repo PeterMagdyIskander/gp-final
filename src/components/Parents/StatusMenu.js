@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import IconTextCard from "../Cards/IconTextCard";
 import { setItems } from "../../ReduxStore/actions/items";
 import { setChildren } from "../../ReduxStore/actions/children";
+import { toast } from "react-toastify";
+import { Deleteobjects, uploadarrtos3editreport } from "../../AWS/s3logic";
 const StatusMenu = (props) => {
   const dispatch = useDispatch();
   const [children, setChildrenStatus] = useState([]);
@@ -24,6 +26,7 @@ const StatusMenu = (props) => {
   const [refresh, setRefresh] = useState(false);
   const [childrenLoading, setChildrenLoading] = useState(true);
   const [itemsLoading, setItemsLoading] = useState(true);
+
   useEffect(async () => {
     console.log(props.authedUser);
     if (props.items) {
@@ -105,6 +108,10 @@ const StatusMenu = (props) => {
     let y = await getItems();
   };
 
+  
+
+  
+
   return (
     <>
       <div className="found-options-container">
@@ -130,6 +137,7 @@ const StatusMenu = (props) => {
           Refresh Status
         </Button>
       </div>
+
       <Container
         sx={{
           mt: "64px",
@@ -144,21 +152,21 @@ const StatusMenu = (props) => {
             <Skeleton
               variant="rectangular"
               height="40vh"
-              width="20vw"
+              width="17vw"
               sx={{ borderRadius: "30px" }}
               animation="wave"
             />
             <Skeleton
               variant="rectangular"
               height="40vh"
-              width="20vw"
+              width="17vw"
               sx={{ borderRadius: "30px" }}
               animation="wave"
             />
             <Skeleton
               variant="rectangular"
               height="40vh"
-              width="20vw"
+              width="17vw"
               sx={{ borderRadius: "30px" }}
               animation="wave"
             />
@@ -178,9 +186,9 @@ const StatusMenu = (props) => {
                 <StatusCard
                   key={index}
                   child={{
-                    imgs: child.photos,
-                    nameOfChild: child.name,
-                    ageOfChild: child.age,
+                    photos: child.photos,
+                    name: child.name,
+                    age: child.age,
                     location: child.Location,
                     status: child.match,
                     matches: child.matches,

@@ -12,7 +12,7 @@ export default function GenericStatusCard(props) {
         boxShadow: 10,
         borderRadius: "30px",
         bgcolor: "#fafafa",
-        width: "20vw",
+        width: "17vw",
         height: "40vh",
         display: "flex",
         flexDirection: "column",

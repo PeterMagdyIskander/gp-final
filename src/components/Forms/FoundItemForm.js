@@ -35,11 +35,15 @@ export default function FoundItemForm({ setData, onSubmit }) {
           lat: coor.coords.latitude,
           lng: coor.coords.longitude,
         });
-        let res = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
-        );
-        res = await res.json();
-        setLoc(res.results[1].formatted_address);
+        try {
+          let res = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coor.coords.latitude},${coor.coords.longitude}&sensor=true&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+          );
+          res = await res.json();
+          setLoc(res.results[1].formatted_address);
+        } catch (err) {
+          setLoc("Tahrir Square. Cairo, Egypt");
+        }
       });
     } else {
       alert("Geolocation is not supported by this browser.");

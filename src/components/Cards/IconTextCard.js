@@ -15,7 +15,8 @@ export default function IconTextCard({
         <p className="card-message">{message}</p>
         <p className="card-sub-message">{subMessage}</p>
       </div>
-      {onClickFunction != null ? (
+
+      {onClickFunction != null && (
         <Button
           sx={{
             textTransform: "none",
@@ -33,10 +34,6 @@ export default function IconTextCard({
         >
           Click for More
         </Button>
-      ) : (
-        <>
-          <p className="card-title"> {message}</p>
-        </>
       )}
     </div>
   );

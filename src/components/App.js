@@ -1,12 +1,5 @@
-import { Fragment, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Fragment } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "./Authentication/signIn";
 import SignUp from "./Authentication/signUp";
 import NavBar from "./Navigation/navBar";
@@ -15,7 +8,7 @@ import ReportMenu from "./Parents/ReportMenu";
 import StatusMenu from "./Parents/StatusMenu";
 import Found from "./User/Found";
 import RequireAuth from "./Navigation/RequireAuth";
-
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <Fragment>
@@ -44,6 +37,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
+      <ToastContainer />
     </Fragment>
   );
 }

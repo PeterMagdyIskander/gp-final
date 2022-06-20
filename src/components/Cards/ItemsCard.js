@@ -16,7 +16,7 @@ import {
   getfromdynamodb,
 } from "../../AWS/dynamodblogic";
 import { setItems } from "../../ReduxStore/actions/items";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import MatchedItemsCard from "./MatchedItemsCard";
 
 function ItemsCard(props) {
@@ -247,7 +247,6 @@ function ItemsCard(props) {
           )}
         </Box>
       </Modal>
-      <ToastContainer limit={1} />
     </>
   );
 }

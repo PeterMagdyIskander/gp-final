@@ -8,7 +8,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function ReportForm({ onSubmit, setData, setFiles }) {
   const [file, setFile] = useState([]);
@@ -170,7 +170,6 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
           </ImageList>
         </Box>
       </Modal>
-      <ToastContainer />
     </Container>
   );
 }

@@ -20,7 +20,7 @@ import { FiXCircle } from "react-icons/fi";
 import GenericStatusCard from "./GenericStatusCard";
 import IconTextCard from "../Cards/IconTextCard";
 import { setChildren } from "../../ReduxStore/actions/children";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 const StatusCard = (props) => {
   console.log("status props", props);
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const StatusCard = (props) => {
   const handleCloseMatchesModal = () => setOpenMatches(false);
 
   const [editing, setEditing] = useState(false);
-  const [imgs, setImages] = useState(props.child.imgs);
+  const [imgs, setImages] = useState(props.child.photos);
 
   const [sentReq, setSentReq] = useState(false);
   const styleInfo = {
@@ -75,46 +75,15 @@ const StatusCard = (props) => {
     boxShadow: 24,
     p: 4,
   };
-  const handleRemoveChild = async () => {
-    setSentReq(true);
-    let success = await toast.promise(
-      Deleteobjects(
-        props.authedUser.jwtToken,
-        props.child.imgs,
-        "lostchildrenbucket"
-      ),
-      {
-        pending: "Deleting Report",
-        success: "Report Deleted Successfully",
-        error: "Deletion Failed",
-      },
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      }
-    );
-  if (success) {
-      let newChildArr = props.children.filter(
-        (child) =>
-          props.child.nameOfChild + props.child.location !==
-          child.name + child.Location
-      );
-      console.log("before", props.children, "after deletion", newChildArr);
-      dispatch(setChildren(newChildArr));
-    }
-    setSentReq(false);
-    props.setRefresh(!props.refresh);
-  };
   const handleEditing = () => {
-    console.log(props.child.imgs);
+    console.log(props.child.photos);
     setEditing(!editing);
   };
 
-  const handleRemove = async () => {
-    let toBeDeleted = imgs.filter((img) => img.selected);
-    console.log(toBeDeleted);
-    //to be deleted is the images to be deleted uri
-    //call the delete api here
-    if (toBeDeleted.length === imgs.length) {
+  const removeChildImages = async (child) => {
+    console.log(child);
+    let toBeDeleted = child.photos.filter((img) => img.selected);
+    if (toBeDeleted.length === child.photos.length) {
       toast.error("Can't Remove All Pictures", {
         position: "bottom-right",
         autoClose: 2000,
@@ -151,13 +120,21 @@ const StatusCard = (props) => {
         }
       );
       if (success) {
-        let notDeleted = imgs.filter((img) => !img.selected);
+        let newChildArr = props.children;
 
-        setImages(notDeleted);
+        let notDeletedImgs = child.photos.filter((img) => !img.selected);
+
+        for (let i = 0; i < newChildArr.length; i++) {
+          if (newChildArr[i].name === child.name) {
+            newChildArr[i].photos = notDeletedImgs;
+            setImages(notDeletedImgs);
+            break;
+          }
+        }
+        dispatch(setChildren(newChildArr));
       }
     }
   };
-
   const onFileUpload = async (e) => {
     if (e.target.files.length > 10 - imgs.length) {
       toast.error(`Please upload ${10 - imgs.length} images only`, {
@@ -182,15 +159,13 @@ const StatusCard = (props) => {
       });
       return;
     }
-    //call the upload function here on the new images -> uploadImgs
-    //any use data is in -> props.authedUser
     let success = await toast.promise(
       uploadarrtos3editreport(
         props.authedUser.jwtToken,
         e.target.files,
         props.authedUser.email,
         props.authedUser.cognitoUserId,
-        props.child.nameOfChild,
+        props.child.name,
         props.child.location,
         props.authedUser.phoneNumber,
         "lostchildrenbucket"
@@ -218,22 +193,43 @@ const StatusCard = (props) => {
       setImages([...imgs, ...selectedImages]);
     }
   };
-
+  const removeChildReport = async (childImgs, childName, childLocation) => {
+    let success = await toast.promise(
+      Deleteobjects(props.authedUser.jwtToken, childImgs, "lostchildrenbucket"),
+      {
+        pending: "Deleting Report",
+        success: "Report Deleted Successfully",
+        error: "Deletion Failed",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      }
+    );
+    if (success) {
+      let newChildArr = props.children.filter(
+        (child) => childName + childLocation !== child.name + child.Location
+      );
+      console.log("before", props.children, "after deletion", newChildArr);
+      dispatch(setChildren(newChildArr));
+    }
+    handleCloseInfoModal();
+    props.setRefresh(!props.refresh);
+  };
   return (
     <>
       <GenericStatusCard
         component={
           <img
             className="lost-child-img"
-            alt={props.child.nameOfChild}
-            src={props.child.imgs[0].img}
+            alt={props.child.name}
+            src={props.child.photos[0].img}
           />
         }
         message={""}
         handleOpenMatchesModal={handleOpenMatchesModal}
         handleOpenInfoModal={handleOpenInfoModal}
       />
-      <ToastContainer limit={1} />
+
       <Modal
         open={openInfo}
         onClose={handleCloseInfoModal}
@@ -263,7 +259,10 @@ const StatusCard = (props) => {
                 hidden
               />
             </Button>
-            <Button onClick={handleRemove} disabled={!editing}>
+            <Button
+              onClick={() => removeChildImages(props.child)}
+              disabled={!editing}
+            >
               Remove Images
             </Button>
           </div>
@@ -288,7 +287,7 @@ const StatusCard = (props) => {
                       variant="body2"
                       color="text.primary"
                     >
-                      {props.child.nameOfChild}
+                      {props.child.name}
                     </Typography>
                   </React.Fragment>
                 }
@@ -319,7 +318,16 @@ const StatusCard = (props) => {
             </ListItem>
           </List>
           <div className="flex flex-space-between">
-            <Button onClick={handleRemoveChild} disabled={sentReq}>
+            <Button
+              onClick={() => {
+                removeChildReport(
+                  props.child.photos,
+                  props.child.name,
+                  props.child.location
+                );
+              }}
+              disabled={sentReq}
+            >
               Remove Report
             </Button>
             <Button onClick={handleEditing} disabled={sentReq}>
