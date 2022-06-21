@@ -61,7 +61,7 @@ function SignInForm(props) {
       onSuccess: (data) => {
         setSignedUpPasswordError(false);
         setSignedUpEmailError(false);
-        dispatch(setAuthedUser(data.getIdToken()));
+        dispatch(setAuthedUser(data));
         runLogoutTimer(
           dispatch,
           new Date(data.getIdToken().payload.exp * 1000).getTime() -

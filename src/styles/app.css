@@ -32,14 +32,15 @@ body {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
+
 h1 {
     display: block;
     font-size: 2em;
@@ -520,13 +521,36 @@ a:hover {
     border-radius: 30px;
 }
 
+
+.face-img-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.face-img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+}
+
 @media (max-width: 600px) {
 
     .found-options-container,
-    .home {
+    .home,
+    .face-img-container {
         flex-direction: column;
     }
-    .logo-card{
+
+    .face-img-container {
+        height: 50vh;
+        width: 210px;
+        overflow-x: hidden;
+    }
+
+    .logo-card {
         visibility: hidden;
     }
 }

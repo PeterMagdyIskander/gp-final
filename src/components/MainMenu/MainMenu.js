@@ -4,13 +4,14 @@ import { useNavigate } from "react-router";
 import { FiFlag } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import LogoCard from "../Cards/LogoCard";
+import ImageContainer from "../Cards/ImageContainer";
 const MainMenu = () => {
   const navigate = useNavigate();
 
-  
   return (
     <div className="home">
-      <IconTextCard
+      
+       <IconTextCard
         component={<FiFlag size="7vw" color="#39a2db" />}
         onClickFunction={() => navigate("Found")}
         message={"Found a Child/Item"}
@@ -26,7 +27,8 @@ const MainMenu = () => {
         subMessage={
           "We are using the latest AI technologies to macth lost children"
         }
-      />
+      /> 
+
     </div>
   );
 };

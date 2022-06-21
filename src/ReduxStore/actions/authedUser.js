@@ -1,4 +1,3 @@
-
 import { setChildren } from "./children";
 import { setItems } from "./items";
 export const SET_AUTHED_USER = "SET_AUTHED_USER";
@@ -7,12 +6,13 @@ export function setAuthedUser(user) {
   let authedUser;
   if (user) {
     authedUser = {
-      jwtToken: user.jwtToken,
-      email: user.payload.email,
-      phoneNumber: user.payload.phone_number,
-      name: `${user.payload.name} ${user.payload.family_name}`,
-      tokenExpiryDate: user.payload.exp * 1000,
-      cognitoUserId: user.payload["cognito:username"],
+      jwtToken: user.idToken.jwtToken,
+      email: user.idToken.payload.email,
+      phoneNumber: user.idToken.payload.phone_number,
+      name: `${user.idToken.payload.name} ${user.idToken.payload.family_name}`,
+      tokenExpiryDate: user.idToken.payload.exp * 1000,
+      cognitoUserId: user.idToken.payload["cognito:username"],
+      accessToken: user.accessToken,
     };
   } else {
     authedUser = user;
@@ -28,8 +28,6 @@ function saveTokenInLocalStorage(tokenDetails) {
 }
 
 export function runLogoutTimer(dispatch, timer) {
-  console.log("auto logging off in ", timer);
-
   setTimeout(() => {
     localStorage.removeItem("userDetails");
     dispatch(setAuthedUser(null));
@@ -44,10 +42,8 @@ export function isAuthedForRouting(dispatch) {
   if (userDetails === "null" || !userDetails) return false;
 
   tokenDetails = JSON.parse(userDetails);
-  console.log("yo", tokenDetails);
-  let expireDate = new Date(tokenDetails.payload.exp * 1000);
+  let expireDate = new Date(tokenDetails.idToken.payload.exp * 1000);
   let todaysDate = new Date().getTime();
-  console.log(todaysDate, expireDate);
   if (todaysDate > expireDate) return false;
 
   dispatch(setAuthedUser(tokenDetails));

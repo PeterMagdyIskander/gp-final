@@ -9,6 +9,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
 
 import { toast } from "react-toastify";
+import ImageContainer from "../Cards/ImageContainer";
 
 export default function ReportForm({ onSubmit, setData, setFiles }) {
   const [file, setFile] = useState([]);
@@ -33,8 +34,7 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "fit-content",
-    overflowY: "auto",
+    width: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -155,7 +155,7 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+          {/* <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
             {file.map((img) => (
               <ImageListItem key={img}>
                 <img
@@ -167,7 +167,8 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
                 />
               </ImageListItem>
             ))}
-          </ImageList>
+          </ImageList> */}
+          <ImageContainer imgs={file} />
         </Box>
       </Modal>
     </Container>
