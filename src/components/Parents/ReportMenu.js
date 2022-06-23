@@ -79,12 +79,12 @@ const ReportMenu = (props) => {
       {selecting === "" && (
         <div className="found-options-container">
           <IconTextCard
-            component={<FiUser size={"7vw"} />}
+            component={<FiUser className="icon" />}
             message="Report a Child"
             onClickFunction={() => handleSelect("child")}
           />
           <IconTextCard
-            component={<MdOutlineDevicesOther size={"7vw"} />}
+            component={<MdOutlineDevicesOther className="icon" />}
             message="Report an Item"
             onClickFunction={() => handleSelect("items")}
           />
@@ -107,7 +107,7 @@ const ReportMenu = (props) => {
         {matches.length === 0 && done && (
           <div className="found-options-container">
             <IconTextCard
-              component={<FiXCircle size={"7vw"} color="red" />}
+              component={<FiXCircle className="icon" color="red" />}
               message="No Matches Found"
               onClickFunction={null}
             />
@@ -135,11 +135,11 @@ const ReportMenu = (props) => {
                     found={false}
                     component={
                       item.type === "car" ? (
-                        <FaCar size="7vw" />
+                        <FaCar className="icon" />
                       ) : props.type === "wallet" ? (
-                        <FaWallet size="7vw" />
+                        <FaWallet className="icon" />
                       ) : (
-                        <MdOutlineDevicesOther size="7vw" />
+                        <MdOutlineDevicesOther className="icon" />
                       )
                     }
                     key={item.id}

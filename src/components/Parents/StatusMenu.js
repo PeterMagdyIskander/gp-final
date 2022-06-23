@@ -108,10 +108,6 @@ const StatusMenu = (props) => {
     let y = await getItems();
   };
 
-  
-
-  
-
   return (
     <>
       <div className="found-options-container">
@@ -138,50 +134,46 @@ const StatusMenu = (props) => {
         </Button>
       </div>
 
-      <Container
-        sx={{
-          mt: "64px",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-evenly",
-        }}
-        component="main"
-      >
-        {(childrenLoading || itemsLoading) && (
-          <>
-            <Skeleton
-              variant="rectangular"
-              height="40vh"
-              width="17vw"
-              sx={{ borderRadius: "30px" }}
-              animation="wave"
-            />
-            <Skeleton
-              variant="rectangular"
-              height="40vh"
-              width="17vw"
-              sx={{ borderRadius: "30px" }}
-              animation="wave"
-            />
-            <Skeleton
-              variant="rectangular"
-              height="40vh"
-              width="17vw"
-              sx={{ borderRadius: "30px" }}
-              animation="wave"
-            />
-          </>
-        )}
-
-        {children.length === 0 && !childrenLoading && !itemsLoading ? (
-          <IconTextCard
-            component={<FiXCircle size={"7vw"} color="red" />}
-            message="No Child Reports Found"
-            onClickFunction={null}
+      {childrenLoading || itemsLoading ? (
+        <div className="status-container">
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="25%"
+            sx={{ borderRadius: "30px", minWidth: "250px", m: "25px " }}
+            animation="wave"
           />
-        ) : !childrenLoading && !itemsLoading ? (
-          <>
-            {children.map((child, index) => {
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="25%"
+            sx={{ borderRadius: "30px", minWidth: "250px", m: "25px " }}
+            animation="wave"
+          />
+          <Skeleton
+            variant="rectangular"
+            height="40vh"
+            width="25%"
+            sx={{ borderRadius: "30px", minWidth: "250px", m: "25px " }}
+            animation="wave"
+          />
+        </div>
+      ) : (
+        <div className="status-container">
+          {!childrenLoading &&
+            !itemsLoading &&
+            items.length === 0 &&
+            children.length === 0 && (
+              <IconTextCard
+                component={<FiXCircle className="icon" color="red" />}
+                message="No Reports Found"
+                onClickFunction={null}
+              />
+            )}
+          {!childrenLoading &&
+            !itemsLoading &&
+            children.lenght !== 0 &&
+            children.map((child, index) => {
               return (
                 <StatusCard
                   key={index}
@@ -198,20 +190,10 @@ const StatusMenu = (props) => {
                 />
               );
             })}
-          </>
-        ) : (
-          <></>
-        )}
-
-        {items.length === 0 && !childrenLoading && !itemsLoading ? (
-          <IconTextCard
-            component={<FiXCircle size={"7vw"} color="red" />}
-            message="No Item Reports Found"
-            onClickFunction={null}
-          />
-        ) : !childrenLoading && !itemsLoading ? (
-          <>
-            {items.map((item) => {
+          {!childrenLoading &&
+            !itemsLoading &&
+            items.lenght !== 0 &&
+            items.map((item) => {
               return (
                 <ItemsCard
                   id={item.id}
@@ -224,11 +206,8 @@ const StatusMenu = (props) => {
                 />
               );
             })}
-          </>
-        ) : (
-          <></>
-        )}
-      </Container>
+        </div>
+      )}
     </>
   );
 };

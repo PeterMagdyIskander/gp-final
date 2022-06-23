@@ -224,9 +224,6 @@ Circles {
 /*
 styling for selected image
 */
-.container {
-    position: relative;
-}
 
 #status-card-img {
     width: 200px;
@@ -465,9 +462,11 @@ a:hover {
 
 /*IconTextCard.js styling*/
 .card-content {
-    margin: 25px 0;
+    margin: 25px 15px;
     padding: 35px;
     width: 25%;
+    min-width: 250px;
+    max-width: 300px;
     border: 1px solid #39a2db;
     background-color: #fff;
     border-radius: 30px;
@@ -475,14 +474,11 @@ a:hover {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-width: 250px;
 }
 
-.icon-border {
-    padding: 10px;
-    border: 1px solid #39a2db;
-    border-radius: 30px;
-    margin: 15px 0;
+.icon {
+    font-size: clamp(64px, 7vw, 72px);
+
 }
 
 .message-container {
@@ -522,8 +518,11 @@ a:hover {
     border-radius: 30px;
 }
 
+/*END*/
 
+/*StatusMenu.js*/
 .face-img-container {
+    min-height: 220px;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -531,30 +530,78 @@ a:hover {
     overflow-x: auto;
 }
 
-.face-img {
-    max-width: 200px;
-    max-height: 200px;
-    object-fit: contain;
+.container {
+
+    border: 2px solid #39a2db;
+    border-radius: 30px;
+    margin: 5px;
+    padding: 5px;
+    background-color: #eee;
 }
 
-@media (max-width: 600px) {
+
+.face-img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+
+}
+
+.edit-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 70%;
+    height: 70vh;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 30px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-controls-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+/*Loading container*/
+.status-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 64px auto;
+    align-items: center;
+}
+
+/*END*/
+@media (max-width: 900px) {
 
     .found-options-container,
     .home,
-    .face-img-container {
+    .face-img-container,
+    .status-controls-container,
+    .loading-container {
         flex-direction: column;
     }
 
     .face-img-container {
         height: 50vh;
-        width: 210px;
         overflow-x: hidden;
     }
 
-    nav{
+    nav {
         margin: 15px 15px;
     }
+
     .logo-card {
-        display:none;
+        display: none;
     }
 }

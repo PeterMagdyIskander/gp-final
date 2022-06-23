@@ -9,7 +9,7 @@ export default function IconTextCard({
 }) {
   return (
     <div className="card-content">
-      <div className="icon-border">{component}</div>
+      {component}
 
       <div className="message-container">
         <p className="card-message">{message}</p>

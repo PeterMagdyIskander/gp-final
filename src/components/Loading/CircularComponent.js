@@ -51,7 +51,7 @@ function CircularComponent(props) {
             </Fab>
             {loading && (
               <CircularProgress
-                size={68}
+                className="icon"
                 sx={{
                   color: green[500],
                   position: "absolute",

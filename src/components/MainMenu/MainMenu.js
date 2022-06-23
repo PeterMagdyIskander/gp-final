@@ -12,7 +12,7 @@ const MainMenu = () => {
     <div className="home">
       
        <IconTextCard
-        component={<FiFlag size="7vw" color="#39a2db" />}
+        component={<FiFlag className="icon" color="#39a2db" />}
         onClickFunction={() => navigate("Found")}
         message={"Found a Child/Item"}
         subMessage={
@@ -21,7 +21,7 @@ const MainMenu = () => {
       />
       <LogoCard />
       <IconTextCard
-        component={<RiUserSearchFill size="7vw" color="#39a2db" />}
+        component={<RiUserSearchFill className="icon" color="#39a2db" />}
         onClickFunction={() => navigate("Report")}
         message={"Report a Child/Item"}
         subMessage={

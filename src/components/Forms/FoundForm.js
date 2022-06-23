@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
+import ImageContainer from "../Cards/ImageContainer";
 const theme = createTheme();
 export default function FoundForm({
   setFiles,
@@ -74,8 +75,7 @@ export default function FoundForm({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "fit-content",
-    overflowY: "auto",
+    width: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -221,7 +221,7 @@ export default function FoundForm({
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <ImageList
+                {/* <ImageList
                   sx={{ width: 620, height: 405 }}
                   cols={3}
                   rowHeight={200}
@@ -237,7 +237,8 @@ export default function FoundForm({
                       />
                     </ImageListItem>
                   ))}
-                </ImageList>
+                </ImageList> */}
+                <ImageContainer imgs={file} selectable={false}/>
               </Box>
             </Modal>
           </Box>

@@ -47,7 +47,7 @@ const BurgerMenu = (props) => {
         <Box
           sx={{
             width: "100vw",
-            backgroundImage: "linear-gradient(to right, #89b0ae, #c9ada7)",
+            backgroundColor:"#eff4f7",
             height: "100vh",
             display: "flex",
             flexDirection: "column",

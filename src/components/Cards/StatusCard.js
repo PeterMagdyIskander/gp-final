@@ -21,12 +21,16 @@ import GenericStatusCard from "./GenericStatusCard";
 import IconTextCard from "../Cards/IconTextCard";
 import { setChildren } from "../../ReduxStore/actions/children";
 import { toast } from "react-toastify";
+import ImageContainer from "./ImageContainer";
 const StatusCard = (props) => {
   console.log("status props", props);
   const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
   const handleOpenInfoModal = () => setOpenInfo(true);
-  const handleCloseInfoModal = () => setOpenInfo(false);
+  const handleCloseInfoModal = () => {
+    setEditing(false);
+    setOpenInfo(false);
+  };
 
   const [openMatches, setOpenMatches] = useState(false);
   const handleOpenMatchesModal = () => setOpenMatches(true);
@@ -41,7 +45,7 @@ const StatusCard = (props) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "750px",
+    width: "70%",
     height: "70%",
     overflowY: "auto",
     bgcolor: "background.paper",
@@ -236,18 +240,19 @@ const StatusCard = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={styleInfo}>
-          <Typography id="modal-modal-title" variant="h4" component="h2">
-            Child Info
-          </Typography>
-          <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
+        <div className="edit-container">
+          {/* <ImageList sx={{ width: 620, height: 405 }} cols={3} rowHeight={200}>
             {imgs.map((img, index) => (
               <ImageListItem key={index}>
                 <SelectedImg key={index} img={img} editable={editing} />
               </ImageListItem>
             ))}
-          </ImageList>
-          <div className="flex flex-space-between">
+          </ImageList> */}
+          <ImageContainer imgs={imgs} selectable={true} editing={editing} />
+          <div className="status-controls-container">
+            <Button onClick={handleEditing} disabled={sentReq}>
+              {editing ? "Save Changes" : "Enable Editting"}
+            </Button>
             <Button component="label" disabled={imgs.length === 10 || !editing}>
               Add Images
               <input
@@ -266,59 +271,27 @@ const StatusCard = (props) => {
               Remove Images
             </Button>
           </div>
-          <List
-            sx={{
-              width: "100%",
-              maxWidth: 360,
-              bgcolor: "background.paper",
-            }}
-          >
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <FiUser size={28} />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Name:"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {props.child.name}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            {!editing && <Divider variant="inset" component="li" />}
-
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <FiMapPin size={28} />
-              </ListItemAvatar>
-
-              <ListItemText
-                primary="Location:"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {props.child.location}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          </List>
-          <div className="flex flex-space-between">
+          <div className="flex">
+            <FiUser size={28} />
+            <p className="card-message">Name {props.child.name}</p>
+          </div>
+          <div className="flex ">
+            <FiMapPin size={28} />
+            <p className="card-message">Last seen at {props.child.location}</p>
+          </div>{" "}
+          <div className="status-controls-container">
             <Button
+              sx={{
+                textTransform: "none",
+                fontWeight: "100",
+                fontSize: "1.2rem",
+                fontFamily: "Quicksand",
+                borderRadius: "15px",
+                color: "red",
+                fontWeight: "600",
+                backgroundColor: "white",
+               }}
+              variant="contained"
               onClick={() => {
                 removeChildReport(
                   props.child.photos,
@@ -330,11 +303,11 @@ const StatusCard = (props) => {
             >
               Remove Report
             </Button>
-            <Button onClick={handleEditing} disabled={sentReq}>
-              {editing ? "Save Changes" : "Enable Editting"}
+            <Button onClick={() => handleCloseInfoModal()} disabled={sentReq}>
+              Close
             </Button>
           </div>
-        </Box>
+        </div>
       </Modal>
 
       <Modal
@@ -346,7 +319,7 @@ const StatusCard = (props) => {
         <Box sx={props.child.matches.length == 0 ? styleNoMatch : styleMatch}>
           {props.child.matches.length === 0 ? (
             <IconTextCard
-              component={<FiXCircle size={"7vw"} color="red" />}
+              component={<FiXCircle className="icon" color="red" />}
               message="No Matches Found"
               onClickFunction={() => handleCloseMatchesModal()}
             />

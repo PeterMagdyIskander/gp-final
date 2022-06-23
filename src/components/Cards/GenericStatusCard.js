@@ -5,20 +5,7 @@ import { FiInfo, FiEdit } from "react-icons/fi";
 export default function GenericStatusCard(props) {
   let iconSize = 24;
   return (
-    <CardContent
-      variant="outlined"
-      sx={{
-        m: "2% 0",
-        boxShadow: 10,
-        borderRadius: "30px",
-        bgcolor: "#fafafa",
-        width: "17vw",
-        height: "40vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-around",
-      }}
+    <div className="card-content"
     >
       {props.component}
       {props.message !== "" && <p className="card-title">{props.message}</p>}
@@ -42,6 +29,6 @@ export default function GenericStatusCard(props) {
           <h4 className="options-title">Edit</h4>
         </div>
       </div>
-    </CardContent>
+    </div>
   );
 }

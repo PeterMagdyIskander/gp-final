@@ -168,7 +168,7 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
               </ImageListItem>
             ))}
           </ImageList> */}
-          <ImageContainer imgs={file} />
+          <ImageContainer imgs={file} selectable={false} />
         </Box>
       </Modal>
     </Container>

@@ -142,11 +142,11 @@ function ItemsCard(props) {
       <GenericStatusCard
         component={
           props.type === "car" ? (
-            <FaCar size="7vw" />
+            <FaCar className="icon" />
           ) : props.type === "wallet" ? (
-            <FaWallet size="7vw" />
+            <FaWallet className="icon" />
           ) : (
-            <MdOutlineDevicesOther size="7vw" />
+            <MdOutlineDevicesOther className="icon" />
           )
         }
         message={props.id}
@@ -218,7 +218,7 @@ function ItemsCard(props) {
         <Box sx={styleMatch}>
           {!props.matches.length ? (
             <IconTextCard
-              component={<FiXCircle size={"7vw"} color="red" />}
+              component={<FiXCircle className="icon" color="red" />}
               message="No Matches Found"
               onClickFunction={null}
             />
@@ -231,11 +231,11 @@ function ItemsCard(props) {
                     found={false}
                       component={
                       item.type === "car" ? (
-                        <FaCar size="7vw" />
+                        <FaCar className="icon" />
                       ) : props.type === "wallet" ? (
-                        <FaWallet size="7vw" />
+                        <FaWallet className="icon" />
                       ) : (
-                        <MdOutlineDevicesOther size="7vw" />
+                        <MdOutlineDevicesOther className="icon" />
                       )
                     }
                     key={item.id}
