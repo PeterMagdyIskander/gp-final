@@ -24,13 +24,13 @@ export async function sendmail(Destination,type,id)
             Body: {
                 Text: {
                    
-                    Data: "Your "+type+" "+id+" has been found please sign in to your account see more information",
+                    Data: "Your "+type+" "+id+" has been found please sign in to your account to see more information.",
                   }
               
             },
             Subject: {
                 
-                Data: "Lost and Found Notify",
+                Data: "Lost & Found Report Update",
               
               
             },
