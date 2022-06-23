@@ -126,7 +126,10 @@ const ProfileMenu = ({ authedUser }) => {
               <FiCheck
                 style={{ cursor: "pointer" }}
                 size="2vw"
-                onClick={() => {
+                onClick={async()  => {
+
+                  
+                  await changephonenumber("+2"+newPhone,authedUser.jwtToken,authedUser.accessToken.jwtToken,authedUser.email)
                   saveChange();
                 }}
               />

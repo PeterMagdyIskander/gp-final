@@ -7,6 +7,7 @@ import {
   HeadObjectCommand,
 } from "@aws-sdk/client-s3";
 import {sendmail} from "../AWS/maillogic"
+import {getfromdynamodbphonenumber} from "../AWS/dynamodblogic"
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
@@ -310,6 +311,7 @@ export async function getreports(id, Bucket) {
       photosuri: i[1],
       metadata: JSON.parse(i[0]),
     };
+    out["metadata"]["phonenumber"]=await getfromdynamodbphonenumber(out["metadata"]["owner"])
     outarr.push(out);
     sendmail(out['metadata']['owner'],"Child",out['metadata']["lostchildid"]);
   }
