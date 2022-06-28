@@ -17,27 +17,26 @@ function CircularComponent(props) {
   const [loading, setLoading] = useState(props.loading);
   useEffect(() => {
     if (props.success === "true") setLoading(false);
-    
-  }, [props.success,props.loading]);
-  
+  }, [props.success, props.loading]);
+
   useEffect(() => {
     setLoading(props.loading);
   }, [props.loading]);
-  console.log(loading,props.number)
+  console.log(loading, props.number);
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        margin:"15px"
+        margin: "15px",
       }}
     >
       <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
-        <Box sx={{ display: "grid", justifyItems: "center", margin: "10px" }}>
+        <Box sx={{ display: "flex", alignItems: "center", margin: "10px" }}>
           <Box
             sx={{
+              m: "1",
               position: "relative",
-              mb: "10px",
             }}
           >
             <Fab aria-label="save" sx={buttonSx}>
@@ -51,7 +50,7 @@ function CircularComponent(props) {
             </Fab>
             {loading && (
               <CircularProgress
-                className="icon"
+                size={68}
                 sx={{
                   color: green[500],
                   position: "absolute",
@@ -63,6 +62,7 @@ function CircularComponent(props) {
             )}
           </Box>
         </Box>
+
         <Typography variant="p" sx={{ textAlign: "center" }}>
           {props.success === "true"
             ? props.message.success

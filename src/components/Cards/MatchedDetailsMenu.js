@@ -79,9 +79,9 @@ export default function MatchedDetailsMenu(props) {
           <p>
             {" "}
             Written Address{" "}
-            {selectedMatch.metadata.writenaddress === ""
-              ? "Not Written Address Entered"
-              : selectedMatch.metadata.writenaddress}
+            {selectedMatch.metadata.address
+              ? "No Written Address Entered"
+              : selectedMatch.metadata.address }
           </p>
         </div>
         <div className="flex big-gap">

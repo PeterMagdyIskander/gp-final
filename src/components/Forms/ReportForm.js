@@ -70,10 +70,10 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
           }
           setNameError(false);
 
-          if (values.childAge === "" || values.childAge === 0) {
-            setAgeError(true);
-            return;
-          }
+          // if (values.childAge === "" || values.childAge === 0) {
+          //   setAgeError(true);
+          //   return;
+          // }
           setAgeError(false);
           if (values.location === "") {
             setLocationError(true);
@@ -116,16 +116,6 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
               component={MyField}
               error={NameError}
               helperText="Please enter the Name Value "
-            />
-            <Field
-              name="childAge"
-              label="Child Age"
-              type="number"
-              id="childAge"
-              required={false}
-              component={MyField}
-              error={AgeError}
-              helperText="Please enter the Age Value "
             />
             <Field
               name="location"

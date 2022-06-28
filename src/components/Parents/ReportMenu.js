@@ -81,11 +81,13 @@ const ReportMenu = (props) => {
           <IconTextCard
             component={<FiUser className="icon" />}
             message="Report a Child"
+            subMessage="Lost your Child? We have got this."
             onClickFunction={() => handleSelect("child")}
           />
           <IconTextCard
             component={<MdOutlineDevicesOther className="icon" />}
             message="Report an Item"
+            subMessage="Lost your Item? We have got this."
             onClickFunction={() => handleSelect("items")}
           />
         </div>

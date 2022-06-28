@@ -489,14 +489,14 @@ a:hover {
 .card-message {
     font-weight: 600;
     color: #073944;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin: 10px;
 }
 
 .card-sub-message {
     margin: 10px;
     color: #073944;
-    font-size: 0.9rem;
+    font-size: 1rem;
     opacity: 0.9;
 }
 
@@ -507,6 +507,7 @@ a:hover {
     margin: 5px 0;
     padding: 35px;
     width: 30%;
+    height: 50vh;
     align-self: stretch;
     background-image: url("./logo.svg");
     background-repeat: no-repeat;

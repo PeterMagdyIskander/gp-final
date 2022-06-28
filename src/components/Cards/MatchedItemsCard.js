@@ -57,7 +57,7 @@ export default function MatchedItemsCard({ component, item, found }) {
             <p>
               Written Address:{" "}
               {item.address === ""
-                ? "Not Written Address Entered"
+                ? "No Written Address Entered"
                 : item.address}
             </p>
           </div>

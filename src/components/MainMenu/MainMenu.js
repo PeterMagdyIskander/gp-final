@@ -5,30 +5,29 @@ import { FiFlag } from "react-icons/fi";
 import { RiUserSearchFill } from "react-icons/ri";
 import LogoCard from "../Cards/LogoCard";
 import ImageContainer from "../Cards/ImageContainer";
+import CircularComponent from "../Loading/CircularComponent";
 const MainMenu = () => {
   const navigate = useNavigate();
 
   return (
     <div className="home">
-      
-       <IconTextCard
+      <IconTextCard
         component={<FiFlag className="icon" color="#39a2db" />}
         onClickFunction={() => navigate("Found")}
-        message={"Found a Child/Item"}
+        message="Found"
         subMessage={
-          "We can help you return them to the person they belong to using AI"
+          "If you found a child or an Item, we can help you return them to their respectful owner"
         }
       />
       <LogoCard />
       <IconTextCard
         component={<RiUserSearchFill className="icon" color="#39a2db" />}
         onClickFunction={() => navigate("Report")}
-        message={"Report a Child/Item"}
+        message="Lost"
         subMessage={
-          "We are using the latest AI technologies to macth lost children"
+          "If you have a missing Child or an Item, we can help you get them back"
         }
-      /> 
-
+      />
     </div>
   );
 };

@@ -81,11 +81,13 @@ const Found = (props) => {
           <IconTextCard
             component={<FiUser className="icon" />}
             message="Found a Child"
+            subMessage="Suspecting a missing Child? Your report will definitely help."
             onClickFunction={() => handleSelect("child")}
           />
           <IconTextCard
             component={<MdOutlineDevicesOther className="icon" />}
             message="Found an Item"
+            subMessage="Suspecting a missing Item? Your report will definitely help."
             onClickFunction={() => handleSelect("items")}
           />
         </div>

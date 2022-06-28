@@ -32,7 +32,7 @@ export default function IconTextCard({
           }}
           onClick={onClickFunction}
         >
-          Click for More
+          Click Here
         </Button>
       )}
     </div>
