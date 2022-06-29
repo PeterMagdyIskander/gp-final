@@ -245,11 +245,12 @@ styling for selected image
 }
 
 .found-options-container {
-    width: 50%;
-    margin: 2% auto;
+    width: 100%;
+    margin: 68px auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    gap: 125px;
 }
 
 .col {
