@@ -405,7 +405,7 @@ NEW START
 .home {
     margin: 85px 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     gap: 15px;
     padding: 0 150px;
