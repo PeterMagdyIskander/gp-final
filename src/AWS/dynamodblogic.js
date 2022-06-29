@@ -8,6 +8,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
+import {sendmail} from "../AWS/maillogic"
 
 const identitypoolid = process.env.REACT_APP_IDENTITY_POOL_ID;
 const reg = process.env.REACT_APP_REGION;
@@ -251,7 +252,8 @@ export async function getfromdynamodbpasserby(TableName, itype, unid) {
         phone: phonee,
       },
     ];
-    console.log("Success", ret);
+    sendmail(ret[0]['email'],'Item',ret[0]['id']);
+
     return ret;
   } catch (err) {
     console.log("Error", err);
