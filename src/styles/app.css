@@ -133,11 +133,10 @@ h1 {
 }
 
 .lost-child-img {
-    width: 200px;
-    height: 200px;
+    width: 170px;
+    height: 170px;
     object-fit: cover;
     border-radius: 30px;
-    margin-bottom: 25px;
 }
 
 
@@ -345,6 +344,7 @@ NEW START
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 15px;
 }
 
 .options-title {
@@ -464,9 +464,10 @@ a:hover {
 .card-content {
     margin: 25px 15px;
     padding: 35px;
-    width: 25%;
-    min-width: 250px;
+    width: 20%;
+    min-width: 200px;
     max-width: 300px;
+    min-height: 250px;
     border: 1px solid #39a2db;
     background-color: #fff;
     border-radius: 30px;
@@ -570,6 +571,7 @@ a:hover {
     width: 100%;
     display: flex;
     justify-content: space-around;
+
 }
 
 
@@ -580,6 +582,7 @@ a:hover {
     flex-wrap: wrap;
     margin: 64px auto;
     align-items: center;
+    width: 70%;
 }
 
 /*END*/
