@@ -242,12 +242,13 @@ export async function getfromdynamodbpasserby(TableName, itype, unid) {
       console.log("null ret");
       return [];
     }
+    const phonee=await getfromdynamodbphonenumber(data.Item["email"]["S"])
     const ret = [
       {
         id: data.Item["id"]["S"],
         type: data.Item["itemtype"]["S"],
         email: data.Item["email"]["S"],
-        phone: data.Item["phone"]["S"],
+        phone: phonee,
       },
     ];
     console.log("Success", ret);
