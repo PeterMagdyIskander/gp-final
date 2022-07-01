@@ -7,15 +7,18 @@ import { Button } from "@mui/material";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
+import { getchildids } from "../../AWS/dynamodblogic";
+
 
 import { toast } from "react-toastify";
 import ImageContainer from "../Cards/ImageContainer";
 
-export default function ReportForm({ onSubmit, setData, setFiles }) {
+export default function ReportForm({ onSubmit, setData, setFiles,authedUser }) {
   const [file, setFile] = useState([]);
   const [open, setOpen] = useState(false);
   const [NameError, setNameError] = useState(false);
   const [AgeError, setAgeError] = useState(false);
+  const [nameerrortext, setnameerrortext] = useState("");
   const [LocationError, setLocationError] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
@@ -48,7 +51,20 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
           childAge: "",
           location: "",
         }}
-        onSubmit={(values) => {
+        onSubmit={async (values) =>  {
+          
+          
+          const childids=await getchildids(authedUser.email,authedUser.jwtToken);
+          console.log(values['childName']);
+          if(childids.has(values['childName']))
+          {
+            setnameerrortext('This child is already Reported \nyou can edit it from status page')
+            setNameError(true);
+            return;
+          }
+
+          
+          
           console.log({
             ...values,
           });
@@ -65,6 +81,7 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
             return;
           }
           if (values.childName === "") {
+            setnameerrortext('Please enter the Name Value')
             setNameError(true);
             return;
           }
@@ -115,7 +132,7 @@ export default function ReportForm({ onSubmit, setData, setFiles }) {
               required={false}
               component={MyField}
               error={NameError}
-              helperText="Please enter the Name Value "
+              helperText={nameerrortext}
             />
             <Field
               name="location"

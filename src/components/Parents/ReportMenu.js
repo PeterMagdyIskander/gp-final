@@ -99,6 +99,7 @@ const ReportMenu = (props) => {
           setData={setData}
           onSubmit={setSendReq}
           setDone={setDone}
+          authedUser={props.authedUser}
         />
       )}
       {!sendReq && selecting === "items" && (
