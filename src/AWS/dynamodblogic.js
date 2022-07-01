@@ -13,6 +13,21 @@ import {sendmail} from "../AWS/maillogic"
 const identitypoolid = process.env.REACT_APP_IDENTITY_POOL_ID;
 const reg = process.env.REACT_APP_REGION;
 const COGNITO_IDP = process.env.REACT_APP_COGNITO_IDP;
+
+export async function getchildids(email,token)
+{
+    const reports=await quaryfromdynamodb("userdata",email,token);
+    const reportsSet = new Set()
+    for(let i=0;i<reports.length;i++)
+    {
+        reportsSet.add(reports[i]['name'])    
+        
+    }
+    return reportsSet
+
+
+}
+
 //used function
 export async function quaryfromdynamodb(TableName, Key, signintoken) {
   const client = new DynamoDBClient({
