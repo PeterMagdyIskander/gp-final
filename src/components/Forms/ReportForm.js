@@ -81,9 +81,7 @@ export default function ReportForm({ onSubmit, setData, setFiles,authedUser }) {
             return;
           }
           if (values.childName === "") {
-            setnameerrortext('Please enter the Name Value')
-            setNameError(true);
-            return;
+            values.childName="child "+childids.size;
           }
           setNameError(false);
 
