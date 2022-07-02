@@ -17,10 +17,10 @@ export function login(mail, password) {
       return data;
     },
     onFailure: (err) => {
-      console.error("onFailure: ", err);
+      
     },
     newPasswordRequired: (data) => {
-      console.log("newPasswordRequired: ", data);
+      
     },
   });
 }

@@ -70,10 +70,7 @@ export default function FoundItemForm({ setData, onSubmit }) {
           reporterPhone: "",
         }}
         onSubmit={(values) => {
-          console.log({
-            ...values,
-            coordinates,
-          });
+         
           if (values.id === "") {
             setIdError(true);
             setHelperTextId("Please Enter A Value");

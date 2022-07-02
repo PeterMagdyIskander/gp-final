@@ -24,7 +24,7 @@ const ProfileMenu = ({ authedUser }) => {
   const [edit, setEdit] = useState(false);
 
   const signOut = () => {
-    console.log("Successufully Signed out");
+    
     dispatch(setAuthedUser(null));
     dispatch(setChildren(null));
     dispatch(setItems(null));

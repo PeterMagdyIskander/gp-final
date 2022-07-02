@@ -13,7 +13,7 @@ const BurgerMenu = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const { dispatch } = props;
   const signOut = () => {
-    console.log("Successufully Signed out");
+    
 
     dispatch(setAuthedUser(null));
     dispatch(setChildren(null));
@@ -27,7 +27,7 @@ const BurgerMenu = (props) => {
   const handleCloseModal = () => setOpen(false);
   const [open, setOpen] = useState(false);
 
-  console.log(props);
+
   const sxForIcons = { minWidth: 32 };
 
   return (

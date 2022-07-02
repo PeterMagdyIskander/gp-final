@@ -48,7 +48,7 @@ const Found = (props) => {
     setDone(false);
     setSelecting("");
   };
-  console.log("items form item form", data);
+  
   return (
     <>
       {sendReq && done && (

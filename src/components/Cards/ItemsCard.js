@@ -89,10 +89,10 @@ function ItemsCard(props) {
         position: toast.POSITION.BOTTOM_RIGHT,
       }
     );
-    console.log(response);
+    
     if (response) {
       let newItemsArr = props.items;
-      console.log(newItemsArr);
+     
       for (let i = 0; i < newItemsArr.length; i++) {
         if (newItemsArr[i].id === props.id) {
           newItemsArr[i].id = newId;
@@ -136,7 +136,7 @@ function ItemsCard(props) {
     border: "2px solid #000",
     boxShadow: 24,
   };
-  console.log("matches", props);
+  
   return (
     <>
       <GenericStatusCard

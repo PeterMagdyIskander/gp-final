@@ -2,7 +2,7 @@ import { FiInfo } from "react-icons/fi";
 import CardContent from "@mui/material/CardContent";
 const MatchedCard = (props) => {
   let { img } = props;
-  console.log("props", props);
+  
   return (
     <CardContent
       variant="outlined"

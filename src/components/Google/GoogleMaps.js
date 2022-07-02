@@ -11,7 +11,7 @@ import { SiGooglemaps } from "react-icons/si";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 const GoogleMaps = (props) => {
-  console.log(props.loc);
+ 
   const [address, setAddress] = useState(props.loc);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -20,7 +20,7 @@ const GoogleMaps = (props) => {
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
     map.fitBounds(bounds);
-    console.log(bounds);
+    
   }, []);
   useEffect(() => {
     setAddress(props.loc);

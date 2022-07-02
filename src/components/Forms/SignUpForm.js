@@ -45,7 +45,7 @@ export default function SignUpForm() {
           verificationCode: "",
         }}
         onSubmit={async (values) => {
-          console.log(values);
+          
           if (/^(010|011|012|015)[0-9]{8}$/.test(`0${values.phone}`)) {
             setSignedUpNumberError(false);
             try {
@@ -57,7 +57,7 @@ export default function SignUpForm() {
                 values.firstName,
                 values.lastName
               );
-              console.log(signUpRes);
+             
               navigate("/login");
             } catch (error) {
               if (error.toString().includes("email")) {

@@ -84,7 +84,7 @@ export async function quaryfromdynamodb(TableName, Key, signintoken) {
     return statusArr;
   } catch (err) {
     
-    console.log("Error", err);
+    
     return false;
   }
 }
@@ -117,10 +117,10 @@ export async function updatedynamodb(TableName, Key, signintoken) {
   };
   try {
     const data = await client.send(new GetItemCommand(params));
-    console.log("Success", data.Item);
+    
     return data;
   } catch (err) {
-    console.log("Error", err);
+   
     return false;
   }
 }
@@ -147,7 +147,7 @@ export async function quaryfromdynamodbgetitem(TableNamee, mail, signintoken) {
     const data = await client.send(new QueryCommand(params));
 
     var statusArr = [];
-    console.log("appppppppppppppppppppppppppppppp", data);
+   
     for (let i = 0; i < data.Items.length; i++) {
       const itemid = data.Items[i]["id"]["S"];
       const type = data.Items[i]["itemtype"]["S"];
@@ -158,11 +158,11 @@ export async function quaryfromdynamodbgetitem(TableNamee, mail, signintoken) {
 
       statusArr.push(statobject);
     }
-    console.log("abadeeeeeeeeeer", statusArr);
+    
 
     return statusArr;
   } catch (err) {
-    console.log("Error", err);
+   
     return false;
   }
 }
@@ -189,7 +189,7 @@ export async function additemdb(itemtype, uniqid, phone, email, signintoken) {
     TableName: "itemslost",
   });
   var response = await client.send(command);
-  console.log(response);
+  
   command = new PutItemCommand({
     Item: {
       itemtype: { S: itemtype },
@@ -199,7 +199,7 @@ export async function additemdb(itemtype, uniqid, phone, email, signintoken) {
     TableName: "itemslostuserdata",
   });
   response = await client.send(command);
-  console.log(response);
+  
   return true;
 }
 
@@ -211,7 +211,7 @@ export async function additemdbpasserby(
   lat,
   lng
 ) {
-  console.log("abadeeeeeeeeeeeeer", itemtype);
+  
   const client = new DynamoDBClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -232,11 +232,11 @@ export async function additemdbpasserby(
     TableName: "itemsfound",
   });
   const response = await client.send(command);
-  console.log(response);
+  
   return true;
 }
 export async function getfromdynamodbpasserby(TableName, itype, unid) {
-  console.log("called");
+  
   const client = new DynamoDBClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -253,9 +253,9 @@ export async function getfromdynamodbpasserby(TableName, itype, unid) {
   };
   try {
     const data = await client.send(new GetItemCommand(params));
-    console.log("Success", data.Item);
+    
     if (data.Item == null) {
-      console.log("null ret");
+      
       return [];
     }
     const phonee=await getfromdynamodbphonenumber(data.Item["email"]["S"])
@@ -271,7 +271,7 @@ export async function getfromdynamodbpasserby(TableName, itype, unid) {
 
     return ret;
   } catch (err) {
-    console.log("Error", err);
+    
   }
 }
 export async function getfromdynamodb(TableName, itype, unid, signintoken) {
@@ -294,10 +294,9 @@ export async function getfromdynamodb(TableName, itype, unid, signintoken) {
   };
   try {
     const data = await client.send(new GetItemCommand(params));
-    console.log("Success", data.Item);
-
+    
     if (data.Item == null) {
-      console.log("nullll reterened");
+     
       return [];
     }
     const ret = [
@@ -312,7 +311,7 @@ export async function getfromdynamodb(TableName, itype, unid, signintoken) {
     ];
     return ret;
   } catch (err) {
-    console.log("Error", err);
+    
   }
 }
 export async function deleteitem(itemid, email, signintoken, itemtype) {
@@ -336,9 +335,9 @@ export async function deleteitem(itemid, email, signintoken, itemtype) {
 
   try {
     const data = await client.send(new DeleteItemCommand(params));
-    console.log("Success");
+    
   } catch (err) {
-    console.log("Error", err);
+   
   }
   params = {
     TableName: "itemslost",
@@ -349,10 +348,10 @@ export async function deleteitem(itemid, email, signintoken, itemtype) {
   };
   try {
     const data = await client.send(new DeleteItemCommand(params));
-    console.log("Success");
+    
     return data;
   } catch (err) {
-    console.log("Error", err);
+   
   }
 }
 export async function updatedynamodbbphone(nephone,token,email)
@@ -385,10 +384,10 @@ export async function updatedynamodbbphone(nephone,token,email)
       };
       try {
         const data = await client.send(new UpdateItemCommand(params));
-        console.log("Success");
+        
         return data
     } catch (err) {
-        console.log("Error", err);
+       
     }
      
 
@@ -414,10 +413,10 @@ export async function getfromdynamodbphonenumber(email)
       };
       try {
         const data = await client.send(new GetItemCommand(params));
-        console.log("Success", data.Item);
+        
         return data.Item["phone"]["S"]
     } catch (err) {
-        console.log("Error", err);
+        
     }
      
 

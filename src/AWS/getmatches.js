@@ -10,7 +10,7 @@ export async function Getmatches(photoslinkarr,token)
     {
         photosnamearr[i]=linktoid(photoslinkarr[i]["img"])
     }
-    console.log("aaaaaaaaaaaaaaaaaaaa",photosnamearr);
+   
     const matchesset = new Set()
     for(let i=0;i<photosnamearr.length;i++)
     {
@@ -26,8 +26,7 @@ export async function Getmatches(photoslinkarr,token)
     matchesset.forEach(v => photoidarr.push(v));
     if(photoidarr.length==0)
         return [];
-    console.log("maaaaaaaaaaaaaaaaaaaaaaaaatch",photoidarr);
-    console.log("toooooooooooken",token);
+    
     var y=await gets3file(photoidarr,token,"passerbybucket");
     const metadataarr=[];
     const matchesmap = new Map();
@@ -35,7 +34,7 @@ export async function Getmatches(photoslinkarr,token)
     {
     
        var x=await gets3fileheadobject(photoidarr[i], "passerbybucket")
-       console.log("peeeeeeeeeeee",x);
+       
        const metdata=JSON.stringify({
         lat:x["Metadata"]["lat"],
         name:x["Metadata"]["name"],
@@ -67,7 +66,7 @@ export async function Getmatches(photoslinkarr,token)
         }
         outarr.push(out)
       }
-    console.log("neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",outarr)
+    
     
    const output={
         photosuri:y,
@@ -82,8 +81,7 @@ export async function Getmatches(photoslinkarr,token)
 }
 export async function Getmatchesitem(itemtype,id,token)
 {
-    console.log(itemtype);
-    console.log(id);
+   
     const match=await getfromdynamodb("itemsfound",itemtype,id,token);
     return match
 }

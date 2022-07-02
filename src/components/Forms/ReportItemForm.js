@@ -25,9 +25,7 @@ export default function ReportItemForm({ setData, onSubmit }) {
           id: "",
         }}
         onSubmit={(values) => {
-          console.log({
-            ...values,
-          });
+         
           if (values.id === "") {
             setIdError(true);
             setHelperTextId("Please Enter A Value");

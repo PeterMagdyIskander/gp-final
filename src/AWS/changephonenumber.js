@@ -15,9 +15,6 @@ const config={
 }
 
 export async function changephonenumber(phone,token,accessToken,mail) {
-    console.log("at",accessToken);
-    console.log("abadeer",token);
-    console.log("ph",phone);
     
     const client = new CognitoIdentityProviderClient(config);
     
@@ -36,10 +33,10 @@ export async function changephonenumber(phone,token,accessToken,mail) {
         
         const response = await client.send(command);
         updatedynamodbbphone(phone,token,mail)
-        console.log(response);
+        
         
     } catch (error) {
-        console.log("error",error);
+      
         
         
     }

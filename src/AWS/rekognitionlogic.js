@@ -15,7 +15,7 @@ export async function searchforsim(
   targetfaceimagename,
   signintoken
 ) {
-  console.log("iaiodiojdioj", targetfaceimagename);
+  
   const client = new RekognitionClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -49,7 +49,7 @@ export async function searchforsimpasserby(i,
   targetfacebucket,
   targetfaceimagename
 ) {
-  console.log("called rek",targetfaceimagename);
+  
   targetfaceimagename=convertstringtoascii(targetfaceimagename)+i
   const client = new RekognitionClient({
     region: reg,
@@ -71,14 +71,14 @@ export async function searchforsimpasserby(i,
   try {
     const command = new SearchFacesByImageCommand(searchinput);
     const response = await client.send(command);
-    console.log("reeeeeee",response);
+    
     for (const element of response["FaceMatches"]) {
     photoidarray.push(element["Face"]["ExternalImageId"]);
     }
     return photoidarray;
     
   } catch (error) {
-    console.log(error);
+    
     if (error.toString().includes("no faces"))
     {
         return "NOFACE"
@@ -97,7 +97,7 @@ export async function searchforsimasciihandeled(i,
   signintoken
 ) {
   targetfaceimagename=convertstringtoascii(targetfaceimagename)+i
-  console.log("iaiodiojdioj", targetfaceimagename);
+ 
   const client = new RekognitionClient({
     region: reg,
     credentials: fromCognitoIdentityPool({
@@ -128,7 +128,7 @@ export async function searchforsimasciihandeled(i,
     return photoidarray;
     
   } catch (error) {
-    console.log(error);
+    
     if (error.toString().includes("no faces"))
     {
         return "NOFACE"

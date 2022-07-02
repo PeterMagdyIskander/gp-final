@@ -7,11 +7,11 @@ import { BsPinFill} from "react-icons/bs";
 import MatchedCard from "./MatchedCard";
 import { useState } from "react";
 export default function MatchedDetailsMenu(props) {
-  console.log(props);
+  
   const [selectedMatch, setSelectedMacth] = useState(props.matches[0]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const setSelectedMatch = (match, index) => {
-    console.log(selectedMatch);
+    
     setSelectedMacth(match);
     setSelectedIndex(index);
   };

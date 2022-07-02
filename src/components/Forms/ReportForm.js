@@ -55,7 +55,7 @@ export default function ReportForm({ onSubmit, setData, setFiles,authedUser }) {
           
           
           const childids=await getchildids(authedUser.email,authedUser.jwtToken);
-          console.log(values['childName']);
+          
           if(childids.has(values['childName']))
           {
             setnameerrortext('This child is already Reported \nyou can edit it from status page')
@@ -65,9 +65,7 @@ export default function ReportForm({ onSubmit, setData, setFiles,authedUser }) {
 
           
           
-          console.log({
-            ...values,
-          });
+         
           if (file.length === 0) {
             toast.error("Please Add pictures", {
               position: "bottom-right",

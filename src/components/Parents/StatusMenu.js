@@ -28,7 +28,7 @@ const StatusMenu = (props) => {
   const [itemsLoading, setItemsLoading] = useState(true);
 
   useEffect(async () => {
-    console.log(props.authedUser);
+    
     if (props.items) {
       setItemsStatus(props.items);
       setItemsLoading(false);
@@ -49,7 +49,7 @@ const StatusMenu = (props) => {
       props.authedUser.email,
       props.authedUser.jwtToken
     );
-    console.log("abadeer item", completeItems);
+    
 
     for (let i = 0; i < completeItems.length; i++) {
       //remove the array and add the function to get matches -> if theres a match -> array index of 1
@@ -76,7 +76,7 @@ const StatusMenu = (props) => {
       props.authedUser.jwtToken
     ).then(async (res) => {
       let completedStatus = [...res];
-      console.log("abapaaaaaaaa", completedStatus);
+      
       for (let i = 0; i < completedStatus.length; i++) {
         let images = await gets3file(
           completedStatus[i].photos,

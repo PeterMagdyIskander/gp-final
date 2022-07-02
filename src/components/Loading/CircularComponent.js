@@ -22,7 +22,7 @@ function CircularComponent(props) {
   useEffect(() => {
     setLoading(props.loading);
   }, [props.loading]);
-  console.log(loading, props.number);
+  
   return (
     <Box
       sx={{

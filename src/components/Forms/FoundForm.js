@@ -102,11 +102,7 @@ export default function FoundForm({
           reporterPhone: "",
         }}
         onSubmit={(values) => {
-          console.log({
-            ...values,
-            file,
-            coordinates,
-          });
+          
 
           if (file.length === 0) {
             toast.error("Please Add pictures", {

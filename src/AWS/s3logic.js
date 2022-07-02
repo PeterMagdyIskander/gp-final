@@ -58,9 +58,9 @@ export async function uploadarrtos3editreport(
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      console.log("Success", data);
+      
     } catch (err) {
-      console.log("Error", err);
+      
       success = false;
     }
   }
@@ -108,9 +108,9 @@ export async function uploadarrtos3(
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      console.log("Success", data);
+      
     } catch (err) {
-      console.log("Error", err);
+      
       success = false;
     }
   }
@@ -143,9 +143,9 @@ export async function gets3file(id, signintoken, Bucket) {
 
       uriarr.push(url);
 
-      console.log("Success");
+      
     } catch (err) {
-      console.log("Error", err);
+      
     }
   }
   return uriarr;
@@ -167,9 +167,9 @@ export async function Deleteobject(signintoken, oid, Bucket) {
   };
   try {
     const data = await s3.send(new DeleteObjectCommand(Params));
-    console.log("Success", data);
+    
   } catch (err) {
-    console.log("Error", err);
+   
   }
   return true;
 }
@@ -193,9 +193,9 @@ export async function Deleteobjects(signintoken, oid, Bucket) {
     };
     try {
       const data = await s3.send(new DeleteObjectCommand(Params));
-      console.log("Success", data);
+      
     } catch (err) {
-      console.log("Error", err);
+     
       success = false;
     }
   }
@@ -238,12 +238,12 @@ export async function uploadarrtos3passerby(
     };
     try {
       const data = await s3.send(new PutObjectCommand(uploadParams));
-      console.log("Success", data);
+     
        
     } catch (err) {
       success=false
      
-      console.log("Error", err);
+      
     }
 
   }
@@ -272,9 +272,9 @@ export async function gets3filepasserby(id, Bucket) {
 
       uriarr.push(url);
 
-      console.log("Success");
+      
     } catch (err) {
-      console.log("Error", err);
+     
     }
   }
   return uriarr;
@@ -378,9 +378,9 @@ export async function gets3fileheadobject(id, Bucket) {
    
     return response;
 
-    console.log("Success");
+    
   } catch (err) {
-    console.log("Error", err);
+   
     return false;
   }
 }

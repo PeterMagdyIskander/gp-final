@@ -69,7 +69,7 @@ function UpdateRekoFetch(props) {
     setSuccess1("true");
     setProgressOne();
 
-    console.log(uploadSucces);
+    
     const matchesset = new Set();
     for (let i = 0; i < 1; i++) {
       const ids = await props.reqFunctions.searchForSim.reqFunction(i,
@@ -82,7 +82,7 @@ function UpdateRekoFetch(props) {
     const photoidarr = [];
     matchesset.forEach((v) => photoidarr.push(v));
 
-    console.log(photoidarr);
+    
     if (!photoidarr || photoidarr.length === 0) {
       setLoading2(false);
       setSuccess2("failure");
@@ -101,7 +101,7 @@ function UpdateRekoFetch(props) {
       photoidarr,
       ...props.reqFunctions.getreports.params
     );
-    console.log("s3g", s3g);
+    
 
     if (s3g.lenght === 0) {
       setSuccess3("failure");

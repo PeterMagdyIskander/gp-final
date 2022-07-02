@@ -67,7 +67,7 @@ function SignInForm(props) {
           new Date(data.getIdToken().payload.exp * 1000).getTime() -
             new Date().getTime()
         );
-        console.log("from", from);
+        
         navigate(from, { replace: true });
       },
       onFailure: (err) => {
@@ -81,10 +81,10 @@ function SignInForm(props) {
         }
         setLoading(false);
 
-        console.error("onFailure: ", err);
+        
       },
       newPasswordRequired: (data) => {
-        console.log("newPasswordRequired: ", data);
+       
       },
     });
   };

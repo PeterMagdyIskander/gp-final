@@ -24,16 +24,16 @@ function UpdateFetch(props) {
         prevProgress >= 100 ? 100 : prevProgress + 100
       );
       setTimeout(() => {
-        console.log("called 4")
+        
         setLoading2(true);
       }, 150);
     }, 100);
   };
   const setProgressTwo = (s3g) => {
-    console.log("called 2")
+    
     setSuccess2("true");
     setTimeout(() => {
-      console.log("called 3")
+     
       props.setMatches(s3g);
       props.setDone(true);
     }, 1500);
@@ -55,7 +55,7 @@ function UpdateFetch(props) {
       ...props.reqFunctions.getreports.params
     );
     //if failure
-    console.log(s3g)
+   
     if (s3g.length === 0) {
       setSuccess2("failure");
       setLoading2(false);
@@ -64,7 +64,7 @@ function UpdateFetch(props) {
         props.setDone(true);
       }, 1500);
     } else {
-      console.log("called 1")
+     
       setProgressTwo(s3g);
     }
   }, []);

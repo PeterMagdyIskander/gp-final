@@ -23,7 +23,7 @@ import { setChildren } from "../../ReduxStore/actions/children";
 import { toast } from "react-toastify";
 import ImageContainer from "./ImageContainer";
 const StatusCard = (props) => {
-  console.log("status props", props);
+ 
   const dispatch = useDispatch();
   const [openInfo, setOpenInfo] = useState(false);
   const handleOpenInfoModal = () => setOpenInfo(true);
@@ -80,12 +80,12 @@ const StatusCard = (props) => {
     p: 4,
   };
   const handleEditing = () => {
-    console.log(props.child.photos);
+    
     setEditing(!editing);
   };
 
   const removeChildImages = async (child) => {
-    console.log(child);
+    
     let toBeDeleted = child.photos.filter((img) => img.selected);
     if (toBeDeleted.length === child.photos.length) {
       toast.error("Can't Remove All Pictures", {
@@ -190,7 +190,7 @@ const StatusCard = (props) => {
         }
         return "";
       });
-      console.log(addedImgs);
+     
       let selectedImages = addedImgs.map((img) => {
         return { img, selected: false };
       });
@@ -213,7 +213,7 @@ const StatusCard = (props) => {
       let newChildArr = props.children.filter(
         (child) => childName + childLocation !== child.name + child.Location
       );
-      console.log("before", props.children, "after deletion", newChildArr);
+     
       dispatch(setChildren(newChildArr));
     }
     handleCloseInfoModal();
